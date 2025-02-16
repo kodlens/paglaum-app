@@ -30,25 +30,25 @@ export const UserTable = () => {
     },[page]);
 
     const updatePageNum = (pageNo:number) => {
-        console.log('page no: ', pageNo);
-
         setPage(pageNo);
     }
 
     const renderPagination = () => {
         const pageCount = Math.ceil(total / perPage);
-        console.log(pageCount);
         
         let counter = 0;
         let paginates = [];
 
         while(counter < pageCount){
+            
+            const myCount = counter + 1;
+            
             paginates.push(
                 <li key={counter}
-                    onClick={() => updatePageNum(counter + 1)}
+                    onClick={() => updatePageNum(myCount)}
                     className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 
                         hover:bg-blue-100 hover:text-blue-700">
-                        {counter + 1}
+                        {myCount}
                 </li>
                 // lutang kaayo ko nimo paginate
             );

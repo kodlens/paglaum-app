@@ -1,4 +1,4 @@
-import AdminDashboardLayout from '@/Layouts/AdminDashboardLayout'
+import AdminAuthLayout from '@/Layouts/AdminAuthLayout'
 import { Head } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -8,7 +8,7 @@ import { UserTable } from './UserTable'
 export default function UserIndex() {
 
     return (
-        <AdminDashboardLayout>
+        <AdminAuthLayout>
             <Head title="User"/>
 
             <div>
@@ -16,8 +16,7 @@ export default function UserIndex() {
                 <UserTable />
 
                 
-
             </div>
-        </AdminDashboardLayout>
+        </AdminAuthLayout>
     )
 }

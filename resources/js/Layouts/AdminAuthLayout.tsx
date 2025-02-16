@@ -3,9 +3,7 @@ import React, { ReactNode, useState } from 'react'
 import ProfileDropdown from './partials/ProfileDropdown';
 import { Link } from '@inertiajs/react';
 
-export default function AdminDashboardLayout( {children} : {children:ReactNode}) {
-
-
+export default function AdminAuthLayout( {children} : {children:ReactNode}) {
 
 
     return (
@@ -24,7 +22,7 @@ export default function AdminDashboardLayout( {children} : {children:ReactNode})
                             </button>
                             <a href="https://flowbite.com" className="flex ms-2 md:me-24">
                                 <img src="https://flowbite.com/docs/images/logo.svg" className="h-8 me-3" alt="FlowBite Logo" />
-                                <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">Flowbite</span>
+                                <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap">PAGLAUM</span>
                             </a>
                         </div>
                         
