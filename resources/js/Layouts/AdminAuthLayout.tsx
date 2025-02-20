@@ -1,5 +1,5 @@
 import { useState, PropsWithChildren } from 'react';
-import { Link, router, useForm } from '@inertiajs/react';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
 
 import {
     MenuFoldOutlined,
@@ -12,6 +12,7 @@ import {
 
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';
 import PanelSideBarLogo from '@/Components/PanelSideBarLogo';
+import { User } from '@/types';
 
   const { Header, Sider, Content } = Layout;
 
@@ -22,9 +23,9 @@ const siderStyle: React.CSSProperties = {
 };
 
 export default function AdminAuthLayout(
-    { user, children }: PropsWithChildren<{ user: any}>) {
+    
+    { user, children }: PropsWithChildren<{ user:User }>) {
 
-    console.log(user);
     const { post } = useForm();
 
     const [collapsed, setCollapsed] = useState(false);
@@ -32,6 +33,7 @@ export default function AdminAuthLayout(
     const handleLogout = () => {
         post(route('logout'));
     }
+
 
     type MenuItem = Required<MenuProps>['items'][number];
 
@@ -138,7 +140,7 @@ export default function AdminAuthLayout(
 
         <>
             <Layout>
-                <Sider trigger={null} style={siderStyle} collapsible
+                <Sider className='z-10' trigger={null} style={siderStyle} collapsible
                     collapsed={collapsed} width={300}>
                     <PanelSideBarLogo />
                     <ConfigProvider theme={{
@@ -178,7 +180,10 @@ export default function AdminAuthLayout(
 
 
                             <div className='ml-auto mr-4 flex items-center gap-4'>
-                                <Link href=''>Lastname</Link>
+                                <Link href=''>
+                                    {user.lname}, {user.fname[0]}
+                                
+                                </Link>
                                 <Button className='' onClick={handleLogout}>Logout</Button>
                             </div>
 
@@ -193,7 +198,7 @@ export default function AdminAuthLayout(
                             borderRadius: 0,
                         }}
                     >
-                        <main className='mb-10'>{children}</main>
+                        <main className='m-10'>{children}</main>
                     </Content>
                 </Layout>
             </Layout>

@@ -10,8 +10,8 @@ const NavBar = () => {
 
     useEffect(() => {
         document.onclick = (e) => {
-            const target = e.target;
-            if (!target.closest(".menu-btn")) setState(false);
+            const target = e.target as HTMLElement;
+            if (target && !target.closest(".menu-btn")) setState(false);
         };
     }, []);
 
@@ -94,7 +94,7 @@ const NavBar = () => {
                             className="block text-gray-700 hover:text-gray-900"
                         ></Link>
                         <Link
-                            href=""
+                            href="/login"
                             className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-sky-600 hover:bg-gray-700 active:bg-gray-900 rounded-lg md:inline-flex"
                         >
                             Sign in

@@ -28,7 +28,7 @@ export default () => {
                         </p>
                         <div className=" items-center mt-5 justify-center gap-3 sm:flex">
                             <Link
-                                href=""
+                                href="/register"
                                 className=" mt-2 flex py-2.5 px-8 text-white bg-sky-700 rounded-md justify-center duration-150 hover:bg-gray-800 "
                             >
                                 <Zap
