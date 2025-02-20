@@ -162,7 +162,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 					<div className='z-0'>
 						<Table dataSource={data}
 							loading={loading}
-							rowKey={(data) => data.id}
+							rowKey={(data) => data.id ?? 0}
 							pagination={false}>
 
 							<Column title="Id" dataIndex="id" key="id"/>
@@ -183,7 +183,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 								render={(_, data:User) => (
 									<Space size="small">
 										<Button shape="circle" icon={<EditOutlined/>} 
-											onClick={ ()=> handleEditClick(data.id) } />
+											onClick={ ()=> handleEditClick(data.id ?? 0) } />
 										<ChangePassword data={data} onSuccess={loadDataAsync}/>
 									</Space>
 								)}
