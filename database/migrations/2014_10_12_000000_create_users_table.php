@@ -53,6 +53,7 @@ return new class extends Migration
             $table->string('city', 30)->nullable();
             $table->string('barangay', 30)->nullable();
             $table->string('street', 30)->nullable();
+            $table->string('zip', 30)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('image')->nullable();
