@@ -11,7 +11,7 @@ use App\Models\User;
 class UserController extends Controller
 {
     public function index(){
-        return Inertia::render('Admin/Users/UserIndex');
+        return Inertia::render('Admin/User/AdminUserIndex');
     }
 
     public function getData(Request $req){

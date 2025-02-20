@@ -22,9 +22,9 @@ const siderStyle: React.CSSProperties = {
 };
 
 export default function AdminAuthLayout(
+    
     { user, children }: PropsWithChildren<{ user: any}>) {
 
-    console.log(user);
     const { post } = useForm();
 
     const [collapsed, setCollapsed] = useState(false);
@@ -178,7 +178,7 @@ export default function AdminAuthLayout(
 
 
                             <div className='ml-auto mr-4 flex items-center gap-4'>
-                                <Link href=''>Lastname</Link>
+                                <Link href=''>{user.lname}, {user.fname[0]}</Link>
                                 <Button className='' onClick={handleLogout}>Logout</Button>
                             </div>
 
