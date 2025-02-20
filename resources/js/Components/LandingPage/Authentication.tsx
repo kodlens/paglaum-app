@@ -1,6 +1,7 @@
+import { PageProps } from "@/types";
 import { Link } from "@inertiajs/react";
 
-const Authentication = ({ children }) => {
+const Authentication = ({ children }:PageProps) => {
     return (
         <main className="w-full flex">
             <div className="relative flex-1 hidden items-center justify-center h-screen bg-gray-900 lg:flex">

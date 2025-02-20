@@ -55,9 +55,11 @@ return new class extends Migration
             $table->string('street', 30)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('image')->nullable();
             $table->string('role', 30)->nullable();
             $table->date('membership_date')->nullable();
-
+            $table->tinyInteger('active')->nullable()
+                ->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

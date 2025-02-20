@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import ChangePassword from './partials/ChangePassword';
 import AdminAuthLayout from '@/Layouts/AdminAuthLayout';
+import { PaginateResponse } from '@/types/apiResponse';
 
 const { Column } = Table;
 
@@ -36,16 +37,20 @@ export default function AdminUserIndex({ auth }: PageProps) {
 	const [perPage, setPerPage] = useState(10);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
-    const [errors, setErrors] = useState<any>({});
+    const [errors, setErrors] = useState<any>({
+        lname:'',
+        fname:'',
+        mname:'',
+        email:'',
+        username:'',
+        password:'',
+        password_confirmation:'',
+    });
 
     const [id, setId] = useState(0);
 	
 
-	interface PaginateResponse {
-		data: User[],
-		total: number;
-	}
-
+	
 	const loadDataAsync = async () => {
 
         setLoading(true)
@@ -80,9 +85,9 @@ export default function AdminUserIndex({ auth }: PageProps) {
 			const response = await axios.get<User>(`/admin/users/${dataId}`);
 			form.setFields([
 				{ name: 'username', value: response.data.username },
-				{ name: 'lastname', value: response.data.lname },
-				{ name: 'firstname', value: response.data.fname },
-				{ name: 'middlename', value: response.data.mname },
+				{ name: 'lname', value: response.data.lname },
+				{ name: 'fname', value: response.data.fname },
+				{ name: 'mname', value: response.data.mname },
 				{ name: 'email', value: response.data.email },
 				{ name: 'sex', value: response.data.sex },
 				{ name: 'role', value: response.data.role }
@@ -123,7 +128,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 				}
 			}catch(err:any){
 				if(err.response.status === 422){
-	
+                    setErrors(err.response.data.errors)
 				}
 			}
 		}else{
@@ -136,7 +141,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 				}
 			}catch(err:any){
 				if(err.response.status === 422){
-	
+                    setErrors(err.response.data.errors)
 				}
 			}
 		}
@@ -154,7 +159,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 					{/* card header */}
 					<div className="font-bold mb-4 text-lg">LIST OF USER</div>
 					{/* card body */}
-					<div>
+					<div className='z-0'>
 						<Table dataSource={data}
 							loading={loading}
 							rowKey={(data) => data.id}
@@ -213,7 +218,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
                     autoFocus: true,
                     htmlType: "submit",
                 }}
-                onCancel={() => setOpen(false)}
+                onCancel={() => {setOpen(false); setErrors({});}}
                 destroyOnClose
                 modalRender={(dom) => (
                     <Form
@@ -225,7 +230,9 @@ export default function AdminUserIndex({ auth }: PageProps) {
                             username: "",
                             password: "",
                             email: "",
-                            name: "",
+                            lname: "",
+                            fname: "",
+                            mname: "",
                             sex: "MALE",
                             role: "USER",
                             active: true,
@@ -295,28 +302,28 @@ export default function AdminUserIndex({ auth }: PageProps) {
                 )}
 
                 <Form.Item
-                    name="lastname"
+                    name="lname"
                     label="Last Name"
-                    validateStatus={errors.lastname ? "error" : ""}
-                    help={errors.lastname ? errors.lastname[0] : ""}
+                    validateStatus={errors.lname ? "error" : ""}
+                    help={errors.lname ? errors.lname[0] : ""}
                 >
                     <Input placeholder="Last Name" />
                 </Form.Item>
 
                 <Form.Item
-                    name="firstname"
+                    name="fname"
                     label="First Name"
-                    validateStatus={errors.firstname ? "error" : ""}
-                    help={errors.firstname ? errors.firstname[0] : ""}
+                    validateStatus={errors.fname ? "error" : ""}
+                    help={errors.fname ? errors.fname[0] : ""}
                 >
                     <Input placeholder="First Name" />
                 </Form.Item>
 
                 <Form.Item
-                    name="middlename"
+                    name="mname"
                     label="Middle Name"
-                    validateStatus={errors.middlename ? "error" : ""}
-                    help={errors.middlename ? errors.middlename[0] : ""}
+                    validateStatus={errors.mname ? "error" : ""}
+                    help={errors.mname ? errors.mname[0] : ""}
                 >
                     <Input placeholder="FiMiddlerst Name" />
                 </Form.Item>
