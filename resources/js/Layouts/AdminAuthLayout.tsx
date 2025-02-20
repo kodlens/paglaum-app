@@ -21,9 +21,10 @@ const siderStyle: React.CSSProperties = {
 
 };
 
-export default function AdminLayout(
+export default function AdminAuthLayout(
     { user, children }: PropsWithChildren<{ user: any}>) {
 
+    console.log(user);
     const { post } = useForm();
 
     const [collapsed, setCollapsed] = useState(false);
@@ -122,66 +123,12 @@ export default function AdminLayout(
             type: 'divider'
         },
 
-        // {
-        //     key: 'roles.index',
-        //     icon: <IdcardOutlined />,
-        //     label: 'Roles',
-        //     onClick: ()=> router.visit('/admin/roles')
-        // },
-        // {
-        //     key: 'permissions.index',
-        //     icon: <HddOutlined />,
-        //     label: 'Permissions',
-        //     onClick: ()=> router.visit('/admin/permissions')
-        // },
-        // {
-        //     key: 'role-has-permissions.index',
-        //     icon: <FileJpgOutlined />,
-        //     label: 'Role Permissions',
-        //     onClick: ()=> router.visit('/admin/role-has-permissions')
-        // },
         {
             key: 'users.index',
             icon: <FileJpgOutlined />,
             label: 'Users',
             onClick: ()=> router.visit('/admin/users')
         });
-
-		// if (paramPermissions.includes('sections.index')) {
-		// 	items.push(
-        //     );
-		// }
-
-		// if (paramPermissions.includes('categories.index')) {
-		// 	items.push( );
-		// }
-
-		// if (paramPermissions.includes('posts.index')) {
-		// 	items.push();
-		// }
-
-        // if (paramPermissions.includes('trashes.index')) {
-		// 	items.push();
-		// }
-
-
-		// if (paramPermissions.includes('roles.index')) {
-		// 	items.push();
-		// }
-
-		// if (paramPermissions.includes('permissions.index')) {
-		// 	items.push(
-        //     );
-		// }
-		// if (paramPermissions.includes('role-has-permissions.index')) {
-		// 	items.push(
-        //     );
-		// }
-
-        // if (paramPermissions.includes('users.index')) {
-		// 	items.push(
-        //     ;
-		// }
 
 		return items;
 	}
@@ -231,7 +178,7 @@ export default function AdminLayout(
 
 
                             <div className='ml-auto mr-4 flex items-center gap-4'>
-                                <Link href=''>{user.lastname} {user.firstname[0]}.</Link>
+                                <Link href=''>Lastname</Link>
                                 <Button className='' onClick={handleLogout}>Logout</Button>
                             </div>
 
