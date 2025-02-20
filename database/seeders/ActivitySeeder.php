@@ -253,12 +253,176 @@ class ActivitySeeder extends Seeder
                 'area_id' => 9
             ],
             [
-                'activity' => 'Repair Shop',
+                'activity' => 'Electronic/Electric Shop',
                 'description' => '',
                 'active' => 1,
                 'order_no' => 4,
                 'area_id' => 9
             ],
+            [
+                'activity' => 'Barber/Beauty Shop',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 5,
+                'area_id' => 9
+            ],
+            [
+                'activity' => 'Chainsaw Operator',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 6,
+                'area_id' => 9
+            ],
+            [
+                'activity' => 'Boarding House/Apartment',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 7,
+                'area_id' => 9
+            ],
+
+
+
+
+            [
+                'activity' => 'office/School Supplies',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 1,
+                'area_id' => 10
+            ],
+            [
+                'activity' => 'Sari-sari Strore',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 2,
+                'area_id' => 10
+            ],
+            [
+                'activity' => 'Buy and Sell',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 3,
+                'area_id' => 10
+            ],
+            [
+                'activity' => 'Hardware/Electronics Supplies',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 4,
+                'area_id' => 10
+            ],
+            [
+                'activity' => 'Charcoal/Copra Buy and Sell',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 5,
+                'area_id' => 10
+            ],
+            [
+                'activity' => 'Dried Fish Buy and Sell',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 6,
+                'area_id' => 10
+            ],
+            [
+                'activity' => 'Fruits and Vegetables Sell',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 7,
+                'area_id' => 10
+            ],
+
+
+
+            [
+                'activity' => 'Bakery',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 1,
+                'area_id' => 11
+            ],
+            [
+                'activity' => 'Balot Making/Vendor',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 2,
+                'area_id' => 11
+            ],
+            [
+                'activity' => 'Food Production Sale',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 3,
+                'area_id' => 11
+            ],
+            [
+                'activity' => 'Eatery',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 4,
+                'area_id' => 11
+            ],
+            [
+                'activity' => 'Street Food Vendor',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 5,
+                'area_id' => 11
+            ],
+
+
+            [
+                'activity' => 'Goods Distribution',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 1,
+                'area_id' => 12
+            ],
+            [
+                'activity' => 'Rice Distribution',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 2,
+                'area_id' => 12
+            ],
+            [
+                'activity' => 'Flash Dealer',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 3,
+                'area_id' => 12
+            ],
+            [
+                'activity' => 'Vegetable and Fruit Dealer',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 4,
+                'area_id' => 12
+            ],
+            [
+                'activity' => 'Flower Dealer',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 5,
+                'area_id' => 12
+            ],
+
+
+            [
+                'activity' => 'Education Provider',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 1,
+                'area_id' => 13
+            ],
+
+
+            
+            
         ];
+
+        \App\Models\Activity::insertOrIgnore($data);
     }
 }

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->tinyInteger('active')->default(0);
             $table->integer('order_no')->default(0);
+            $table->unsignedBigInteger('member_category_id');
+            $table->foreign('member_category_id')->references('id')->on('member_categories');    
             $table->timestamps();
         });
     }

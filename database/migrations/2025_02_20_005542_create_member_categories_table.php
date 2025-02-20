@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('education_levels', function (Blueprint $table) {
+        Schema::create('member_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('education_level');
+            $table->string('member_category');
             $table->string('description')->nullable();
             $table->tinyInteger('active')->default(0);
             $table->integer('order_no')->default(0);
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('education_levels');
+        Schema::dropIfExists('member_categories');
     }
 };

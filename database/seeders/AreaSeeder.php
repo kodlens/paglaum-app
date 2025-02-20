@@ -85,6 +85,12 @@ class AreaSeeder extends Seeder
                 'active' => 1,
                 'order_no' => 12
             ],
+            [
+                'area' => 'EDUCATION',
+                'description' => '',
+                'active' => 1,
+                'order_no' => 13
+            ],
         ];
         
 
