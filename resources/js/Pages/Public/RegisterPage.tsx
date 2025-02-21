@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { App, Button, Divider, Form, Input, Modal, Select } from 'antd'
-import { FileAddOutlined, UserOutlined } from '@ant-design/icons'
+import { ArrowLeftOutlined, FileAddOutlined, UserOutlined } from '@ant-design/icons'
 import { User } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import axios from 'axios';
 import { EducationLevel } from '@/types/educationLevel';
-import { Divide } from 'lucide-react';
+import { Captions, Divide } from 'lucide-react';
 
 export default function RegisterPage({ educationLevels }: { educationLevels: EducationLevel[] }) {
 
@@ -27,8 +27,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     });
 
     const [errors, setErrors] = useState<any>({});
-    const [open, setOpen] = useState<boolean>(false);
-
+   
 
     const submit = async (values: User) => {
         console.log('fired');
@@ -39,27 +38,13 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
             if (res.data.status === 'registered') {
 
-                // modal.info({
-                //     title: 'Registration Success!',
-                //     content: 'Your application was successfully submitted and will be reviewed by the PAGLAUM. You will be notified via email once your account is activated.',
-                // });
-
-                // setData(
-                //     {
-                //         username: '',
-                //         lname: '',
-                //         fname: '',
-                //         mname: '',
-                //         suffix: '',
-                //         sex: '',
-                //         education_level: '',
-                //         birthdate: null,
-                //         birthplace: '',
-                //         email: '',
-                //         password: '',
-                //         password_confirmation: '',
-                //     }
-                // );
+                modal.info({
+                    title: 'Registration Success!',
+                    content: 'Your application has been successfully submitted and will be reviewed by PAGLAUM. You will be notified via email once your account is activated.',
+                    onOk: () => {
+                        router.visit('/');
+                    }
+                });
             }
         }).catch((error: any) => {
             setLoading(false);
@@ -71,13 +56,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     }
 
 
-    const handleModalOk = () => {
-
-    }
-
-    const handleModalCancel = () => {
-        setOpen(false);
-    }
 
     return (
         <>
@@ -87,7 +65,11 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
                 <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white border border-1 overflow-hidden sm:rounded-lg shadow-sm my-5">
 
-                    <div className="font-bold mb-4 text-2xl">REGISTER</div>
+                    <div className="font-bold mb-4 text-2xl flex gap-x-2">
+                        <Button icon={<ArrowLeftOutlined/>}
+                        onClick={()=>{window.history.back()}}></Button>
+                        REGISTER
+                    </div>
                     <Divider />
                     <Form layout="vertical"
                         autoComplete='off'
@@ -245,12 +227,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
             </div>
 
 
-            <Modal title="Basic Modal" open={open} onOk={handleModalOk}
-                onCancel={handleModalCancel}>
-                <div>
-
-                </div>
-            </Modal>
+          
 
         </>
 

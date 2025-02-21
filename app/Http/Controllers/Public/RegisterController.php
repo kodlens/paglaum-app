@@ -80,6 +80,7 @@ class RegisterController extends Controller
             'street' => $request->street,
             'zip' => $request->zip,
             'role' => 'MEMBER',
+            'active' => 0,
             'password' => Hash::make($request->password),
         ]);
 
