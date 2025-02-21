@@ -1,54 +1,49 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Auth;
+use Illuminate\Validation\Rules;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use App\Models\EducationLevel;
 
-class RegisteredUserController extends Controller
+class RegisterController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
-    public function create(): Response
-    {
-        return Inertia::render('Public/RegisterPage');
+    
+    public function create(){
+
+        $educationLevels = EducationLevel::orderBy('order_no', 'asc')->get();
+        return Inertia::render('Public/RegisterPage', [
+            'educationLevels' => $educationLevels
+        ]);
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(Request $request): RedirectResponse
-    {
+
+    public function store(Request $request){
+
+        //return $request;
+
         $request->validate([
+            'username' => 'required|string|max:30|unique:users',
             'lname' => 'required|string|max:255',
             'fname' => 'required|string|max:255',
-            'suffix' => 'required|string|max:255',
-            
-            'education_level' => 'required|string|max:255',
-            'birthdate' => 'required',
-            'birthplace' => 'required|string|max:255',
+            //'education_level' => 'required|string|max:255',
+            //'birthdate' => 'required',
+            //'birthplace' => 'required|string|max:255',
             'sex' => 'required|string|max:255',
-
-            'civil_status' => 'required|string|max:255',
-            'religion' => 'required|string|max:255',
-
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            //'civil_status' => 'required|string|max:255',
+            //'religion' => 'required|string|max:255',
+            'email' => 'required|string|lowercase|email|max:255|unique:users',
+            'password' => ['required', 'confirmed', Rules\Password::defaults(), 'max:30'],
         ]);
 
         $user = User::create([
+            'username' => $request->username,
             'lname' => $request->lname,
             'fname' => $request->lname,
             'suffix' => $request->suffix,
@@ -88,10 +83,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(RouteServiceProvider::MEMBER);
+        return response()->json([
+            'status' => 'registered'
+        ], 200);
     }
 }
