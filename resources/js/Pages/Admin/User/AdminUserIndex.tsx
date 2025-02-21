@@ -79,23 +79,6 @@ export default function AdminUserIndex({ auth }: PageProps) {
         setPerPage(perPage)
     }
 
-
-	const getUser = async (dataId:number) => {
-		try{
-			const response = await axios.get<User>(`/admin/users/${dataId}`);
-			form.setFields([
-				{ name: 'username', value: response.data.username },
-				{ name: 'lname', value: response.data.lname },
-				{ name: 'fname', value: response.data.fname },
-				{ name: 'mname', value: response.data.mname },
-				{ name: 'email', value: response.data.email },
-				{ name: 'sex', value: response.data.sex },
-				{ name: 'role', value: response.data.role }
-			]);
-		}catch(err){
-		}
-    }
-
 	const handClickNew = () => {
         //router.visit('/');
 		setId(0)
@@ -173,13 +156,13 @@ export default function AdminUserIndex({ auth }: PageProps) {
 							<Column title="Middle Name" key="mname" dataIndex="mname"/>
 							<Column title="Email" dataIndex="email" key="email"/>
 							<Column title="Role" dataIndex="role" key="role"/>
-							{/* <Column title="Active" dataIndex="active" key="active" render={(_, active)=>(
-								active ? (
-									<span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES</span>
+							<Column title="Active" key="active" render={(data:User)=>(
+								data.active ? (
+									<span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
 								) : (
 									<span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
 								)
-							)}/> */}
+							)}/>
 							<Column title="Action" key="action" 
 								render={(_, data:User) => (
 									<div className='flex'>

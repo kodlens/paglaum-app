@@ -1,7 +1,7 @@
 import AdminAuthLayout from '@/Layouts/AdminAuthLayout'
 import { PageProps, User } from '@/types'
 import { Head, router } from '@inertiajs/react'
-import { App, Button, Divider, Form, Input, Select } from 'antd'
+import { App, Button, Checkbox, Divider, Form, Input, Select } from 'antd'
 import {  UserOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -38,7 +38,8 @@ export default function AdminUserAddEdit({
             { name: 'education_level', value: user.education_level },
             { name: 'email', value: user.email },
             { name: 'sex', value: user.sex },
-            { name: 'role', value: user.role }
+            { name: 'role', value: user.role },
+            { name: 'active', value: user.active > 0 ? true : false }
         ]);
     }, [user])
     const onFinish = async (values:User) =>{
@@ -107,7 +108,7 @@ export default function AdminUserAddEdit({
                             sex: '',
                             birthdate: null,
                             birthplace: '',
-
+                            active: true,
                         }}>
 
                         <Form.Item label="Username"
@@ -233,6 +234,22 @@ export default function AdminUserAddEdit({
                                     { value: "ADMIN", label: "ADMINISTRATOR" },
                                 ]}
                             />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="active"
+                            valuePropName="checked"
+                            className="w-full"
+                            validateStatus={
+                                errors.active ? "error" : ""
+                            }
+                            help={
+                                errors.active
+                                    ? errors.active[0]
+                                    : ""
+                            }
+                        >
+                            <Checkbox>Active</Checkbox>
                         </Form.Item>
 
                         <Divider />
