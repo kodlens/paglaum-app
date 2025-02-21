@@ -7,7 +7,11 @@ export default function MyLoanIndex({ auth }: PageProps) {
   return (
 
     <MemberAuthLayout user={auth.user}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">My Loan</h2>}>
+      header={
+        <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+          My Loan
+        </h2>
+      }>
 
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -16,6 +20,8 @@ export default function MyLoanIndex({ auth }: PageProps) {
           </div>
         </div>
       </div>
+
+      
     </MemberAuthLayout>
 
   )
