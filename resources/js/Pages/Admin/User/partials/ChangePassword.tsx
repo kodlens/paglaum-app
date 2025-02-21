@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { EyeTwoTone, EyeInvisibleOutlined, LockOutlined } from '@ant-design/icons';
 import { User } from '@/types';
 import axios from 'axios';
+import { KeySquare, Pencil, RectangleEllipsis, Trash2 } from 'lucide-react';
 
 export default function ChangePassword({data, onSuccess} : {data:User, onSuccess:any} ) {
 
@@ -34,10 +35,19 @@ export default function ChangePassword({data, onSuccess} : {data:User, onSuccess
 
     return (
         <>
-            <Button shape="circle"
+            {/* <Button
                 loading={loading}
                 onClick={()=> setOpen(true)}
-            icon={<LockOutlined/>} />
+            icon={<LockOutlined />} /> */}
+
+            <button 
+                className='default-button'
+                onClick={()=> setOpen(true)}
+            >
+                <KeySquare size={12}/>
+
+            </button>
+
 
             <Modal
                 open={open}

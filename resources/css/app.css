@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.orange-button {
+    @apply focus:outline-none text-white 
+        bg-orange-500 hover:bg-orange-300 focus:ring-4 focus:ring-orange-300 
+        font-semibold rounded-lg text-sm px-3 py-2.5 me-2 mb-2
+        transition-all duration-300 ease-in-out;
+}
+
+.default-button {
+    @apply focus:outline-none text-white 
+        bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:ring-blue-300 
+        font-semibold rounded-lg text-sm px-3 py-2.5 me-2 mb-2
+        transition-all duration-300 ease-in-out;
+}
+
+.red-button {
+    @apply focus:outline-none text-white 
+        bg-red-500 hover:bg-red-400 focus:ring-4 focus:ring-red-300 
+        font-semibold rounded-lg text-sm px-3 py-2.5 me-2 mb-2
+        transition-all duration-300 ease-in-out;
+}

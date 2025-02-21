@@ -1,15 +1,14 @@
 import { PageProps, User } from '@/types'
-import { Head } from '@inertiajs/react'
+import { Head, router } from '@inertiajs/react'
 
-import { FileAddOutlined, LikeOutlined, 
-    DeleteOutlined, EditOutlined, 
-	EyeInvisibleOutlined,EyeTwoTone,
-    QuestionCircleOutlined } from '@ant-design/icons';
+import { FileAddOutlined,
+	EyeInvisibleOutlined,EyeTwoTone } from '@ant-design/icons';
 
 import { Space, Table, 
     Pagination, Button, Modal,
     Form, Input, Select, Checkbox,
-	App } from 'antd';
+	App, 
+    Popconfirm} from 'antd';
 
 
 import React, { useEffect, useState } from 'react'
@@ -17,6 +16,7 @@ import axios from 'axios';
 import ChangePassword from './partials/ChangePassword';
 import AdminAuthLayout from '@/Layouts/AdminAuthLayout';
 import { PaginateResponse } from '@/types/apiResponse';
+import { Pencil, Trash2 } from 'lucide-react';
 
 const { Column } = Table;
 
@@ -103,13 +103,15 @@ export default function AdminUserIndex({ auth }: PageProps) {
     }
 
 	const handleEditClick = (id:number) => {
-		setId(id);
-        setOpen(true);
-        getUser(id);
+		//setId(id);
+        //setOpen(true);
+        //getUser(id);
+        router.visit('/admin/users/' + id + '/edit');
 	}
 
 	const handleDeleteClick = async (id:number) => {
-		const res = await axios.delete('/admin/users/{id}');
+        
+		const res = await axios.delete(`/admin/users/${id}`);
 		if(res.data.status === 'deleted'){
 			loadDataAsync()
 		}
@@ -153,9 +155,8 @@ export default function AdminUserIndex({ auth }: PageProps) {
 
 			<div className='flex mt-10 justify-center items-center'>
 				{/* card */}
-				<div className='p-6 w-full mx-2 bg-white shadow-sm rounded-md
-					sm:w-[640px]
-					md:w-[990px]'>
+				<div className='p-6 w-full md:mx-2 bg-white shadow-sm rounded-md
+					md:w-[1120px] overflow-auto'>
 					{/* card header */}
 					<div className="font-bold mb-4 text-lg">LIST OF USER</div>
 					{/* card body */}
@@ -181,11 +182,33 @@ export default function AdminUserIndex({ auth }: PageProps) {
 							)}/> */}
 							<Column title="Action" key="action" 
 								render={(_, data:User) => (
-									<Space size="small">
-										<Button shape="circle" icon={<EditOutlined/>} 
-											onClick={ ()=> handleEditClick(data.id ?? 0) } />
-										<ChangePassword data={data} onSuccess={loadDataAsync}/>
-									</Space>
+									<div className='flex'>
+										<button 
+                                            className='orange-button'
+											onClick={ ()=> handleEditClick(data.id ?? 0) } 
+                                        >
+                                            <Pencil size={12}/>
+                                        </button>
+                                        <ChangePassword data={data} onSuccess={loadDataAsync}/>
+
+                                        <Popconfirm
+                                            title="Delete this user?"
+                                            description="Are you sure to delete this user?"
+                                            onConfirm={() => handleDeleteClick(data.id ?? 0) }
+                                            okText="Yes"
+                                            cancelText="No"
+                                        >
+                                               <button 
+                                                    className='red-button'
+                                                    // onClick={ ()=> handleDeleteClick(data.id ?? 0) } 
+                                                >
+                                                    <Trash2 size={12}/>
+                                                </button>
+                                        </Popconfirm>
+
+                                     
+										
+									</div>
 								)}
 							/>
 						</Table>

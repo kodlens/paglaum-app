@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\EducationLevel;
 
 class UserController extends Controller
 {
@@ -25,6 +26,10 @@ class UserController extends Controller
 
     public function show($id){
         return User::find($id);
+    }
+
+    public function create(){ 
+        return Inertia::render('Admin/User/AdminUserAddEdit');
     }
 
     public function store(Request $req){
@@ -47,8 +52,14 @@ class UserController extends Controller
         ]);
 
         User::create([
-            'fname' => $req->fname,
-            'lname' => $req->lname,
+            'username' => $req->username,
+            'title' => $req->title,
+            'fname' => strtoupper($req->fname),
+            'lname' => strtoupper($req->lname),
+            'mname' => strtoupper($req->mname),
+            'suffix' => strtoupper($req->suffix),
+            'sex' => $req->sex,
+            'education_level' => $req->education_level,
             'email' => $req->email,
             'password' => Hash::make($req->password),
             'role' => $req->role,
@@ -59,6 +70,16 @@ class UserController extends Controller
             'status' => 'saved'
         ], 200);
     }
+
+
+    public function edit(Request $req, $id){ 
+        $educationLevels = EducationLevel::orderBy('order_no', 'asc')->get();
+        return Inertia::render('Admin/User/AdminUserAddEdit', [
+            'user' => User::find($id),
+            'educationLevels' => $educationLevels   
+        ]);
+    }
+
 
     public function update(Request $req, $id){
 
@@ -78,10 +99,13 @@ class UserController extends Controller
         ]);
 
         $user = User::find($id);
+        $user->title = $req->title;
         $user->lname = strtoupper($req->lname);
         $user->fname = strtoupper($req->fname);
         $user->mname = strtoupper($req->mname);
+        $user->suffix = strtoupper($req->suffix);
         $user->sex = $req->sex;
+        $user->education_level = $req->education_level;
         $user->email = $req->email;
         $user->role = $req->role;
         $user->active = $req->active ? 1 : 0;
@@ -89,6 +113,13 @@ class UserController extends Controller
 
         return response()->json([
             'status' => 'updated'
+        ], 200);
+    }
+
+    public function destroy($id){
+        User::destroy($id);
+        return response()->json([
+            'status' => 'deleted'
         ], 200);
     }
 }

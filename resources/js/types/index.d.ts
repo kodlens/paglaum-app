@@ -1,5 +1,5 @@
 export interface User {
-    id?: number;
+    id: number|0;
     data?: any[],
     username?: string;
     password?: string;

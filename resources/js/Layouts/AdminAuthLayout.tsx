@@ -181,7 +181,7 @@ export default function AdminAuthLayout(
 
                             <div className='ml-auto mr-4 flex items-center gap-4'>
                                 <Link href=''>
-                                    {user.lname}, {user.fname[0]}
+                                    {user.lname}, {user.fname ? user.fname[0] : ''}
                                 
                                 </Link>
                                 <Button className='' onClick={handleLogout}>Logout</Button>
@@ -198,7 +198,7 @@ export default function AdminAuthLayout(
                             borderRadius: 0,
                         }}
                     >
-                        <main className='m-10'>{children}</main>
+                        <main className='my-10 md:mx-2'>{children}</main>
                     </Content>
                 </Layout>
             </Layout>
