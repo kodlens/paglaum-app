@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Route;
 ==================================*/
 
 
-Route::get('/admin/dashboard', [App\Http\Controllers\Administrator\DashboardController::class, 'index']);
+Route::resource('/admin/dashboard', App\Http\Controllers\Administrator\DashboardController::class)->names('admin.dashboard');
 
-Route::resource('/admin/users', App\Http\Controllers\Administrator\UserController::class);
+Route::resource('/admin/users', App\Http\Controllers\Administrator\UserController::class)->names('admin.users');
 Route::get('/admin/get-users', [App\Http\Controllers\Administrator\UserController::class, 'getData']);
 
 

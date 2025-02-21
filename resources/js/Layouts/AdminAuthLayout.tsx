@@ -37,12 +37,14 @@ export default function AdminAuthLayout(
 
     type MenuItem = Required<MenuProps>['items'][number];
 
+    console.log('route current:', route().current());
+
     const navigationItems = () => {
 
 		const items:MenuItem[] = [];
 
 		items.push({
-			key: 'panel.dashboard',
+			key: 'admin.dashboard.index',
             icon: <UserOutlined />,
             label: 'Dashboard',
             onClick: () => router.visit('/admin/dashboard')
@@ -63,70 +65,66 @@ export default function AdminAuthLayout(
         {
             type: 'divider',
         },
-        {
-            key: 'pages.index',
-            icon: <FilePptOutlined />,
-            label: 'Pages',
-            // onClick: () => router.visit('/admin/pages')
-            children: [
-                {
-                    key: 'pages.banner.index',
-                    label: 'Banners' ,
-                    onClick: ()=> router.visit('/admin/pages/banners'),
-                },
-                {
-                    key: 'pages.magazine.index',
-                    label: 'Magazines' ,
-                    onClick: ()=> router.visit('/admin/pages/magazines'),
-                },
-                {
-                    key: 'pages.dostv.index',
-                    label: 'DOSTv' ,
-                    onClick: ()=> router.visit('/admin/pages/dostvs'),
-                },
-                {
-                    key: 'pages.featured-videos.index',
-                    label: 'Featured Videos' ,
-                    onClick: ()=> router.visit('/admin/pages/featured-videos'),
-                },
-            ],
-        },
-        {
-            type: 'divider',
-        },
-        {
-            type: 'divider',
-        },
-        {
-            key: 'posts',
-            icon: <FormOutlined />,
-            label: 'Posts',
+        // {
+        //     key: 'pages.index',
+        //     icon: <FilePptOutlined />,
+        //     label: 'Pages',
+        //     // onClick: () => router.visit('/admin/pages')
+        //     children: [
+        //         {
+        //             key: 'pages.banner.index',
+        //             label: 'Banners' ,
+        //             onClick: ()=> router.visit('/admin/pages/banners'),
+        //         },
+        //         {
+        //             key: 'pages.magazine.index',
+        //             label: 'Magazines' ,
+        //             onClick: ()=> router.visit('/admin/pages/magazines'),
+        //         },
+        //         {
+        //             key: 'pages.dostv.index',
+        //             label: 'DOSTv' ,
+        //             onClick: ()=> router.visit('/admin/pages/dostvs'),
+        //         },
+        //         {
+        //             key: 'pages.featured-videos.index',
+        //             label: 'Featured Videos' ,
+        //             onClick: ()=> router.visit('/admin/pages/featured-videos'),
+        //         },
+        //     ],
+        // },
+  
+  
+        // {
+        //     key: 'posts',
+        //     icon: <FormOutlined />,
+        //     label: 'Posts',
 
-            children: [
-                {
-                    key: 'posts.index',
-                    label: 'Article' ,
-                    onClick: ()=> router.visit('/admin/posts'),
-                },
-                {
-                    key: 'posts.featured',
-                    label: 'Featured Post' ,
-                    onClick: ()=> router.visit('/admin/post-featured'),
-                },
-                {
-                    key: 'posts.archives',
-                    label: 'Archive' ,
-                    onClick: ()=> router.visit('/admin/post-archives'),
-                },
+        //     children: [
+        //         {
+        //             key: 'posts.index',
+        //             label: 'Article' ,
+        //             onClick: ()=> router.visit('/admin/posts'),
+        //         },
+        //         {
+        //             key: 'posts.featured',
+        //             label: 'Featured Post' ,
+        //             onClick: ()=> router.visit('/admin/post-featured'),
+        //         },
+        //         {
+        //             key: 'posts.archives',
+        //             label: 'Archive' ,
+        //             onClick: ()=> router.visit('/admin/post-archives'),
+        //         },
                 
-            ],
-        },
+        //     ],
+        // },
         {
             type: 'divider'
         },
 
         {
-            key: 'users.index',
+            key: 'admin.users.index',
             icon: <FileJpgOutlined />,
             label: 'Users',
             onClick: ()=> router.visit('/admin/users')
