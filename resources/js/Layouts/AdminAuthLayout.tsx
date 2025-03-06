@@ -47,20 +47,20 @@ export default function AdminAuthLayout(
 			key: 'admin.dashboard.index',
             icon: <UserOutlined />,
             label: 'Dashboard',
-            onClick: () => router.visit('/admin/dashboard')
+            //onClick: () => router.visit('/admin/dashboard')
 		},
         {
             key: 'sections.index',
             icon: <ProfileOutlined />,
             label: 'Sections',
-            onClick: () => router.visit('/admin/sections')
+            //onClick: () => router.visit('/admin/sections')
 
         },
         {
             key: 'categories.index',
             icon: <BarsOutlined />,
             label: 'Categories',
-            onClick: () => router.visit('/admin/categories')
+            //onClick: () => router.visit('/admin/categories')
         },
         {
             type: 'divider',
@@ -127,11 +127,16 @@ export default function AdminAuthLayout(
             key: 'admin.users.index',
             icon: <FileJpgOutlined />,
             label: 'Users',
-            onClick: ()=> router.visit('/admin/users')
+            //onClick: ()=> router.visit('/admin/users')
         });
 
 		return items;
 	}
+
+
+    const onClick: MenuProps['onClick'] = (e) => {
+        router.visit(route(e.key));
+    };
 
 
     return (
@@ -141,24 +146,18 @@ export default function AdminAuthLayout(
                 <Sider className='z-10' trigger={null} style={siderStyle} collapsible
                     collapsed={collapsed} width={300}>
                     <PanelSideBarLogo />
-                    <ConfigProvider theme={{
-                        token: {
-                            colorText: 'white'
+                    <Menu
+                        onClick={onClick}
+                        mode="inline"
+                        style={{ background: "#084c7f",
+                            color: 'white',
+                        }}
+                        defaultSelectedKeys={[`${route().current()}`]}
+                        defaultOpenKeys={['posts']}
+                        items={
+                            navigationItems()
                         }
-                    }}>
-                        <Menu
-                            mode="inline"
-                            style={{ background: "#084c7f",
-                                color: 'white',
-                            }}
-                            defaultSelectedKeys={[`${route().current()}`]}
-                            defaultOpenKeys={['posts']}
-                            items={
-                                navigationItems()
-                            }
-                        />
-
-                    </ConfigProvider>
+                    />
                 </Sider>
                 <Layout>
                     <Header

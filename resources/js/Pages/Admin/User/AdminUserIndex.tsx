@@ -8,7 +8,8 @@ import { Space, Table,
     Pagination, Button, Modal,
     Form, Input, Select, Checkbox,
 	App, 
-    Popconfirm} from 'antd';
+    Popconfirm,
+    Dropdown} from 'antd';
 
 
 import React, { useEffect, useState } from 'react'
@@ -16,7 +17,7 @@ import axios from 'axios';
 import ChangePassword from './partials/ChangePassword';
 import AdminAuthLayout from '@/Layouts/AdminAuthLayout';
 import { PaginateResponse } from '@/types/apiResponse';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Captions, FileLock2, Pencil, Trash2 } from 'lucide-react';
 
 const { Column } = Table;
 
@@ -144,10 +145,11 @@ export default function AdminUserIndex({ auth }: PageProps) {
 					<div className="font-bold mb-4 text-lg">LIST OF USER</div>
 					{/* card body */}
 					<div className='z-0'>
-						<Table dataSource={data}
-							loading={loading}
-							rowKey={(data) => data.id ?? 0}
-							pagination={false}>
+                        <Table dataSource={data}
+                        loading={loading}
+                            
+                            rowKey={(data) => data.id ?? 0}
+                            pagination={false}>
 
 							<Column title="Id" dataIndex="id" key="id"/>
 							<Column title="Username" dataIndex="username" key="username"/>
@@ -166,13 +168,30 @@ export default function AdminUserIndex({ auth }: PageProps) {
 							<Column title="Action" key="action" 
 								render={(_, data:User) => (
 									<div className='flex'>
-										<button 
-                                            className='orange-button'
-											onClick={ ()=> handleEditClick(data.id ?? 0) } 
+
+                                        <Dropdown.Button type="primary"
+                                            placement="bottomRight"
+                                            menu={{
+                                                items: [
+                                                    {
+                                                        key: '1',
+                                                        label: 'Edit',
+                                                        icon: <Pencil size={16} />,
+                                                        onClick: ()=>{
+                                                            handleEditClick(data.id)
+                                                        }
+                                                    
+                                                    },
+                                                    {
+                                                        key: '2',
+                                                        label: (<ChangePassword data={data} onSuccess={loadDataAsync}/>),
+                                                    },
+                                                ],
+                                            }}
+                                            trigger={['click']}
                                         >
-                                            <Pencil size={12}/>
-                                        </button>
-                                        <ChangePassword data={data} onSuccess={loadDataAsync}/>
+                                            <Captions size={16} />
+                                        </Dropdown.Button>
 
                                         <Popconfirm
                                             title="Delete this user?"
@@ -181,7 +200,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
                                             okText="Yes"
                                             cancelText="No"
                                         >
-                                               <button 
+                                            <button 
                                                     className='red-button'
                                                     // onClick={ ()=> handleDeleteClick(data.id ?? 0) } 
                                                 >
@@ -189,8 +208,6 @@ export default function AdminUserIndex({ auth }: PageProps) {
                                                 </button>
                                         </Popconfirm>
 
-                                     
-										
 									</div>
 								)}
 							/>

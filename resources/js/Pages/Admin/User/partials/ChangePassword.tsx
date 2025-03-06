@@ -40,13 +40,14 @@ export default function ChangePassword({data, onSuccess} : {data:User, onSuccess
                 onClick={()=> setOpen(true)}
             icon={<LockOutlined />} /> */}
 
-            <button 
-                className='default-button'
+            <div 
+                className='flex items-center gap-2'
                 onClick={()=> setOpen(true)}
             >
-                <KeySquare size={12}/>
+                <KeySquare size={16}/>
+                Change Password
 
-            </button>
+            </div>
 
 
             <Modal

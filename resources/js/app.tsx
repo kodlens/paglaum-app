@@ -37,6 +37,20 @@ createInertiaApp({
                         },
                         Layout: {
                             headerBg: 'blue' //Background Color of header
+                        },
+                        Menu: {
+                            // itemActiveBg: 'black',
+                            // itemBg: '#0d0c0c',
+                            itemSelectedBg: '#cf1d1f',
+                            itemSelectedColor: 'white',
+
+                             itemColor: 'white',
+                             itemHoverColor: '#aab7e3'
+                        },
+                        Table: {
+                            headerBg: '#dbe9ff',
+                            fontFamily: 'ubuntu',
+                            borderColor: '#dbe9ff'
                         }
                     },
                     token: {
