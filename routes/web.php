@@ -29,6 +29,8 @@ Route::get('/dashboard', function () {
 
 
 
+Route::get('/inactive', [App\Http\Controllers\InActiveController::class, 'index'])->name('inactive.index');
+
 
 require __DIR__.'/admin.php';
 require __DIR__.'/member.php';

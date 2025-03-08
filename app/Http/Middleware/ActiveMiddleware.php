@@ -5,8 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Auth;
 
-class MemberMiddleware
+class ActiveMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,13 +16,11 @@ class MemberMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $role = Auth::user()->role;
-        //return redirect(RouteServiceProvider::HOME);
-        if(strtolower($role) == 'member')
+        $user = Auth::user();
+        if($user->active > 0){
             return $next($request);
-
-        return abort(403);
-  
-
+        }else{
+            return redirect('/inactive');
+        }
     }
 }
