@@ -78,7 +78,7 @@ const ApplyLoan =  () => {
 
 
     return (
-        <div className="bg-white p-6">
+        <div className="bg-white p-6 shadow-sm">
 
             <div className="font-bold ">
                 Apply Loan
