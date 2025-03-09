@@ -26,7 +26,9 @@ return new class extends Migration
 //                ->onDelete('cascade')
 //                ->onUpdate('cascade');
 
-            $table->text('purpose')->default(0);
+            $table->text('purpose')->nullable();
+            $table->string('loan_type')->nullable();
+            $table->string('loan_subtype')->nullable();
 
             $table->unsignedBigInteger('loan_type_id')->default(0);
             $table->foreign('loan_type_id')->references('id')

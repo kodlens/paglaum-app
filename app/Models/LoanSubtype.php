@@ -11,7 +11,9 @@ class LoanSubtype extends Model
 
     protected $fillable = [
         'loan_type_id',
-        'description',
+        'loan_subtype',
+        'term_month',
+        'percent',
         'active',
     ];
 }

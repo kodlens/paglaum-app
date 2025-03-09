@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             MemberCategorySeeder::class,
             MemberTypeSeeder::class,
             LoanTypeSeeder::class,
+            LoanSubtypeSeeder::class,
         ]);
 
 

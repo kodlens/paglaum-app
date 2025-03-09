@@ -40,9 +40,9 @@ class LoanSubtypeSeeder extends Seeder
             [
                 'loan_type_id' => 2,
                 'loan_subtype' => '1 year- 1.75% per month',
-                'term_month' => 6,
+                'term_month' => 12,
                 'percent' => 1.75,
-                'active' => 12
+                'active' => 1
             ],
             [
                 'loan_type_id' => 2,

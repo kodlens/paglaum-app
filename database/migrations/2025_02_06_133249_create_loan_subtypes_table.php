@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('loan_subtypes', function (Blueprint $table) {
             $table->id();
-            
+
             $table->unsignedBigInteger('loan_type_id');
             $table->foreign('loan_type_id')->references('id')
                 ->on('loan_types')

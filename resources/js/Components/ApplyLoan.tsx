@@ -1,4 +1,62 @@
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import { LoanType } from "@/types/loanType";
+import { LoanSubtype } from "@/types/loanSubtype";
+import { Loan } from "@/types/loan";
+
+
 const ApplyLoan =  () => {
+
+    const [loanTypes, setLoanTypes] = useState<LoanType[]>([]);
+    const [loanSubtypes, setLoanSubtypes] = useState<LoanSubtype[]>([]);
+
+    const [fields, setFields] = useState<Loan>({
+        principal: 0,
+        loan_type_id: 1,
+        loan_type: '',
+        loan_subtype_id: 0,
+        loan_subtype: '',
+        user_id: 0,
+        purpose: '',
+        interest: 0,
+        terms: 0,
+        //checkboxInput: false
+    });
+
+    const handleChange = (e:any) => {
+        const { name, value, type, checked } = e.target;
+    
+        setFields((prevFormData) => ({
+          ...prevFormData,
+          [name]: type === 'checkbox' ? checked : value,
+        }));
+    };
+
+    const loadLoanTypes = () => {
+        axios.get('/load-loan-types').then(res=>{
+            setLoanTypes(res.data);
+
+            if(loanTypes.length > 0){
+                
+            }
+        })
+    }
+
+    useEffect(()=>{
+        loadLoanTypes();
+    },[])
+
+    useEffect(()=>{
+
+        const subTypes:any[] = loanTypes.filter(loanType => loanType.id === Number(fields.loan_type_id));
+        setLoanSubtypes(subTypes);
+
+        console.log(loanSubtypes);
+        
+    }, [fields.loan_type_id])
+
+
+
     return (
         <div className="bg-white p-6">
 
@@ -11,29 +69,46 @@ const ApplyLoan =  () => {
                     <div className="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
                             <label htmlFor="first_name"
-                                   className="block mb-2 text-sm font-medium text-gray-900 ">First
-                                name
+                                className="block mb-2 text-sm font-medium text-gray-900 ">
+                                Amount Applied (&#8369;)
                             </label>
-                            <input type="text" id="first_name"
-                                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                    focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                   placeholder="John" required autoComplete="off"/>
+                            <input type="number" id="first_name"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="eg. 1,000" required autoComplete="off"
+                                onChange={handleChange}
+                                value={fields.principal}/>
                         </div>
                         <div>
-                            <label htmlFor="last_name"
-                                   className="block mb-2 text-sm font-medium text-gray-900 ">Last
-                                name</label>
-                            <input type="text" id="last_name"
-                                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                   placeholder="Doe" required/>
+                            <label htmlFor="loan_types"
+                                   className="block mb-2 text-sm font-medium text-gray-900">Select Loan Type</label>
+                            <select id="loan_types"
+                                name="loan_type_id"
+                                onChange={handleChange}
+                                value={fields.loan_type_id}
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
+                                rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                    <option disabled selected className="text-gray-700">Choose here...</option>
+                                {loanTypes.map(item => (
+                                    <option key={item.id} value={item.id}>{item.loan_type}</option>
+                                ))}
+                               
+                            </select>
                         </div>
-                        <div>
-                            <label htmlFor="company"
-                                   className="block mb-2 text-sm font-medium text-gray-900 ">Company</label>
-                            <input type="text" id="company"
-                                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                   placeholder="Flowbite" required/>
-                        </div>
+                        {/* <div>
+                            <label htmlFor="loanTypes"
+                                    className="block mb-2 text-sm font-medium text-gray-900">Select Loan Type</label>
+                            <select id="loanTypes"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
+                                rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option disabled selected className="text-gray-700">Choose here...</option>
+                                {loanSubtypes.map(item => (
+                                    <option key={item.id}>
+                                        {item.loan_subtype}
+                                    </option>
+                                ))}
+                            </select>
+                        </div> */}
                         <div>
                             <label htmlFor="phone"
                                    className="block mb-2 text-sm font-medium text-gray-900 ">Phone

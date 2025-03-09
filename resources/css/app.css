@@ -28,6 +28,6 @@ label {
     @apply font-bold
 }
 
-input {
+input, select {
     @apply focus:outline-none
 }
