@@ -21,7 +21,7 @@ return new class extends Migration
                 ->onUpdate('cascade');
 
             $table->string('loan_subtype')->nullable();
-            $table->double('term_month')->default(0);
+            $table->double('terms_month')->default(0);
             $table->double('percent')->default(0);
             $table->tinyInteger('active')->default(1);
             $table->timestamps();

@@ -5,6 +5,7 @@ export interface LoanSubtype {
     loan_type_id?: number;
     loan_subtype?: string;
     term_month?: number;
+    terms_month?:number;
     percent?: number;
     active?: number;
     updated_at?: Date|unknown;

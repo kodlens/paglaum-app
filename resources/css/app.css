@@ -28,6 +28,6 @@ label {
     @apply font-bold
 }
 
-input, select {
+input, select, textarea {
     @apply focus:outline-none
 }

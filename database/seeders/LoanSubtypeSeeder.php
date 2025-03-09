@@ -16,21 +16,21 @@ class LoanSubtypeSeeder extends Seeder
             [
                 'loan_type_id' => 1,
                 'loan_subtype' => '3-6 months term - 2% per month or 24% per annum',
-                'term_month' => 6,
+                'terms_month' => 6,
                 'percent' => 2,
                 'active' => 1
             ],
             [
                 'loan_type_id' => 1,
                 'loan_subtype' => '7-12 months term - 2.5% per month or 30% per annum',
-                'term_month' => 12,
+                'terms_month' => 12,
                 'percent' => 2.5,
                 'active' => 1
             ],
             [
                 'loan_type_id' => 1,
                 'loan_subtype' => '12 months - 2 years  - 3% per month or 36% per annum',
-                'term_month' => 12,
+                'terms_month' => 12,
                 'percent' => 3,
                 'active' => 1
             ],
@@ -40,21 +40,21 @@ class LoanSubtypeSeeder extends Seeder
             [
                 'loan_type_id' => 2,
                 'loan_subtype' => '1 year- 1.75% per month',
-                'term_month' => 12,
+                'terms_month' => 12,
                 'percent' => 1.75,
                 'active' => 1
             ],
             [
                 'loan_type_id' => 2,
                 'loan_subtype' => '2 years - 2% per month',
-                'term_month' => 24,
+                'terms_month' => 24,
                 'percent' => 2,
                 'active' => 1
             ],
             [
                 'loan_type_id' => 2,
                 'loan_subtype' => '3 years- 2.5 per month',
-                'term_month' => 36,
+                'terms_month' => 36,
                 'percent' => 2.5,
                 'active' => 1
             ],
@@ -63,7 +63,7 @@ class LoanSubtypeSeeder extends Seeder
             [
                 'loan_type_id' => 3,
                 'loan_subtype' => '3% per month or 36% per annum',
-                'term_month' => 12,
+                'terms_month' => 12,
                 'percent' => 3,
                 'active' => 1
             ],
@@ -72,7 +72,7 @@ class LoanSubtypeSeeder extends Seeder
             [
                 'loan_type_id' => 4,
                 'loan_subtype' => '3 months - 2 years - 2% per month flat rate ',
-                'term_month' => 24,
+                'terms_month' => 24,
                 'percent' => 2,
                 'active' => 1
             ],
@@ -81,14 +81,14 @@ class LoanSubtypeSeeder extends Seeder
             [
                 'loan_type_id' => 5,
                 'loan_subtype' => '12% per annum flat rate ( salary only)',
-                'term_month' => 12,
+                'terms_month' => 12,
                 'percent' => 12,
                 'active' => 1
             ],
             [
                 'loan_type_id' => 5,
                 'loan_subtype' => '14% per annum flat rate ( bonus only)',
-                'term_month' => 12,
+                'terms_month' => 12,
                 'percent' => 14,
                 'active' => 1
             ],
