@@ -16,6 +16,7 @@ const NavBar = () => {
     }, []);
 
     return (
+
         <nav
             className={`md:text-sm ${
                 state
@@ -27,7 +28,7 @@ const NavBar = () => {
                 <div className="flex items-center justify-between py-5 md:block mr-7">
                     <Link href="/" className="flex items-center">
                         <img
-                            src="/storage/logos/paglaum-small.png"
+                            src="/images/paglaum-small.png"
                             width={100}
                             alt="Paglaum Logo"
                         />

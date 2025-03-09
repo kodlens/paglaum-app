@@ -1,4 +1,3 @@
-import './bootstrap';
 import '../css/app.css';
 
 import { createRoot } from 'react-dom/client';
@@ -38,21 +37,38 @@ createInertiaApp({
                         },
                         Layout: {
                             headerBg: 'blue' //Background Color of header
+                        },
+                        Menu: {
+                            // itemActiveBg: 'black',
+                            // itemBg: '#0d0c0c',
+                            itemSelectedBg: '#cf1d1f',
+                            itemSelectedColor: 'white',
+
+                             itemColor: 'white',
+                             itemHoverColor: '#aab7e3'
+                        },
+                        Table: {
+                            headerBg: '#dbe9ff',
+                            fontFamily: 'ubuntu',
+                            borderColor: '#dbe9ff'
+                        },
+                        Form: {
+                            
                         }
                     },
                     token: {
                         // Seed Token
                         // colorPrimary: '#244a3d',
                         // borderRadius: 2,
-                    
-                
+
+
                         // Alias Token
                         // colorBgContainer: '#ffff',
                     },
-               
+
             }}>
                 <AntApp>
-                    <App {...props} /> 
+                    <App {...props} />
                 </AntApp>
 
             </ConfigProvider>

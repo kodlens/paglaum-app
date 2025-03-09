@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             ActivitySeeder::class,
             MemberCategorySeeder::class,
             MemberTypeSeeder::class,
+            LoanTypeSeeder::class,
         ]);
 
 

@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class LoanType extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'loan_type',
+        'description',
+        'active',
+    ];
+
 }

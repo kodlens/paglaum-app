@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('loan_types', function (Blueprint $table) {
             $table->id();
             $table->string('loan_type')->nullable();
+            $table->string('description')->nullable();
+            $table->double('percent')->default(0);
             $table->tinyInteger('active')->default(1);
             $table->timestamps();
         });

@@ -20,11 +20,11 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->unsignedBigInteger('saving_account_id');
-            $table->foreign('saving_account_id')->references('id')
-                ->on('saving_accounts')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+//            $table->unsignedBigInteger('saving_account_id');
+//            $table->foreign('saving_account_id')->references('id')
+//                ->on('saving_accounts')
+//                ->onDelete('cascade')
+//                ->onUpdate('cascade');
 
             $table->text('purpose')->default(0);
 
@@ -34,11 +34,17 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
+            $table->unsignedBigInteger('loan_subtype_id')->default(0);
+            $table->foreign('loan_subtype_id')->references('id')
+                ->on('loan_subtypes')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
             $table->double('principal')->default(0);
             $table->double('interest')->default(0);
             $table->double('terms')->default(0);
 
-            
+
             $table->timestamps();
         });
     }
