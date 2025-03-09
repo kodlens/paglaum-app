@@ -39,7 +39,7 @@ export default function Login() {
             setLoading(false)
 
         })
-        
+
     };
 
     return (
@@ -54,7 +54,7 @@ export default function Login() {
                     </div>
 
                     <div className='font-extrabold text-2xl mb-7 text-center'>LOGIN</div>
-                        
+
                     <div className='mb-2'>
 
                         <Form
@@ -75,7 +75,7 @@ export default function Login() {
                                 <Input placeholder="Username" size="large" />
                             </Form.Item>
 
-                            <Form.Item label="PASSWORD" 
+                            <Form.Item label="PASSWORD"
                                 name="password"
                                 validateStatus={errors?.password ? 'error' : ''}
                                 help={errors?.password ? errors?.password[0] : ''}
@@ -83,7 +83,7 @@ export default function Login() {
                                 <Input.Password placeholder="Password" size="large"/>
                             </Form.Item>
 
-                            <Button 
+                            <Button
                                 htmlType="submit"
                                 className='w-full'
                                 type="primary"
@@ -93,7 +93,7 @@ export default function Login() {
                         </Form>
                     </div>
 
-                </div> 
+                </div>
                 {/* card */}
 
             </div>

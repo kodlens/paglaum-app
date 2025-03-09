@@ -18,7 +18,7 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Public/LandingPage', [
-        
+
     ]);
 });
 
@@ -28,8 +28,6 @@ Route::get('/dashboard', function () {
 
 
 
-
-Route::get('/inactive', [App\Http\Controllers\InActiveController::class, 'index'])->name('inactive.index');
 
 
 require __DIR__.'/admin.php';

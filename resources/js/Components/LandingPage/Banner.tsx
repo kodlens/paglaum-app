@@ -9,7 +9,7 @@ export default () => {
                 <div className="pb-4 flex flex-col md:flex-row items-center space-x-8">
                     <div>
                         <img
-                            src="/storage/logos/paglaum.png"
+                            src="/images/paglaum.png"
                             className="mx-auto mb-4 w-60 md:w-96"
                             alt=""
                         />

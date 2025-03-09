@@ -51,21 +51,24 @@ createInertiaApp({
                             headerBg: '#dbe9ff',
                             fontFamily: 'ubuntu',
                             borderColor: '#dbe9ff'
+                        },
+                        Form: {
+                            
                         }
                     },
                     token: {
                         // Seed Token
                         // colorPrimary: '#244a3d',
                         // borderRadius: 2,
-                    
-                
+
+
                         // Alias Token
                         // colorBgContainer: '#ffff',
                     },
-               
+
             }}>
                 <AntApp>
-                    <App {...props} /> 
+                    <App {...props} />
                 </AntApp>
 
             </ConfigProvider>
