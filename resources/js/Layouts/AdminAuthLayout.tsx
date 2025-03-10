@@ -143,7 +143,10 @@ export default function AdminAuthLayout(
 
         <>
             <Layout>
-                <Sider className='z-10' trigger={null} style={siderStyle} collapsible
+                <Sider className='z-10' 
+                    trigger={null} 
+                    style={siderStyle} 
+                    collapsible
                     collapsed={collapsed} width={300}>
                     <PanelSideBarLogo />
                     <Menu
