@@ -12,6 +12,7 @@ const ApplyLoan =  () => {
     const [loanSubtypes, setLoanSubtypes] = useState<LoanSubtype[]>([]);
     const [loanSubTypeId, setLoanSubTypeId] = useState<number|string>(0);
 
+    const [errors, setErrors] = useState<any>({});
 
     const [fields, setFields] = useState<Loan>({
         principal: 0,
@@ -25,8 +26,7 @@ const ApplyLoan =  () => {
         terms_month: 0,
         //checkboxInput: false
     });
-    console.log(fields);
-    console.log(loanSubTypeId);
+
     
 
     useEffect(()=>{
@@ -63,6 +63,7 @@ const ApplyLoan =  () => {
             ...prevField,
             ['loan_subtype_id']: subType.id,
             ['terms_month']: subType.terms,
+            ['interest']: subType.percent,
         }));
     }
 
@@ -77,6 +78,20 @@ const ApplyLoan =  () => {
     },[])
 
 
+    const handleSubmit = (e:any) => {
+        e.preventDefault();
+
+        axios.post('/member/my-loans', fields).then(res=>{
+            if(res.data.status === 'saved'){
+
+            }
+        }).catch(err => {
+            setErrors(err.response.data.errors)
+        })
+        
+    }
+
+
     return (
         <div className="bg-white p-6 shadow-sm">
 
@@ -85,20 +100,23 @@ const ApplyLoan =  () => {
             </div>
 
             <div className={"mt-4"}>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
                             <label htmlFor="first_name"
                                 className="block mb-2 text-sm font-medium text-gray-900 ">
                                 Amount Applied (&#8369;)
                             </label>
-                            <input type="number" id="principal"
+                            <input type="number" 
+                                id="principal"
                                 name="principal"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                className={errors.principal ? 'text-error' : 'text-input' }
                                 placeholder="eg. 1,000" required autoComplete="off"
                                 onChange={handleChange}
-                                value={fields.principal}/>
+                                value={Number(fields.principal)}/>
+                            { errors.principal ? (
+                                <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.principal[0]}</p>
+                            ): null } 
                         </div>
                         <div>
                             <label htmlFor="loan_types"
@@ -107,14 +125,16 @@ const ApplyLoan =  () => {
                                 name="loan_type_id"
                                 onChange={handleChange}
                                 value={fields.loan_type_id}
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
-                                rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                className={errors.loan_type_id ? 'text-error' : 'text-input' }>
                                     <option disabled value={0}>Choose here...</option>
                                 {loanTypes.map(item => (
                                     <option key={item.id} value={item.id}>{item.loan_type}</option>
                                 ))}
                                
                             </select>
+                            { errors.loan_type_id ? (
+                                <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.loan_type_id[0]}</p>
+                            ): null } 
                         </div>
                         <div>
                             <label htmlFor="loanSubtype"
@@ -123,15 +143,17 @@ const ApplyLoan =  () => {
                                 //name="loanSubTypeId"
                                 value={loanSubTypeId}
                                 onChange={handleLoanSubTypeChange}
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm
-                                    rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                className={errors.loan_subtype_id ? 'text-error' : 'text-input' }>
                                 <option disabled className="text-gray-700" value=''>Choose here...</option>
                                 {loanSubtypes.map(item => (
-                                    <option key={item.id} value={JSON.stringify({ id: item.id,loan_subtype:item.loan_subtype, terms:item.terms_month })}>
+                                    <option key={item.id} value={JSON.stringify({ id: item.id,loan_subtype:item.loan_subtype, terms:item.terms_month, percent: item.percent })}>
                                         {item.loan_subtype}
                                     </option>
                                 ))}
                             </select>
+                            { errors.loan_subtype_id ? (
+                                <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.loan_subtype_id[0]}</p>
+                            ): null } 
                         </div>
                         <div>
                             <label htmlFor="terms"
@@ -139,12 +161,15 @@ const ApplyLoan =  () => {
                                 Terms
                             </label>
                             <input type="number" id="terms"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                className={errors.terms ? 'text-error' : 'text-input' }
                                 placeholder="e.g 12" required
                                 name="terms"
                                 value={fields.terms_month}
                                 onChange={handleChange}
                             />
+                            { errors.terms ? (
+                                <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.terms[0]}</p>
+                            ): null } 
                         </div>
                        
                       
@@ -156,8 +181,15 @@ const ApplyLoan =  () => {
                             Purpose of Loan
                         </label>
                         <textarea id="purpose"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            name="purpose"
+                            value={fields.purpose}
+                            onChange={handleChange}
+                            className={errors.purpose ? 'text-error' : 'text-input' }
                             placeholder="Your purpose here..." rows={4} required/>
+                            
+                            { errors.purpose ? (
+                                <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.purpose[0]}</p>
+                            ): null } 
                     </div>
                    
                     <button type="submit"

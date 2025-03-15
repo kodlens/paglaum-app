@@ -20,6 +20,8 @@ Route::middleware(['auth', 'active'])->group(function () {
 
     Route::resource('/member/my-loans', App\Http\Controllers\Member\MemberMyLoanController::class)->names('member.my-loans');
 
+
+
 });
 
 
