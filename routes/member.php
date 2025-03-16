@@ -22,6 +22,9 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/member/get-my-loans', [App\Http\Controllers\Member\MemberMyLoanController::class, 'getMyLoans']);
 
 
+    Route::get('/member/my-loans-details/{id}', [App\Http\Controllers\Member\MemeberMyLoanDetailController::class, 'index']);
+
+
 
 });
 

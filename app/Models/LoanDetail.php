@@ -12,10 +12,11 @@ class LoanDetail extends Model
     protected $fillable = [
         'loan_id',
         'month',
+        'user_id',
+        'due_date',
+        'date_paid',
         'amount',
-        'interest_rate',
-        'term',
-        'due_date'
+        'is_paid'
     ];
 
 }
