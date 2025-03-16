@@ -109,11 +109,21 @@ const ApplyLoan =  () => {
                 })
             }
         }).catch(err => {
-            setErrors(err.response.data.errors)
             setLoading(false)
 
+            if(err.response.status === 422){
+                setErrors(err.response.data.errors)
+            }
+            if(err.response.status === 500){
+                console.log(err.response.data);
+                
+                notification.error({
+                    placement: 'bottomRight',
+                    description: 'Error: ' + err.response.data.message,
+                    message: 'Unknown error occured!'
+                });
+            }
         })
-        
     }
 
 

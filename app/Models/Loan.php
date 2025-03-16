@@ -19,4 +19,13 @@ class Loan extends Model
         'interest',
         'purpose'
     ];
+
+
+    public function loan_type(){
+        return $this->belongsTo(LoanType::class);
+    }
+
+    public function loan_subtype(){
+        return $this->belongsTo(LoanSubtype::class);
+    }
 }

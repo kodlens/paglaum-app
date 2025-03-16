@@ -19,6 +19,7 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::delete('/member/profile', [ProfileController::class, 'destroy'])->name('member.profile.destroy');
 
     Route::resource('/member/my-loans', App\Http\Controllers\Member\MemberMyLoanController::class)->names('member.my-loans');
+    Route::get('/member/get-my-loans', [App\Http\Controllers\Member\MemberMyLoanController::class, 'getMyLoans']);
 
 
 
