@@ -19,6 +19,8 @@ return new class extends Migration
                 ->on('loans')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+                
+            $table->integer('month')->default(0)->nullable();
 
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')
@@ -26,11 +28,11 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->bigInteger('saving_account_id')->unsigned();
-            $table->foreign('saving_account_id')->references('id')
-                ->on('saving_accounts')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            // $table->bigInteger('saving_account_id')->unsigned();
+            // $table->foreign('saving_account_id')->references('id')
+            //     ->on('saving_accounts')
+            //     ->onDelete('cascade')
+            //     ->onUpdate('cascade');
 
             $table->date('due_date')->nullable();
             $table->date('date_paid')->nullable();
