@@ -1,5 +1,5 @@
 export interface User {
-    id: number|0;
+    id?: number|0;
     data?: any[],
     username?: string;
     password?: string;
@@ -45,7 +45,7 @@ export interface User {
     email_verified_at?: string;
     role?: string;
     membership_date?: Date|null;
-    active: number;
+    active?: number;
     created_at?: Date|null;
     updated_at?: Date|null;
 }

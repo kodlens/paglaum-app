@@ -4,12 +4,13 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { UserTable } from './UserTable'
 import SearchUserTable from './SearchUserTable'
+import { PageProps } from '@/types'
 
 
-export default function UserIndex() {
+export default function UserIndex( {auth} : PageProps ) {
 
     return (
-        <AdminAuthLayout>
+        <AdminAuthLayout user={auth.user}>
             <Head title="User"/>
 
             <div>

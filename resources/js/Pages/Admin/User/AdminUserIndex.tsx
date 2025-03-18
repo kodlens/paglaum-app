@@ -178,7 +178,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
                                                         label: 'Edit',
                                                         icon: <Pencil size={16} />,
                                                         onClick: ()=>{
-                                                            handleEditClick(data.id)
+                                                            //handleEditClick(data.id)
                                                         }
                                                     
                                                     },
