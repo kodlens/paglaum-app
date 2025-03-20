@@ -12,6 +12,12 @@ Route::resource('/admin/dashboard', App\Http\Controllers\Administrator\Dashboard
 Route::resource('/admin/users', App\Http\Controllers\Administrator\UserController::class)->names('admin.users');
 Route::get('/admin/get-users', [App\Http\Controllers\Administrator\UserController::class, 'getData']);
 
+
+Route::resource('/admin/areas', App\Http\Controllers\Administrator\AdminAreaContoller::class)->names('admin.areas');
+Route::get('/admin/get-areas', [App\Http\Controllers\Administrator\AdminAreaContoller::class, 'getData']);
+
+
+
 Route::post('/admin/user-set-active/{id}', [App\Http\Controllers\Administrator\UserController::class, 'userSetActive']);
 Route::post('/admin/user-set-inactive/{id}', [App\Http\Controllers\Administrator\UserController::class, 'userSetInactive']);
 

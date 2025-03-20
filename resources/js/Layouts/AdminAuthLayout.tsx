@@ -50,9 +50,9 @@ export default function AdminAuthLayout(
             //onClick: () => router.visit('/admin/dashboard')
 		},
         {
-            key: 'sections.index',
+            key: 'areas.index',
             icon: <ProfileOutlined />,
-            label: 'Sections',
+            label: 'Areas',
             //onClick: () => router.visit('/admin/sections')
 
         },

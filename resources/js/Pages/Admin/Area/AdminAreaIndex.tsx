@@ -14,7 +14,6 @@ import { Space, Table,
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import ChangePassword from './partials/ChangePassword';
 import AdminAuthLayout from '@/Layouts/AdminAuthLayout';
 import { PaginateResponse } from '@/types/apiResponse';
 import { Captions, FileLock2, MonitorCheck, Pencil, ShieldOff, Trash2 } from 'lucide-react';
@@ -22,7 +21,7 @@ import { Captions, FileLock2, MonitorCheck, Pencil, ShieldOff, Trash2 } from 'lu
 const { Column } = Table;
 
 
-export default function AdminUserIndex({ auth }: PageProps) {
+const AdminAreaIndex = ({ auth }: PageProps)  => {
 	
 	const [form] = Form.useForm();
 
@@ -133,17 +132,13 @@ export default function AdminUserIndex({ auth }: PageProps) {
 		}
 	}
 
-    const handleClickActive = (id:any) => {
-        axios.post('/admin/users-set-active/' + id).then(res=>{
-            notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
+    const handleClickTrash = (id:any) => {
+        axios.delete('/admin/areas/' + id).then(res=>{
+            notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
         })
     }
 
-    const handleClickInactive = (id:any) => {
-        axios.post('/admin/users-set-inactive/' + id).then(res=>{
-            notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
-        })
-    }
+
 
 	return (
 		<AdminAuthLayout user={auth.user}>
@@ -195,26 +190,15 @@ export default function AdminUserIndex({ auth }: PageProps) {
                                                     },
                                                     {
                                                         key: '2',
-                                                        label: 'Acitve',
-                                                        icon: <MonitorCheck  size={16} />,
+                                                        label: 'Delete',
+                                                        icon: <Trash2 size={16} />,
                                                         onClick: ()=>{
-                                                            handleClickActive(data.id)
+                                                            handleClickTrash(data.id)
                                                         }
                                                     
                                                     },
-                                                    {
-                                                        key: '3',
-                                                        label: 'Inactive',
-                                                        icon: <ShieldOff size={16} />,
-                                                        onClick: ()=>{
-                                                            handleClickInactive(data.id)
-                                                        }
-                                                    
-                                                    },
-                                                    {
-                                                        key: '4',
-                                                        label: (<ChangePassword data={data} onSuccess={loadDataAsync}/>),
-                                                    },
+                                                   
+                                                   
                                                 ],
                                             }}
                                             trigger={['click']}
@@ -429,3 +413,5 @@ export default function AdminUserIndex({ auth }: PageProps) {
 		</AdminAuthLayout>
 	)
 }
+
+export default AdminAreaIndex;
