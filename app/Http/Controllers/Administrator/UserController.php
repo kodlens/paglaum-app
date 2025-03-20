@@ -116,7 +116,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function setActive($id){
+    public function userSetActive($id){
 
         $user = User::find($id);
         $user->active = 1;
@@ -127,7 +127,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function setInactive($id){
+    public function userSetInactive($id){
 
         $user = User::find($id);
         $user->active = 0;
