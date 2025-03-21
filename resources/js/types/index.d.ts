@@ -14,7 +14,7 @@ export interface User {
     birthplace?: string;
     sex?: string;
     civil_status?: string;
-    relligion?: string;
+    religion?: string;
     ethnic_group?: string;
     nationality?: string;
     height?: number;
@@ -30,6 +30,9 @@ export interface User {
     industry_code?: string;
     occupational_code?: string;
     monthly_income?: string;
+    office_address?: string;
+    contact_person?: string;
+    contact_person_no?: string;
     sector_presented?: string;
     organization_affiliated?: string;
     org_aff_address?: string;

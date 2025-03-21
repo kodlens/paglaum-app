@@ -1,6 +1,6 @@
 import { PageProps } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { DatePicker, Form, Input, Select } from 'antd'
+import { Button, DatePicker, Form, Input, InputNumber, Select } from 'antd'
 import axios from 'axios';
 import React, { useEffect } from 'react'
 
@@ -9,6 +9,7 @@ const MemberProfile = () => {
     const [errors, setErrors] = React.useState<any>({})
     const user = usePage<PageProps>().props.auth.user;
     const [educationLevels, setEducationLevels] = React.useState<any>([])
+    const [idTypes, setIdTypes] = React.useState<any>([])
 
 
     const loadEducationLevels = () => {
@@ -17,8 +18,16 @@ const MemberProfile = () => {
         })
     }
 
+    
+    const loadIdTypes = () => {
+        axios.get('/load-id-types').then(res => {
+            setIdTypes(res.data);
+        })
+    }
+
     useEffect(() => {
         loadEducationLevels()
+        loadIdTypes()
     }, [])
 
     const onFinish = (values: any) => {
@@ -38,7 +47,26 @@ const MemberProfile = () => {
                         lname: user.lname,
                         fname: user.fname,
                         mname: user.mname,
-                        sex: user.sex
+                        sex: user.sex,
+                        education_level: user.education_level,
+                        birthdate: user.birthdate,
+                        birthplace: user.birthplace,
+                        civil_status: user.civil_status,
+                        religion: user.religion,
+                        ethnic_group: user.ethnic_group,
+                        nationality: user.nationality,
+                        height: user.height,
+                        weight: user.weight,
+                        blood_type: user.blood_type,
+                        sss: user.sss,
+                        tin: user.tin,
+                        household_size: user.household_size,
+                        contact_no: user.contact_no,
+                        email: user.email,
+                        occupation: user.occupation,
+                        monthly_income: user.monthly_income,
+                        office_address: user.office_address,
+                        contact_person: user.contact_person,
                     }}
                     onFinish={onFinish}
                 >
@@ -166,6 +194,191 @@ const MemberProfile = () => {
                             
                             <Input type='text' className='w-full p-2' placeholder='e.g. Tagalog' />
                         </Form.Item>
+                    </div>
+
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                        <Form.Item label="Nationality"
+                            name="nationality"
+                            className="w-full"
+                            validateStatus={errors.nationality ? "error" : ""}
+                            help={errors.nationality ? errors.nationality[0] : ""}>
+
+                            <Input type='text' className='w-full p-2' placeholder='e.g. Filipino...' />
+                            
+                        </Form.Item>
+
+                        <Form.Item label="Height (Cm)"
+                            name="height"
+                            className="w-full"
+                            validateStatus={errors.height ? "error" : ""}
+                            help={errors.height ? errors.height[0] : ""}>
+                            
+                            <InputNumber type='text' className='w-full p-1' placeholder='e.g. Height in Cm' />
+                        </Form.Item>
+
+                        <Form.Item label="Weight (KG)"
+                            name="weight"
+                            className="w-full"
+                            validateStatus={errors.height ? "error" : ""}
+                            help={errors.height ? errors.height[0] : ""}>
+                            
+                            <InputNumber type='text' className='w-full p-1' placeholder='e.g. Weight in KG' />
+                        </Form.Item>
+                    </div>
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                        <Form.Item label="Blood Type"
+                            name="blood_type"
+                            className="w-full"
+                            validateStatus={errors.blood_type ? "error" : ""}
+                            help={errors.blood_type ? errors.blood_type[0] : ""}>
+
+                            <Input type='text' className='w-full p-2' placeholder='e.g. AB, A+, A...' />
+                            
+                        </Form.Item>
+
+                        <Form.Item label="SSS"
+                            name="sss"
+                            className="w-full"
+                            validateStatus={errors.sss ? "error" : ""}
+                            help={errors.sss ? errors.sss[0] : ""}>
+
+                            <Input type='text' className='w-full p-2' placeholder='e.g. SSS No...' />
+                            
+                        </Form.Item>
+
+                        <Form.Item label="TIN"
+                            name="tin"
+                            className="w-full"
+                            validateStatus={errors.tin ? "error" : ""}
+                            help={errors.tin ? errors.tin[0] : ""}>
+
+                            <Input type='text' className='w-full p-2' placeholder='e.g. TIN...' />
+                            
+                        </Form.Item>
+                    </div>
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                        <Form.Item label="ID Type"
+                            name="id_type"
+                            className="w-full"
+                            validateStatus={errors.id_type ? "error" : ""}
+                            help={errors.id_type ? errors.id_type[0] : ""}>
+                            
+                            <Select
+                                className='h-10'
+                                options={idTypes.map((type: any) => ({
+                                    value: type.id,
+                                    label: type.id_type
+                                }))}
+                            />
+                        </Form.Item>
+
+                        <Form.Item label="Id No."
+                            name="id_no"
+                            className="w-full"
+                            validateStatus={errors.id_no ? "error" : ""}
+                            help={errors.id_no ? errors.id_no[0] : ""}>
+
+                            <Input type='text' className='w-full p-2' placeholder='e.g. Id No...' />
+                        </Form.Item>
+
+                        <Form.Item label="Household Size"
+                            name="household_size"
+                            className="w-full"
+                            validateStatus={errors.household_size ? "error" : ""}
+                            help={errors.household_size ? errors.household_size[0] : ""}>
+
+                            <InputNumber type='number' className='w-full p-1' placeholder='e.g. 12...' />
+                            
+                        </Form.Item>
+   
+                    </div>
+
+                    <div className='text-center my-4 font-bold'>CONTACT INFORMATION</div>
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                        <Form.Item label="Contact No."
+                            name="contact_no"
+                            className="w-full"
+                            validateStatus={errors.contact_no ? "error" : ""}
+                            help={errors.contact_no ? errors.contact_no[0] : ""}>
+                         
+                            <Input type='text' className='w-full p-2' placeholder='e.g. Contact no...' />
+                        
+                        </Form.Item>
+
+                        <Form.Item label="Email"
+                            name="email"
+                            className="w-full"
+                            validateStatus={errors.email ? "error" : ""}
+                            help={errors.email ? errors.email[0] : ""}>
+
+                            <Input type='email' className='w-full p-2' placeholder='e.g. Email' />
+                        </Form.Item>
+   
+                    </div>
+          
+
+                    <div className='text-center my-4 font-bold'>WORK INFORMATION</div>
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                        <Form.Item label="Occupation"
+                            name="occupation"
+                            className="w-full"
+                            validateStatus={errors.occupation ? "error" : ""}
+                            help={errors.occupation ? errors.occupation[0] : ""}>
+                         
+                            <Input type='text' className='w-full p-2' placeholder='e.g. Occupation' />
+                        
+                        </Form.Item>
+
+                        <Form.Item label="Monthly Income"
+                            name="monthly_income"
+                            className="w-full"
+                            validateStatus={errors.monthly_income ? "error" : ""}
+                            help={errors.monthly_income ? errors.monthly_income[0] : ""}>
+
+                            <InputNumber type='number' className='w-full p-1' placeholder='e.g. Id No...' />
+                        </Form.Item>
+
+                        <Form.Item label="Office Address"
+                            name="office_address"
+                            className="w-full"
+                            validateStatus={errors.office_address ? "error" : ""}
+                            help={errors.office_address ? errors.office_address[0] : ""}>
+
+                            <Input type='text' className='w-full p-2' placeholder='e.g. Office Address...' />
+                            
+                        </Form.Item>
+   
+                    </div>
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                        <Form.Item label="Contact Person"
+                            name="contact_person"
+                            className="w-full"
+                            validateStatus={errors.contact_person ? "error" : ""}
+                            help={errors.contact_person ? errors.contact_person[0] : ""}>
+
+                            <Input type='text' className='w-full p-2' placeholder='e.g. Contact Person' />
+                            
+                        </Form.Item>
+
+                        <Form.Item label="Contact Person No."
+                            name="contact_person_no"
+                            className="w-full"
+                            validateStatus={errors.contact_person_no ? "error" : ""}
+                            help={errors.contact_person_no ? errors.contact_person_no[0] : ""}>
+
+                            <Input type='text' className='w-full p-2' placeholder='e.g. Contact Person No...' />
+                            
+                        </Form.Item>
+                    </div>
+
+                    <div>
+                        <Button type='primary' htmlType='submit'>Update My Profile</Button>
                     </div>
 
 
