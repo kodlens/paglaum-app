@@ -27,6 +27,9 @@ return new class extends Migration
 //                ->onUpdate('cascade');
 
             $table->text('purpose')->nullable();
+            
+            $table->string('guarantor')->nullable();
+
             $table->string('loan_type')->nullable();
             $table->string('loan_subtype')->nullable();
 

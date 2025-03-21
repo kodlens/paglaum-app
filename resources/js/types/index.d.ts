@@ -48,6 +48,7 @@ export interface User {
     active?: number;
     created_at?: Date|null;
     updated_at?: Date|null;
+    last_login?: Date|null;
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
