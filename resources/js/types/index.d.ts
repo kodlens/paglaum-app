@@ -22,6 +22,8 @@ export interface User {
     blood_type?: string;
     sss?: string;
     tin?: string;
+    id_type?: string;
+    id_no?: string;
     drivers_license?: string;
     philhealth?: string;
     umid?: string;
@@ -39,11 +41,11 @@ export interface User {
     contact_no?: string;
     name?: string;
     email?: string;
-    province?: string;
-    city?: string;
-    barangay?: string;
-    street?: string;
-    zip_code?: string;
+    province?: string|number;
+    city?: string|number;
+    barangay?: string|number;
+    street?: string|number;
+    zip_code?: string|number;
     image?: string;
     email_verified_at?: string;
     role?: string;

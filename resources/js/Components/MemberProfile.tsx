@@ -1,16 +1,23 @@
 import { PageProps } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { Button, DatePicker, Form, Input, InputNumber, Select } from 'antd'
+import { App, Button, DatePicker, Form, Input, InputNumber, Select } from 'antd'
 import axios from 'axios';
 import React, { useEffect } from 'react'
+import dayjs from 'dayjs';
+
+const dateFormat = (item:Date, customFormat:string):string=> {
+	return dayjs(item).format(customFormat)
+}
+
 
 const MemberProfile = () => {
     const [form] = Form.useForm();
+    const { notification } = App.useApp();
     const [errors, setErrors] = React.useState<any>({})
     const user = usePage<PageProps>().props.auth.user;
     const [educationLevels, setEducationLevels] = React.useState<any>([])
     const [idTypes, setIdTypes] = React.useState<any>([])
-
+    const [loading, setLoading] = React.useState<boolean>(false)
 
     const loadEducationLevels = () => {
         axios.get('/load-education-levels').then(res => {
@@ -31,7 +38,21 @@ const MemberProfile = () => {
     }, [])
 
     const onFinish = (values: any) => {
-        console.log(values)
+        setLoading(true)
+        axios.patch('/member/update-member-profile', values).then(res => {
+            if (res.data.status === 'updated') {
+                setLoading(false)
+
+                notification.success({
+                    message: 'Profile Updated!',
+                    description: 'Your profile has been updated successfully',
+                    placement: 'bottomRight'
+                });
+            }
+        }).catch(err => {
+            setLoading(false)
+            setErrors(err.data.errors)
+        });
     }
 
 
@@ -49,7 +70,7 @@ const MemberProfile = () => {
                         mname: user.mname,
                         sex: user.sex,
                         education_level: user.education_level,
-                        birthdate: user.birthdate,
+                        birthdate: dayjs(user.birthdate),
                         birthplace: user.birthplace,
                         civil_status: user.civil_status,
                         religion: user.religion,
@@ -60,6 +81,8 @@ const MemberProfile = () => {
                         blood_type: user.blood_type,
                         sss: user.sss,
                         tin: user.tin,
+                        id_type: user.id_type,
+                        id_no: user.id_no,
                         household_size: user.household_size,
                         contact_no: user.contact_no,
                         email: user.email,
@@ -67,7 +90,9 @@ const MemberProfile = () => {
                         monthly_income: user.monthly_income,
                         office_address: user.office_address,
                         contact_person: user.contact_person,
+                        contact_person_no: user.contact_person_no
                     }}
+                    
                     onFinish={onFinish}
                 >
                     <div className='flex md:flex-row flex-col md:gap-4'>
@@ -134,7 +159,7 @@ const MemberProfile = () => {
                         <Select
                             className='h-10'
                             options={educationLevels.map((level: any) => ({
-                                value: level.id,
+                                value: level.education_level,
                                 label: level.education_level
                             }))}
                         />
@@ -269,7 +294,7 @@ const MemberProfile = () => {
                             <Select
                                 className='h-10'
                                 options={idTypes.map((type: any) => ({
-                                    value: type.id,
+                                    value: type.id_type,
                                     label: type.id_type
                                 }))}
                             />
@@ -378,7 +403,7 @@ const MemberProfile = () => {
                     </div>
 
                     <div>
-                        <Button type='primary' htmlType='submit'>Update My Profile</Button>
+                        <Button loading={loading} type='primary' htmlType='submit'>Update My Profile</Button>
                     </div>
 
 
