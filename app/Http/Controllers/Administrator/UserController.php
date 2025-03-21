@@ -116,6 +116,28 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function userSetActive($id){
+
+        $user = User::find($id);
+        $user->active = 1;
+        $user->save();
+
+        return response()->json([
+            'status' => 'active'
+        ], 200);
+    }
+
+    public function userSetInactive($id){
+
+        $user = User::find($id);
+        $user->active = 0;
+        $user->save();
+
+        return response()->json([
+            'status' => 'inactive'
+        ], 200);
+    }
+
     public function destroy($id){
         User::destroy($id);
         return response()->json([

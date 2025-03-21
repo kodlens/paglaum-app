@@ -26,7 +26,10 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
+Route::get('load-education-levels', [App\Http\Controllers\OpenController::class , 'loadEducationLevels'])->name('load-education-levels')  ;
+Route::get('load-loan-types', [App\Http\Controllers\OpenController::class , 'loadLoanTypes'])->name('load-loan-types')  ;
+Route::get('load-loan-subtypes', [App\Http\Controllers\OpenController::class , 'loadLoanSubtypes'])->name('load-loan-subtypes')  ;
+Route::get('load-id-types', [App\Http\Controllers\OpenController::class , 'loadIdTypes'])->name('load-id-types')  ;
 
 
 

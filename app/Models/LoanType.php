@@ -12,7 +12,12 @@ class LoanType extends Model
     protected $fillable = [
         'loan_type',
         'description',
+        'percentage',
         'active',
     ];
+
+    public function loanSubtypes(){
+        return $this->hasMany(LoanSubtype::class);
+    }
 
 }

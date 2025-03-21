@@ -25,3 +25,9 @@
 
     Interest = 20000 × 0.03 × 0.25 = 150
     Interest = 20000 × 0.03 × 0.25 = 150
+
+## Actors
+
+    ADMINISTRATOR
+    STAFF
+    MEMBER

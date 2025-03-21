@@ -11,7 +11,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const user = usePage<PageProps>().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        name: user.name,
+        lname: user.lname,
+        fname: user.fname,
+        mname: user.mname,
         email: user.email,
     });
 
@@ -33,19 +35,48 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="lname" value="Last Name" />
+
+                    <TextInput
+                        id="lname"
+                        className="mt-1 block w-full"
+                        value={data.lname}
+                        onChange={(e) => setData('lname', e.target.value)}
+                        required
+                        isFocused
+                        autoComplete="off"
+                    />
+
+                    <InputError className="mt-2" message={errors.fname} />
+                </div>
+                <div>
+                    <InputLabel htmlFor="name" value="First Name" />
 
                     <TextInput
                         id="name"
                         className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        value={data.fname}
+                        onChange={(e) => setData('fname', e.target.value)}
                         required
                         isFocused
-                        autoComplete="name"
+                        autoComplete="off"
                     />
 
-                    <InputError className="mt-2" message={errors.name} />
+                    <InputError className="mt-2" message={errors.fname} />
+                </div>
+                <div>
+                    <InputLabel htmlFor="mname" value="Middle Name" />
+
+                    <TextInput
+                        id="mname"
+                        className="mt-1 block w-full"
+                        value={data.mname}
+                        onChange={(e) => setData('mname', e.target.value)}
+                        isFocused
+                        autoComplete="off"
+                    />
+
+                    <InputError className="mt-2" message={errors.mname} />
                 </div>
 
                 <div>
@@ -88,17 +119,19 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>Save</PrimaryButton>
-
-                    <Transition
-                        show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
-                        leaveTo="opacity-0"
-                    >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
                 </div>
+
+                <Transition
+                    show={recentlySuccessful}
+                    enter="transition ease-in-out"
+                    enterFrom="opacity-0"
+                    leave="transition ease-in-out"
+                    leaveTo="opacity-0"
+                >
+                    <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+                        <span className="font-medium">Success alert!</span> Profile Updated.
+                    </div>
+                </Transition>
             </form>
         </section>
     );

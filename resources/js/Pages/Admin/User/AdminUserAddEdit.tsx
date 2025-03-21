@@ -39,12 +39,12 @@ export default function AdminUserAddEdit({
             { name: 'email', value: user.email },
             { name: 'sex', value: user.sex },
             { name: 'role', value: user.role },
-            { name: 'active', value: user.active > 0 ? true : false }
+            { name: 'active', value: user.active ? user.active > 0 : false }
         ]);
     }, [user])
     const onFinish = async (values:User) =>{
         setLoading(true);
-        if(user.id > 0){
+        if(user && user.id && user.id > 0){
 			try{
 				const res = await axios.put('/admin/users/' + user.id, values)
                 setLoading(false);

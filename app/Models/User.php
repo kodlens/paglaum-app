@@ -58,7 +58,8 @@ class User extends Authenticatable
         'role',
         'membership_date',
         'image',
-        'active'
+        'active',
+        'last_login'
     ];
 
     /**

@@ -87,7 +87,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             sex: '',
                             birthdate: null,
                             birthplace: '',
-
                         }}>
 
                         <Form.Item label="Username"

@@ -26,7 +26,12 @@ return new class extends Migration
 //                ->onDelete('cascade')
 //                ->onUpdate('cascade');
 
-            $table->text('purpose')->default(0);
+            $table->text('purpose')->nullable();
+            
+            $table->string('guarantor')->nullable();
+
+            $table->string('loan_type')->nullable();
+            $table->string('loan_subtype')->nullable();
 
             $table->unsignedBigInteger('loan_type_id')->default(0);
             $table->foreign('loan_type_id')->references('id')
@@ -42,7 +47,9 @@ return new class extends Migration
 
             $table->double('principal')->default(0);
             $table->double('interest')->default(0);
-            $table->double('terms')->default(0);
+            $table->double('terms_month')->default(0);
+            
+            $table->tinyInteger('is_paid')->default(0);
 
 
             $table->timestamps();

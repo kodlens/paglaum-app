@@ -28,6 +28,19 @@ label {
     @apply font-bold
 }
 
-input {
+input, select, textarea {
     @apply focus:outline-none
+}
+
+.text-input {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+}
+
+.text-error {
+    @apply bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 block w-full p-2.5
+}
+
+
+.dashboard-card-item {
+    @apply max-w-[calc(33.33%-1rem)] flex-1 p-4
 }

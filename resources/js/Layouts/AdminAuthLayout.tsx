@@ -13,6 +13,7 @@ import {
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';
 import PanelSideBarLogo from '@/Components/PanelSideBarLogo';
 import { User } from '@/types';
+import { LogOut } from 'lucide-react';
 
   const { Header, Sider, Content } = Layout;
 
@@ -50,21 +51,21 @@ export default function AdminAuthLayout(
             //onClick: () => router.visit('/admin/dashboard')
 		},
         {
-            key: 'sections.index',
+            key: 'admin.areas.index',
             icon: <ProfileOutlined />,
-            label: 'Sections',
+            label: 'Areas',
             //onClick: () => router.visit('/admin/sections')
 
         },
         {
-            key: 'categories.index',
+            key: 'admin.education-levels.index',
             icon: <BarsOutlined />,
-            label: 'Categories',
+            label: 'Education Levels',
             //onClick: () => router.visit('/admin/categories')
         },
-        {
-            type: 'divider',
-        },
+        // {
+        //     type: 'divider',
+        // },
         // {
         //     key: 'pages.index',
         //     icon: <FilePptOutlined />,
@@ -143,15 +144,18 @@ export default function AdminAuthLayout(
 
         <>
             <Layout>
-                <Sider className='z-10' trigger={null} style={siderStyle} collapsible
+                <Sider className='z-10' 
+                    trigger={null}
+                    collapsible
+                    breakpoint='md'
+                    onBreakpoint={(broken) => {
+                        setCollapsed(broken);
+                    }}
                     collapsed={collapsed} width={300}>
                     <PanelSideBarLogo />
                     <Menu
                         onClick={onClick}
                         mode="inline"
-                        style={{ background: "#084c7f",
-                            color: 'white',
-                        }}
                         defaultSelectedKeys={[`${route().current()}`]}
                         defaultOpenKeys={['posts']}
                         items={
@@ -175,13 +179,15 @@ export default function AdminAuthLayout(
                                 }}
                             />
 
-
                             <div className='ml-auto mr-4 flex items-center gap-4'>
                                 <Link href=''>
                                     {user.lname}, {user.fname ? user.fname[0] : ''}
-                                
                                 </Link>
-                                <Button className='' onClick={handleLogout}>Logout</Button>
+                                <Button className='' 
+                                    danger
+                                    onClick={handleLogout}>
+                                    <LogOut size={16} />
+                                </Button>
                             </div>
 
                         </div>
@@ -195,7 +201,7 @@ export default function AdminAuthLayout(
                             borderRadius: 0,
                         }}
                     >
-                        <main className='my-10 md:mx-2'>{children}</main>
+                        <main className='my-4 md:mx-2'>{children}</main>
                     </Content>
                 </Layout>
             </Layout>

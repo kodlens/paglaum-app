@@ -36,12 +36,14 @@ createInertiaApp({
                             // defaultColor: 'white'
                         },
                         Layout: {
-                            headerBg: 'blue' //Background Color of header
+                            //headerBg: 'blue', //Background Color of header
+                            siderBg: '#133E87', //Background Color of the side bar
                         },
+                     
                         Menu: {
                             // itemActiveBg: 'black',
-                            // itemBg: '#0d0c0c',
-                            itemSelectedBg: '#cf1d1f',
+                            itemBg: '#133E87',
+                            itemSelectedBg: '#608BC1',
                             itemSelectedColor: 'white',
 
                              itemColor: 'white',

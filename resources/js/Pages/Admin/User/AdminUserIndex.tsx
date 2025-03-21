@@ -17,7 +17,7 @@ import axios from 'axios';
 import ChangePassword from './partials/ChangePassword';
 import AdminAuthLayout from '@/Layouts/AdminAuthLayout';
 import { PaginateResponse } from '@/types/apiResponse';
-import { Captions, FileLock2, Pencil, Trash2 } from 'lucide-react';
+import { Captions, FileLock2, MonitorCheck, Pencil, ShieldOff, Trash2 } from 'lucide-react';
 
 const { Column } = Table;
 
@@ -86,7 +86,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
         setOpen(true)
     }
 
-	const handleEditClick = (id:number) => {
+	const handleEditClick = (id:any) => {
 		//setId(id);
         //setOpen(true);
         //getUser(id);
@@ -133,6 +133,18 @@ export default function AdminUserIndex({ auth }: PageProps) {
 		}
 	}
 
+    const handleClickActive = (id:any) => {
+        axios.post('/admin/users-set-active/' + id).then(res=>{
+            notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
+        })
+    }
+
+    const handleClickInactive = (id:any) => {
+        axios.post('/admin/users-set-inactive/' + id).then(res=>{
+            notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
+        })
+    }
+
 	return (
 		<AdminAuthLayout user={auth.user}>
 			<Head title="User Management"></Head>
@@ -167,7 +179,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 							)}/>
 							<Column title="Action" key="action" 
 								render={(_, data:User) => (
-									<div className='flex'>
+									<div className='flex gap-2'>
 
                                         <Dropdown.Button type="primary"
                                             placement="bottomRight"
@@ -180,10 +192,27 @@ export default function AdminUserIndex({ auth }: PageProps) {
                                                         onClick: ()=>{
                                                             handleEditClick(data.id)
                                                         }
-                                                    
                                                     },
                                                     {
                                                         key: '2',
+                                                        label: 'Acitve',
+                                                        icon: <MonitorCheck  size={16} />,
+                                                        onClick: ()=>{
+                                                            handleClickActive(data.id)
+                                                        }
+                                                    
+                                                    },
+                                                    {
+                                                        key: '3',
+                                                        label: 'Inactive',
+                                                        icon: <ShieldOff size={16} />,
+                                                        onClick: ()=>{
+                                                            handleClickInactive(data.id)
+                                                        }
+                                                    
+                                                    },
+                                                    {
+                                                        key: '4',
                                                         label: (<ChangePassword data={data} onSuccess={loadDataAsync}/>),
                                                     },
                                                 ],
