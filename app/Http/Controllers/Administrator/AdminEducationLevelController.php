@@ -5,35 +5,34 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Area;
 use Inertia\Response;
+use App\Models\EducationLevel;
 
-class AdminAreaContoller extends Controller
+class AdminEducationLevelController extends Controller
 {
-    //
     public function index(){
-        return Inertia::render('Admin/Area/AdminAreaIndex');
+        return Inertia::render('Admin/EducationLevel/AdminEducationLevelIndex');
     }
 
 
     public function getData(Request $req){
-        return Area::orderBy('id', 'desc')->paginate($req->perpage);
+        return EducationLevel::orderBy('id', 'desc')->paginate($req->perpage);
     }
 
 
     public function show($id){
-        return Area::find($id);
+        return EducationLevel::find($id);
     }
 
     public function store(Request $req){
 
         $req->validate([
-            'area' => 'required',
+            'education_level' => 'required',
             'description' => 'required',
         ]);
 
-        Area::create([
-            'area' => strtoupper($req->area),
+        EducationLevel::create([
+            'education_level' => strtoupper($req->education_level),
             'description' => $req->description,
             'order_no' => $req->order_no,
             'active' => $req->active ? 1 : 0,
@@ -47,12 +46,12 @@ class AdminAreaContoller extends Controller
     public function update(Request $req, $id){
         
         $req->validate([
-            'area' => 'required|unique:areas,area,'.$id,
+            'education_level' => 'required|unique:education_levels,education_level,'.$id,
             'description' => 'required',
         ]);
 
-        Area::find($id)->update([
-            'area' => strtoupper($req->area),
+        EducationLevel::find($id)->update([
+            'education_level' => strtoupper($req->education_level),
             'description' => $req->description,
             'order_no' => $req->order_no,
             'active' => $req->active ? 1 : 0,
@@ -66,7 +65,7 @@ class AdminAreaContoller extends Controller
 
 
     public function destroy($id){
-        Area::destroy($id);
+        EducationLevel::destroy($id);
         return response()->json([
             'status' => 'deleted'
         ], 200);

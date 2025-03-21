@@ -23,7 +23,7 @@ import { Area } from '@/types/area';
 const { Column } = Table;
 
 
-const AdminAreaIndex = ({ auth }: PageProps)  => {
+const AdminEducationLevelIndex = ({ auth }: PageProps)  => {
 	
 	const [form] = Form.useForm();
 
@@ -52,7 +52,7 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
         ].join('&');
 
 		try{
-			const res = await axios.get<PaginateResponse>(`/admin/get-areas?${params}`);
+			const res = await axios.get<PaginateResponse>(`/admin/get-education-levels?${params}`);
 			setData(res.data.data)
 			setTotal(res.data.total)
 			setLoading(false)
@@ -86,9 +86,9 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 
     const getData = (id:number) => {
 
-        axios.get('/admin/areas/' + id).then(res=>{
+        axios.get('/admin/education-levels/' + id).then(res=>{
             form.setFieldsValue({
-                area: res.data.area,
+                education_level: res.data.education_level,
                 description: res.data.description,
                 order_no: res.data.order_no,
                 active: res.data.active > 0 ? true : false,
@@ -101,7 +101,7 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 
 	const handleDeleteClick = async (id:number) => {
         
-		const res = await axios.delete(`/admin/areas/${id}`);
+		const res = await axios.delete(`/admin/education-levels/${id}`);
 		if(res.data.status === 'deleted'){
 			loadDataAsync()
 		}
@@ -112,9 +112,9 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 
 		if(id > 0){
 			try{
-				const res = await axios.put('/admin/areas/' + id, values)
+				const res = await axios.put('/admin/education-levels/' + id, values)
 				if(res.data.status === 'updated'){
-					notification.info({ placement: 'bottomRight', message: 'Updated!', description: 'Area successfully updated.'})
+					notification.info({ placement: 'bottomRight', message: 'Updated!', description: 'Education Level successfully updated.'})
 					setOpen(false)
 					loadDataAsync()
 				}
@@ -125,9 +125,9 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 			}
 		}else{
 			try{
-				const res = await axios.post('/admin/areas', values)
+				const res = await axios.post('/admin/education-levels', values)
 				if(res.data.status === 'saved'){
-					notification.info({ placement: 'bottomRight', message: 'Saved!', description: 'Area successfully saved.'})
+					notification.info({ placement: 'bottomRight', message: 'Saved!', description: 'Education Level successfully saved.'})
 					setOpen(false)
 					loadDataAsync()
 				}
@@ -142,7 +142,7 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
     const handleClickTrash = (id:any) => {
         modal.confirm({title: 'Delete?', content: 'Are you sure you want to delete this item?', 
             onOk: ()=>{
-            axios.delete('/admin/areas/' + id).then(res=>{
+            axios.delete('/admin/education-levels/' + id).then(res=>{
                 notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
                 loadDataAsync()
             })
@@ -171,7 +171,7 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
                             pagination={false}>
 
 							<Column title="Id" dataIndex="id" key="id"/>
-							<Column title="Area" dataIndex="area" key="area"/>
+							<Column title="Education Level" dataIndex="education_level" key="education_level"/>
 							<Column title="Description" key="description" dataIndex="description"/>
 							<Column title="Order No." dataIndex="order_no" key="order_no"/>
 							<Column title="Active" key="active" render={(data:User)=>(
@@ -237,7 +237,7 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 			{/* Modal */}
             <Modal
                 open={open}
-                title="AREA INFORMATION"
+                title="EDUCATION LEVEL INFORMATION"
                 okText="Save"
                 cancelText="Cancel"
                 okButtonProps={{
@@ -253,7 +253,7 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
                         name="form_in_modal"
                         autoComplete="off"
                         initialValues={{
-                            area: "",
+                            education_level: "",
                             description: "",
                             order_no: 0,
                             active: true,
@@ -267,10 +267,10 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
             >
 
                 <Form.Item
-                    name="area"
-                    label="Area"
-                    validateStatus={errors.area ? "error" : ""}
-                    help={errors.area ? errors.area[0] : ""}
+                    name="education_level"
+                    label="Education Level"
+                    validateStatus={errors.education_level ? "error" : ""}
+                    help={errors.education_level ? errors.education_level[0] : ""}
                 >
                     <Input placeholder="Area" />
                 </Form.Item>
@@ -307,4 +307,4 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 	)
 }
 
-export default AdminAreaIndex;
+export default AdminEducationLevelIndex;

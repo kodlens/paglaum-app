@@ -13,6 +13,7 @@ import {
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';
 import PanelSideBarLogo from '@/Components/PanelSideBarLogo';
 import { User } from '@/types';
+import { LogOut } from 'lucide-react';
 
   const { Header, Sider, Content } = Layout;
 
@@ -59,12 +60,12 @@ export default function AdminAuthLayout(
         {
             key: 'admin.education-levels.index',
             icon: <BarsOutlined />,
-            label: 'Categories',
+            label: 'Education Levels',
             //onClick: () => router.visit('/admin/categories')
         },
-        {
-            type: 'divider',
-        },
+        // {
+        //     type: 'divider',
+        // },
         // {
         //     key: 'pages.index',
         //     icon: <FilePptOutlined />,
@@ -178,12 +179,15 @@ export default function AdminAuthLayout(
                                 }}
                             />
 
-
                             <div className='ml-auto mr-4 flex items-center gap-4'>
                                 <Link href=''>
                                     {user.lname}, {user.fname ? user.fname[0] : ''}
                                 </Link>
-                                <Button className='' onClick={handleLogout}>Logout</Button>
+                                <Button className='' 
+                                    danger
+                                    onClick={handleLogout}>
+                                    <LogOut size={16} />
+                                </Button>
                             </div>
 
                         </div>
@@ -197,7 +201,7 @@ export default function AdminAuthLayout(
                             borderRadius: 0,
                         }}
                     >
-                        <main className='my-10 md:mx-2'>{children}</main>
+                        <main className='my-4 md:mx-2'>{children}</main>
                     </Content>
                 </Layout>
             </Layout>

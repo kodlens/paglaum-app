@@ -32,10 +32,14 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+
         $request->session()->regenerate();
 
         $user = Auth::user();
+        $user->update(['last_login' => now()]);
+
         $role = $user->role;
+        
         if(strtolower($role) == 'admin')
             return redirect()->intended(RouteServiceProvider::ADMIN);
         else

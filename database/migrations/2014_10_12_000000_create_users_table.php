@@ -62,6 +62,7 @@ return new class extends Migration
             $table->tinyInteger('active')->nullable()
                 ->default(1);
             $table->rememberToken();
+            $table->dateTime('last_login')->nullable();
             $table->timestamps();
         });
     }
