@@ -71,15 +71,24 @@ class MemberMyLoanController extends Controller
                     'interest' => $req->interest,
                     'terms_month' => $req->terms_month,
                 ]);
-        
-                $terms = $req->terms_month;
+                $principal = $req->principal;
+                $terms = $req->terms_month / 12;
+                $interest = $req->interest / 100;
+                
+                $monthlyInterest = $principal * $interest * $terms;
+              
+                $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
+
+                $monthlyAmortization = $totalPayment / $req->terms_month;
+
                 $loanDetails = [];
-                for($i = 0; $i < $terms; $i++){
+
+                for($i = 0; $i < $req->terms_month; $i++){
                     $loanDetails[] = [
                         'loan_id' => $loan->id,
                         'user_id' => $user->id,
                         'month' => $i + 1,
-                        'amount' => round($req->principal / $terms, 2),
+                        'amount' => round($monthlyAmortization, 2),
                         'due_date' => now()->addMonths($i + 1),
                         'created_at' => now(),
                         'updated_at' => now(),

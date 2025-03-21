@@ -92,7 +92,7 @@ const MemberProfile = () => {
                         contact_person: user.contact_person,
                         contact_person_no: user.contact_person_no
                     }}
-                    
+
                     onFinish={onFinish}
                 >
                     <div className='flex md:flex-row flex-col md:gap-4'>
@@ -403,7 +403,11 @@ const MemberProfile = () => {
                     </div>
 
                     <div>
-                        <Button loading={loading} type='primary' htmlType='submit'>Update My Profile</Button>
+                        <Button loading={loading} type='primary' 
+                            className='p-4'
+                            htmlType='submit'>
+                            Update My Profile
+                        </Button>
                     </div>
 
 
