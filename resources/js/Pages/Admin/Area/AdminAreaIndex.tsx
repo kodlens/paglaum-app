@@ -9,7 +9,8 @@ import { Space, Table,
     Form, Input, Select, Checkbox,
 	App, 
     Popconfirm,
-    Dropdown} from 'antd';
+    Dropdown,
+    InputNumber} from 'antd';
 
 
 import React, { useEffect, useState } from 'react'
@@ -17,6 +18,7 @@ import axios from 'axios';
 import AdminAuthLayout from '@/Layouts/AdminAuthLayout';
 import { PaginateResponse } from '@/types/apiResponse';
 import { Captions, FileLock2, MonitorCheck, Pencil, ShieldOff, Trash2 } from 'lucide-react';
+import { Area } from '@/types/area';
 
 const { Column } = Table;
 
@@ -27,29 +29,19 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 
 	const  { notification } = App.useApp();
 
-    const [data, setData] = useState<User[]>([]);
+    const [data, setData] = useState<Area[]>([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
 
     const [open, setOpen] = useState(false); //for modal
-	const [passwordVisible, setPasswordVisible] = React.useState(false);
 
 	const [perPage, setPerPage] = useState(10);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
-    const [errors, setErrors] = useState<any>({
-        lname:'',
-        fname:'',
-        mname:'',
-        email:'',
-        username:'',
-        password:'',
-        password_confirmation:'',
-    });
+    const [errors, setErrors] = useState<any>({});
 
     const [id, setId] = useState(0);
 	
-
 	
 	const loadDataAsync = async () => {
 
@@ -60,7 +52,7 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
         ].join('&');
 
 		try{
-			const res = await axios.get<PaginateResponse>(`/admin/get-users?${params}`);
+			const res = await axios.get<PaginateResponse>(`/admin/get-areas?${params}`);
 			setData(res.data.data)
 			setTotal(res.data.total)
 			setLoading(false)
@@ -86,15 +78,30 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
     }
 
 	const handleEditClick = (id:any) => {
-		//setId(id);
-        //setOpen(true);
-        //getUser(id);
-        router.visit('/admin/users/' + id + '/edit');
+		setId(id);
+        setOpen(true);
+        getData(id);
+        //router.visit('/admin/users/' + id + '/edit');
 	}
+
+    const getData = (id:number) => {
+
+        axios.get('/admin/areas/' + id).then(res=>{
+            form.setFieldsValue({
+                area: res.data.area,
+                description: res.data.description,
+                order_no: res.data.order_no,
+                active: res.data.active > 0 ? true : false,
+            })
+
+            console.log(res.data.active);
+            
+        });
+    }
 
 	const handleDeleteClick = async (id:number) => {
         
-		const res = await axios.delete(`/admin/users/${id}`);
+		const res = await axios.delete(`/admin/areas/${id}`);
 		if(res.data.status === 'deleted'){
 			loadDataAsync()
 		}
@@ -105,9 +112,9 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 
 		if(id > 0){
 			try{
-				const res = await axios.put('/admin/users/' + id, values)
+				const res = await axios.put('/admin/areas/' + id, values)
 				if(res.data.status === 'updated'){
-					notification.info({ placement: 'bottomRight', message: 'Updated!', description: 'User successfully updated.'})
+					notification.info({ placement: 'bottomRight', message: 'Updated!', description: 'Area successfully updated.'})
 					setOpen(false)
 					loadDataAsync()
 				}
@@ -118,9 +125,9 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 			}
 		}else{
 			try{
-				const res = await axios.post('/admin/users', values)
+				const res = await axios.post('/admin/areas', values)
 				if(res.data.status === 'saved'){
-					notification.info({ placement: 'bottomRight', message: 'Saved!', description: 'User successfully saved.'})
+					notification.info({ placement: 'bottomRight', message: 'Saved!', description: 'Area successfully saved.'})
 					setOpen(false)
 					loadDataAsync()
 				}
@@ -149,7 +156,7 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 				<div className='p-6 w-full md:mx-2 bg-white shadow-sm rounded-md
 					md:w-[1120px] overflow-auto'>
 					{/* card header */}
-					<div className="font-bold mb-4 text-lg">LIST OF USER</div>
+					<div className="font-bold mb-4 text-lg">LIST OF AREA</div>
 					{/* card body */}
 					<div className='z-0'>
                         <Table dataSource={data}
@@ -159,12 +166,9 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
                             pagination={false}>
 
 							<Column title="Id" dataIndex="id" key="id"/>
-							<Column title="Username" dataIndex="username" key="username"/>
-							<Column title="Last Name" key="lname" dataIndex="lname"/>
-							<Column title="First Name" key="fname" dataIndex="fname"/>
-							<Column title="Middle Name" key="mname" dataIndex="mname"/>
-							<Column title="Email" dataIndex="email" key="email"/>
-							<Column title="Role" dataIndex="role" key="role"/>
+							<Column title="Area" dataIndex="area" key="area"/>
+							<Column title="Description" key="description" dataIndex="description"/>
+							<Column title="Order No." dataIndex="order_no" key="order_no"/>
 							<Column title="Active" key="active" render={(data:User)=>(
 								data.active ? (
 									<span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
@@ -173,7 +177,7 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 								)
 							)}/>
 							<Column title="Action" key="action" 
-								render={(_, data:User) => (
+								render={(_, data:Area) => (
 									<div className='flex gap-2'>
 
                                         <Dropdown.Button type="primary"
@@ -195,32 +199,13 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
                                                         onClick: ()=>{
                                                             handleClickTrash(data.id)
                                                         }
-                                                    
                                                     },
-                                                   
-                                                   
                                                 ],
                                             }}
                                             trigger={['click']}
                                         >
                                             <Captions size={16} />
                                         </Dropdown.Button>
-
-                                        <Popconfirm
-                                            title="Delete this user?"
-                                            description="Are you sure to delete this user?"
-                                            onConfirm={() => handleDeleteClick(data.id ?? 0) }
-                                            okText="Yes"
-                                            cancelText="No"
-                                        >
-                                            <button 
-                                                    className='red-button'
-                                                    // onClick={ ()=> handleDeleteClick(data.id ?? 0) } 
-                                                >
-                                                    <Trash2 size={12}/>
-                                                </button>
-                                        </Popconfirm>
-
 									</div>
 								)}
 							/>
@@ -247,7 +232,7 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
 			{/* Modal */}
             <Modal
                 open={open}
-                title="USER INFORMATION"
+                title="AREA INFORMATION"
                 okText="Save"
                 cancelText="Cancel"
                 okButtonProps={{
@@ -263,14 +248,9 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
                         name="form_in_modal"
                         autoComplete="off"
                         initialValues={{
-                            username: "",
-                            password: "",
-                            email: "",
-                            lname: "",
-                            fname: "",
-                            mname: "",
-                            sex: "MALE",
-                            role: "USER",
+                            area: "",
+                            description: "",
+                            order_no: 0,
                             active: true,
                         }}
                         clearOnDestroy
@@ -280,132 +260,40 @@ const AdminAreaIndex = ({ auth }: PageProps)  => {
                     </Form>
                 )}
             >
-                <Form.Item
-                    name="username"
-                    label="Username"
-                    validateStatus={errors.username ? "error" : ""}
-                    help={errors.username ? errors.username[0] : ""}
-                >
-                    <Input placeholder="Username" />
-                </Form.Item>
-
-                {id < 1 ? (
-                    <>
-                        <Form.Item
-                            name="password"
-                            label="Password"
-                            validateStatus={errors.password ? "error" : ""}
-                            help={errors.password ? errors.password[0] : ""}
-                        >
-                            <Input.Password
-                                iconRender={(visible) =>
-                                    visible ? (
-                                        <EyeTwoTone />
-                                    ) : (
-                                        <EyeInvisibleOutlined />
-                                    )
-                                }
-                                placeholder="Re-type Password"
-                            />
-                        </Form.Item>
-
-                        <Form.Item
-                            name="password_confirmation"
-                            label="Re-type Password"
-                            validateStatus={
-                                errors.password_confirmation ? "error" : ""
-                            }
-                            help={
-                                errors.password_confirmation
-                                    ? errors.password_confirmation[0]
-                                    : ""
-                            }
-                        >
-                            <Input.Password
-                                iconRender={(visible) =>
-                                    visible ? (
-                                        <EyeTwoTone />
-                                    ) : (
-                                        <EyeInvisibleOutlined />
-                                    )
-                                }
-                                placeholder="Re-type Password"
-                            />
-                        </Form.Item>
-                    </>
-                ) : (
-                    ""
-                )}
 
                 <Form.Item
-                    name="lname"
-                    label="Last Name"
-                    validateStatus={errors.lname ? "error" : ""}
-                    help={errors.lname ? errors.lname[0] : ""}
+                    name="area"
+                    label="Area"
+                    validateStatus={errors.area ? "error" : ""}
+                    help={errors.area ? errors.area[0] : ""}
                 >
-                    <Input placeholder="Last Name" />
+                    <Input placeholder="Area" />
                 </Form.Item>
 
                 <Form.Item
-                    name="fname"
-                    label="First Name"
-                    validateStatus={errors.fname ? "error" : ""}
-                    help={errors.fname ? errors.fname[0] : ""}
+                    name="description"
+                    label="Description"
+                    validateStatus={errors.description ? "error" : ""}
+                    help={errors.description ? errors.description[0] : ""}
                 >
-                    <Input placeholder="First Name" />
+                    <Input placeholder="Description" />
                 </Form.Item>
 
                 <Form.Item
-                    name="mname"
-                    label="Middle Name"
-                    validateStatus={errors.mname ? "error" : ""}
-                    help={errors.mname ? errors.mname[0] : ""}
+                    className='w-full'
+                    name="order_no"
+                    label="Order No"
+                    validateStatus={errors.order_no ? "error" : ""}
+                    help={errors.order_no ? errors.order_no[0] : ""}
                 >
-                    <Input placeholder="FiMiddlerst Name" />
+                    <InputNumber type='number' className='w-full' placeholder="Order No." />
                 </Form.Item>
 
                 <Form.Item
-                    name="email"
-                    label="Email"
-                    validateStatus={errors.email ? "error" : ""}
-                    help={errors.email ? errors.email[0] : ""}
-                >
-                    <Input placeholder="Email" />
+                    valuePropName='checked'
+                    name="active">
+                    <Checkbox>Active</Checkbox>
                 </Form.Item>
-				
-
-                <div className="flex gap-4">
-                    <Form.Item
-                        name="sex"
-                        label="Sex"
-                        className="w-full"
-                        validateStatus={errors.sex ? "error" : ""}
-                        help={errors.sex ? errors.sex[0] : ""}
-                    >
-                        <Select
-                            options={[
-                                { value: "MALE", label: "MALE" },
-                                { value: "FEMALE", label: "FEMALE" },
-                            ]}
-                        />
-                    </Form.Item>
-
-                    <Form.Item
-                        name="role"
-                        label="Role"
-                        className="w-full"
-                        validateStatus={errors.role ? "error" : ""}
-                        help={errors.role ? errors.role[0] : ""}
-                    >
-                        <Select
-                            options={[
-                                { value: "MEMBER", label: "MEMBER" },
-                                { value: "BM", label: "BRANCH MANAGER" },
-                                { value: "ADMIN", label: "ADMINISTRATOR" },
-                            ]}
-                        />
-                    </Form.Item>
-                </div>
 
             </Modal>
 

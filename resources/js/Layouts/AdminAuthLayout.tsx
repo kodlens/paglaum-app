@@ -50,14 +50,14 @@ export default function AdminAuthLayout(
             //onClick: () => router.visit('/admin/dashboard')
 		},
         {
-            key: 'areas.index',
+            key: 'admin.areas.index',
             icon: <ProfileOutlined />,
             label: 'Areas',
             //onClick: () => router.visit('/admin/sections')
 
         },
         {
-            key: 'categories.index',
+            key: 'admin.education-levels.index',
             icon: <BarsOutlined />,
             label: 'Categories',
             //onClick: () => router.visit('/admin/categories')
@@ -144,17 +144,17 @@ export default function AdminAuthLayout(
         <>
             <Layout>
                 <Sider className='z-10' 
-                    trigger={null} 
-                    style={siderStyle} 
+                    trigger={null}
                     collapsible
+                    breakpoint='md'
+                    onBreakpoint={(broken) => {
+                        setCollapsed(broken);
+                    }}
                     collapsed={collapsed} width={300}>
                     <PanelSideBarLogo />
                     <Menu
                         onClick={onClick}
                         mode="inline"
-                        style={{ background: "#084c7f",
-                            color: 'white',
-                        }}
                         defaultSelectedKeys={[`${route().current()}`]}
                         defaultOpenKeys={['posts']}
                         items={
@@ -182,7 +182,6 @@ export default function AdminAuthLayout(
                             <div className='ml-auto mr-4 flex items-center gap-4'>
                                 <Link href=''>
                                     {user.lname}, {user.fname ? user.fname[0] : ''}
-                                
                                 </Link>
                                 <Button className='' onClick={handleLogout}>Logout</Button>
                             </div>
