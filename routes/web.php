@@ -32,9 +32,9 @@ Route::get('load-loan-subtypes', [App\Http\Controllers\OpenController::class , '
 Route::get('load-id-types', [App\Http\Controllers\OpenController::class , 'loadIdTypes'])->name('load-id-types')  ;
 
 
-
 require __DIR__.'/admin.php';
 require __DIR__.'/member.php';
+require __DIR__.'/bm.php';
 
 
 require __DIR__.'/auth.php';

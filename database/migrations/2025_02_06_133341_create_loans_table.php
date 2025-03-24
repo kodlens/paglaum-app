@@ -50,7 +50,7 @@ return new class extends Migration
             $table->double('interest')->default(0);
             $table->double('terms_month')->default(0);
             
-            $table->tinyInteger('is_approved')->default(0);
+            $table->tinyInteger('is_approve')->default(0);
             $table->tinyInteger('is_paid')->default(0);
 
             $table->timestamps();

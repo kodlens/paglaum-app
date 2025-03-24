@@ -14,6 +14,8 @@ export interface Loan {
     // loan_subtypes: LoanSubtype[]
     interest: number;
     terms_month: number;
+    guarantor?: string;
+    mode_payment?: string;
     active?: number;
     updated_at?: Date|unknown;
     created_at?: Date|unknown;
