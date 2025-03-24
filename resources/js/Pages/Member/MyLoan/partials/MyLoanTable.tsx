@@ -54,7 +54,7 @@ export default function MyLoanTable() {
                                     </div>
 
                                     <div>
-                                        <div className='font-bold text-gray-500 text-[.7rem]'>INTEREST IN %</div>
+                                        <div className='font-bold text-gray-500 text-[.7rem]'>INTEREST(%)</div>
                                         <div>{item.interest}</div>
                                     </div>
                                 </td>
@@ -62,11 +62,26 @@ export default function MyLoanTable() {
 
                                 <td className=''>
                                     <div className='mb-2'>
+                                        <div className='font-bold text-gray-500 text-[.7rem]'>STATUS</div>
+                                        <div className=''>{
+                                            item.is_approve > 0 ? (
+                                                <div className='bg-green-600 text-white text-[10px] w-[60px] text-center rounded-lg'>
+                                                    APPROVED
+                                                </div>
+                                            ) : (
+                                                <div className='bg-red-400 text-white text-[10px] w-[60px] text-center rounded-lg'>
+                                                    PENDING
+                                                </div>
+                                            )
+                                        }
+                                        </div>
+                                    </div>
+
+                                    <div className='mb-2'>
                                         <div className='font-bold text-gray-500 text-[.7rem]'>PRINCIPAL</div>
                                         <div className='text-lg'> &#8369; {item.principal.toLocaleString()}</div>
                                     </div>
                                 </td>
-
                                 <td>
                                     <Link
                                         href={`/member/my-loans-details/${item.id}`}
