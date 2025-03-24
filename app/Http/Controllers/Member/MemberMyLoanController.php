@@ -75,35 +75,15 @@ class MemberMyLoanController extends Controller
                     'mode_payment' => $req->mode_payment,
                     'terms_month' => $req->terms_month,
                 ]);
-                $principal = $req->principal;
-                $terms = $req->terms_month / 12;
-                $interest = $req->interest / 100;
+
+                $this->monthlyBreakdown($loan, $req, $user);
                 
-                $monthlyInterest = $principal * $interest * $terms;
-              
-                $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
-
-                $monthlyAmortization = $totalPayment / $req->terms_month;
-
-                $loanDetails = [];
-
-                for($i = 0; $i < $req->terms_month; $i++){
-                    $loanDetails[] = [
-                        'loan_id' => $loan->id,
-                        'user_id' => $user->id,
-                        'month' => $i + 1,
-                        'amount' => round($monthlyAmortization, 2),
-                        'due_date' => now()->addMonths($i + 1),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];   
-                }
-                LoanDetail::insert($loanDetails);
-        
             });
+
             return response()->json([
                 'status' => 'saved'
             ], 200);
+            
         }catch(\Exception  $e){
             return response()->json(['error' => ['Transaction failed: ' . $e->getMessage()], 'message' => $e->getMessage()], 500);
         }
@@ -113,5 +93,46 @@ class MemberMyLoanController extends Controller
     public function create(){
         return Inertia::render('Member/MyLoan/CreateEdit');
     }
+
+
+
+
+
+    /*=========================================*/
+    private function monthlyBreakdown($loan, $req, $user){
+
+        $principal = $req->principal;
+        $terms = $req->terms_month / 12;
+        $interest = $req->interest / 100;
+        
+        $monthlyInterest = $principal * $interest * $terms;
+        $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
+        $monthlyAmortization = $totalPayment / $req->terms_month;
+        
+        $loanDetails = [];
+
+        for($i = 0; $i < $req->terms_month; $i++){
+            $loanDetails[] = [
+                'loan_id' => $loan->id,
+                'user_id' => $user->id,
+                'month' => $i + 1,
+                'amount' => round($monthlyAmortization, 2),
+                'due_date' => now()->addMonths($i + 1),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];   
+        }
+
+        LoanDetail::insert($loanDetails);
+    }
+
+
+
+
+
+
+
+
+
 
 }
