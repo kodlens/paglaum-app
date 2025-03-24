@@ -41,9 +41,9 @@ export interface User {
     contact_no?: string;
     name?: string;
     email?: string;
-    province?: string|number;
-    city?: string|number;
-    barangay?: string|number;
+    province?: any;
+    city?: any;
+    barangay?: any;
     street?: string|number;
     zip_code?: string|number;
     image?: string;

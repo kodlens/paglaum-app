@@ -1,13 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { App, Button, Divider, Form, Input, Modal, Select } from 'antd'
-import { ArrowLeftOutlined, FileAddOutlined, UserOutlined } from '@ant-design/icons'
-import { User } from '@/types';
-import { Head, router } from '@inertiajs/react';
-import axios from 'axios';
-import { EducationLevel } from '@/types/educationLevel';
-import { Captions, Divide } from 'lucide-react';
+import { PageProps, User } from '@/types'
+import { Head, router } from '@inertiajs/react'
+import { App, Button, Checkbox, Divider, Form, Input, Select } from 'antd'
+import {  UserOutlined } from '@ant-design/icons'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { EducationLevel } from '@/types/educationLevel'
+import BmLAuthLayout from '@/Layouts/BmLAuthLayout'
 
-export default function RegisterPage({ educationLevels }: { educationLevels: EducationLevel[] }) {
+
+export default function BmMemberCreateEdit({
+        auth,
+        user,
+        educationLevels
+    }
+    : PageProps<{
+        user: User,
+        educationLevels: EducationLevel[]
+    }>) {
+
 
     const { message, modal, notification } = App.useApp();
     const [loading, setLoading] = useState<boolean>(false);
@@ -15,87 +25,132 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     const [cities, setCities] = useState<any[]>([]);
     const [barangays, setBarangays] = useState<any[]>([]);
 
+
     const [form] = Form.useForm();
-   
+
     const [errors, setErrors] = useState<any>({});
-   
 
-    const submit = async (values: User) => {
-       
+    useEffect(() => {
+
+        form.setFields([
+            { name: 'username', value: user.username },
+            { name: 'lname', value: user.lname },
+            { name: 'fname', value: user.fname },
+            { name: 'mname', value: user.mname },
+            { name: 'suffix', value: user.suffix },
+            { name: 'education_level', value: user.education_level },
+            { name: 'email', value: user.email },
+            { name: 'contact_no', value: user.contact_no },
+            { name: 'sex', value: user.sex },
+            { name: 'role', value: user.role },
+            { name: 'province', value: user.province ? user.province.provCode : null },
+            { name: 'city', value: user.city ? user.city.citymunCode : null },
+            { name: 'barangay', value: user.barangay ? user.barangay.brgyCode : null },
+            { name: 'street', value: user.street },
+            { name: 'active', value: user.active ? user.active > 0 : false }
+        ]);
+    }, [user])
+
+    const onFinish = async (values:User) =>{
         setLoading(true);
+        if(user && user.id && user.id > 0){
+			try{
+				const res = await axios.put('/bm/members/' + user.id, values)
+                setLoading(false);
+				if(res.data.status === 'updated'){
+					notification.success({ placement: 'topRight', message: 'Updated!', description: 'Member successfully updated.'})
+					router.visit('/bm/members');
+				}
+			}catch(err:any){
+                setLoading(false);
 
-        axios.post('/register', values).then(res => {
-            setLoading(false);
+				if(err.response.status === 422){
+                    setErrors(err.response.data.errors)
+				}
+			}
+		}else{
+			try{
+				const res = await axios.post('/bm/members', values)
+                setLoading(false);
 
-            if (res.data.status === 'registered') {
+				if(res.data.status === 'saved'){
+					notification.success({ placement: 'topRight', message: 'Saved!', description: 'Member successfully saved.'})
+                    router.visit('/bm/members');
 
-                modal.info({
-                    title: 'Registration Success!',
-                    content: 'Your account information has been successfully submitted and will be reviewed by PAGLAUM. You will be notified via email once your account is activated.',
-                    onOk: () => {
-                        router.visit('/');
-                    }
-                });
-            }
-        }).catch((error: any) => {
-            setLoading(false);
-            if (error.response.status === 422) {
-                setErrors(error.response.data.errors);
-            }
-        })
+				}
+			}catch(err:any){
+                setLoading(false);
 
-    }
-
+				if(err.response.status === 422){
+                    setErrors(err.response.data.errors)
+				}
+			}
+		}
+	}
 
     const loadProvinces = () => {
         axios.get('/load-provinces').then(res=>{
             setProvinces(res.data);
         })
     }
+    const loadCities = (provCode:any) => {
+        axios.get('/load-cities?provcode=' + provCode).then(res=>{
+            setCities(res.data);
+        })
+    }
+    const loadBarangays = (brgy:any) => {
+        axios.get(`/load-barangays?citycode=${brgy}`).then(res=>{
+            setBarangays(res.data);
+        })
+    }
 
+    
     const handleChangeProvince = (value:any) => {
         form.setFields([
             { name: 'city', value: null },
             { name: 'barangay', value: null }
         ]);
-        axios.get('/load-cities?provcode=' + value).then(res=>{
-            setCities(res.data);
-        })
     }
     const handleChangeCity = (value:any) => {
         form.setFields([
             { name: 'barangay', value: null }
         ]);
-        axios.get(`/load-barangays?citycode=${value}`).then(res=>{
-            setBarangays(res.data);
-        })
     }
 
     useEffect(()=>{
-        loadProvinces()
+        loadProvinces() 
     }, [])
+    useEffect(()=>{
+        loadCities(form.getFieldValue('province'))
+    }, [form.getFieldValue('province')])
+
+    useEffect(()=>{
+        loadBarangays(form.getFieldValue('city'))
+    }, [form.getFieldValue('city')])
+
+
+
+
+    
 
 
     return (
-        <>
-            <Head title="Register" />
+        <BmLAuthLayout user={auth.user}>
+            <Head title="User Management"></Head>
 
-            <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+            <div className='flex mt-10 justify-center items-center'>
+                {/* card */}
+                <div className='p-6 w-full mx-2 bg-white shadow-sm rounded-md
+					sm:w-[640px]'>
+                    {/* card header */}
+                    <div className="font-bold mb-4 text-lg">ADD / EDIT USER</div>
 
-                <div className="w-full sm:max-w-lg mt-6 px-6 py-4 bg-white border border-1 overflow-hidden sm:rounded-lg shadow-sm my-5">
-
-                    <div className="font-bold mb-4 text-lg flex gap-x-2">
-                        <Button icon={<ArrowLeftOutlined/>}
-                        onClick={()=>{window.history.back()}}></Button>
-                        REGISTER
-                    </div>
-                    <Divider />
                     <Form layout="vertical"
                         autoComplete='off'
                         form={form}
-                        onFinish={submit}
+                        onFinish={onFinish}
                         initialValues={{
-                            // title: '',
+                            title: '',
                             username: '',
                             password: '',
                             password_confirmation: '',
@@ -104,45 +159,23 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             mname: '',
                             suffix: '',
                             email: '',
+                            contact_no: '',
                             sex: '',
                             birthdate: null,
                             birthplace: '',
-                            province: '',
-                            city: '',
-                            barangay: '',
-                            street: '',
-                            zipcode: ''
+                            active: true,
                         }}>
 
-                        <div className='my-4 font-bold text-md text-center'>ACCOUNT INFORMATION</div>
+                        <Divider />
 
                         <Form.Item label="Username"
                             name="username"
                             validateStatus={errors?.username ? 'error' : ''}
                             help={errors?.username ? errors?.username[0] : ''}
                         >
-                            <Input placeholder="ex. juan1234" size="large" />
+                            <Input placeholder="ex. juan1234" size="large"  readOnly/>
                         </Form.Item>
 
-
-                        <Form.Item label="Password"
-                            name="password"
-                            validateStatus={errors?.password ? 'error' : ''}
-                            help={errors?.password ? errors?.password[0] : ''}
-                        >
-                            <Input.Password placeholder="*****" size="large" />
-                        </Form.Item>
-
-                        <Form.Item label="Confirm Password"
-                            name="password_confirmation"
-                            validateStatus={errors?.password_confirmation ? 'error' : ''}
-                            help={errors?.password_confirmation ? errors?.password_confirmation[0] : ''}
-                        >
-                            <Input.Password placeholder="*****" size="large" />
-                        </Form.Item>
-
-                        <div className='my-4 font-bold text-md text-center'>PERSONAL INFORMATION</div>
-                        
                         {/* <Form.Item
                             name="title"
                             label="Title (Mr. / Ms. / Mrs.)"
@@ -151,7 +184,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             help={errors.title ? errors.title[0] : ""}
                         >
                             <Select
-                                className='h-10'
                                 options={[
                                     { value: "MR", label: "MR." },
                                     { value: "MS", label: "MS." },
@@ -165,7 +197,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
                             <Form.Item label="Last Name"
                                 name="lname"
-                                className="w-full"
+                                className='w-full'
                                 validateStatus={errors?.lname ? 'error' : ''}
                                 help={errors?.lname ? errors?.lname[0] : ''}
                             >
@@ -174,7 +206,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
                             <Form.Item label="First Name"
                                 name="fname"
-                                className="w-full"
+                                className='w-full'
                                 validateStatus={errors?.fname ? 'error' : ''}
                                 help={errors?.fname ? errors?.fname[0] : ''}
                             >
@@ -185,8 +217,8 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                         <div className='flex flex-col gap-x-4 sm:flex-row'>
 
                             <Form.Item label="Middle Name"
-                                className="w-full"
                                 name="mname"
+                                className='w-full'
                                 validateStatus={errors?.mname ? 'error' : ''}
                                 help={errors?.mname ? errors?.mname[0] : ''}
                             >
@@ -194,7 +226,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             </Form.Item>
 
                             <Form.Item label="Suffix"
-                                className="w-full"
                                 name="suffix"
                                 validateStatus={errors?.suffix ? 'error' : ''}
                                 help={errors?.suffix ? errors?.suffix[0] : ''}
@@ -203,16 +234,28 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             </Form.Item>
                         </div>
 
-                        <div className='flex flex-col gap-x-4 sm:flex-row'>
+                        <div className="flex flex-col gap-x-4 sm:flex-row">
                             <Form.Item label="Email"
-                                name="email"
-                                className='w-full'
-                                validateStatus={errors?.email ? 'error' : ''}
-                                help={errors?.email ? errors?.email[0] : ''}
+                                       className='w-full'
+                                       name="email"
+                                       validateStatus={errors?.email ? 'error' : ''}
+                                       help={errors?.email ? errors?.email[0] : ''}
                             >
                                 <Input placeholder="ex. juan@mail.com" size="large" />
                             </Form.Item>
 
+                            <Form.Item label="Contact No."
+                                       name="contact_no"
+                                       className='w-full'
+                                       validateStatus={errors?.contact_no ? 'error' : ''}
+                                       help={errors?.contact_no ? errors?.contact_no[0] : ''}
+                            >
+                                <Input placeholder="ex. 09161231234" size="large" />
+                            </Form.Item>
+                        </div>
+
+
+                        <div className="flex flex-col gap-x-4 sm:flex-row">
                             <Form.Item
                                 name="sex"
                                 label="Sex"
@@ -221,7 +264,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                                 help={errors.sex ? errors.sex[0] : ""}
                             >
                                 <Select
-                                    className='h-10'
                                     options={[
                                         { value: "MALE", label: "MALE" },
                                         { value: "FEMALE", label: "FEMALE" },
@@ -229,6 +271,24 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                                     ]}
                                 />
                             </Form.Item>
+
+                            <Form.Item
+                                name="role"
+                                label="Role"
+                                className="w-full"
+                                validateStatus={errors.role ? "error" : ""}
+                                help={errors.role ? errors.role[0] : ""}
+                            >
+                                <Select
+                                    options={[
+                                        { value: "MEMBER", label: "MEMBER" },
+                                        { value: "DO", label: "DEVELOPMENT OFFICER" },
+                                        { value: "BM", label: "BRANCH MANAGER" },
+                                        { value: "ADMIN", label: "ADMINISTRATOR" },
+                                    ]}
+                                />
+                            </Form.Item>
+
                         </div>
 
                         <Form.Item
@@ -239,16 +299,16 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             help={errors.education_level ? errors.education_level[0] : ""}
                         >
                             <Select
-                                className="w-full h-10"
-                                options={educationLevels.map((level: EducationLevel) => ({ 
-                                    value: level.education_level, 
-                                    label: level.education_level 
+                                options={educationLevels.map((level: EducationLevel) => ({
+                                    value: level.education_level,
+                                    label: level.education_level
                                 }))}
                             />
                         </Form.Item>
-                            
-                        <div className='my-4 font-bold text-md text-center'>ADDRESS INFORMATION</div>
+
                         
+                        <div className='my-4 font-bold text-md text-center'>ADDRESS INFORMATION</div>
+                                                
                         <Form.Item
                             label="Province"
                             name="province"
@@ -308,6 +368,22 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             <Input placeholder="ex. Juan Dela Cruz St." size="large" />
                         </Form.Item>
 
+                        <Form.Item
+                            name="active"
+                            valuePropName="checked"
+                            className="w-full"
+                            validateStatus={
+                                errors.active ? "error" : ""
+                            }
+                            help={
+                                errors.active
+                                    ? errors.active[0]
+                                    : ""
+                            }
+                        >
+                            <Checkbox>Active</Checkbox>
+                        </Form.Item>
+
                         <Divider />
 
                         <div className='flex flex-end mt-2'>
@@ -316,20 +392,17 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                                 loading={loading}
                                 icon={<UserOutlined />}
                                 type="primary">
-                                SUBMIT APPLICATION
+                                UPDATE INFORMATION
                             </Button>
                         </div>
 
                     </Form>
+
+
+
+
                 </div>
             </div>
-
-
-          
-
-        </>
-
-
-
+        </BmLAuthLayout>
     )
 }

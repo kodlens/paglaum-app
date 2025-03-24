@@ -9,7 +9,7 @@ Route::middleware(['auth', 'bm'])->group(function () {
     Route::get('/bm/get-loans', [App\Http\Controllers\Bm\BmLoanController::class, 'getData']);
     Route::post('/bm/approve-loan', [App\Http\Controllers\Bm\BmLoanController::class, 'approveLoan']);
 
-    Route::resource('/bm/users', App\Http\Controllers\Bm\BmMemberController::class)->names('bm.members');
+    Route::resource('/bm/members', App\Http\Controllers\Bm\BmMemberController::class)->names('bm.members');
     Route::get('/bm/get-members', [App\Http\Controllers\Bm\BmMemberController::class, 'getData']);
     Route::post('/bm/member-disallow-loan/{id}', [App\Http\Controllers\Bm\BmMemberController::class, 'userDisallowLoan']);
     Route::post('/bm/member-allow-loan/{id}', [App\Http\Controllers\Bm\BmMemberController::class, 'userAllowLoan']);

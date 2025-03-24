@@ -80,12 +80,12 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
 		//setId(id);
         //setOpen(true);
         //getUser(id);
-        router.visit('/admin/users/' + id + '/edit');
+        router.visit('/bm/members/' + id + '/edit');
 	}
 
 	const handleDeleteClick = async (id:number) => {
 
-		const res = await axios.delete(`/admin/users/${id}`);
+		const res = await axios.delete(`/bm/members/${id}`);
 		if(res.data.status === 'deleted'){
 			loadDataAsync()
 		}

@@ -64,6 +64,11 @@ class MemberProfileController extends Controller
         $user->office_address = $req->office_address;
         $user->contact_person = $req->contact_person;
         $user->contact_person_no = $req->contact_person_no;
+        
+        $user->province = $req->province;
+        $user->city = $req->city;
+        $user->barangay = $req->barangay;
+        $user->street = $req->street;
 
         $user->email = $req->email;
         $user->save();

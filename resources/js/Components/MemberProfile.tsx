@@ -2,7 +2,7 @@ import { PageProps } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { App, Button, DatePicker, Form, Input, InputNumber, Select } from 'antd'
 import axios from 'axios';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs';
 
 const dateFormat = (item:Date, customFormat:string):string=> {
@@ -10,11 +10,14 @@ const dateFormat = (item:Date, customFormat:string):string=> {
 }
 
 
-const MemberProfile = () => {
+const MemberProfile = ( { profile } : { profile:any  }) => {
+    
     const [form] = Form.useForm();
     const { notification } = App.useApp();
     const [errors, setErrors] = React.useState<any>({})
-    const user = usePage<PageProps>().props.auth.user;
+
+    //const user = usePage<PageProps>().props.auth.user;
+
     const [educationLevels, setEducationLevels] = React.useState<any>([])
     const [idTypes, setIdTypes] = React.useState<any>([])
     const [loading, setLoading] = React.useState<boolean>(false)
@@ -56,6 +59,58 @@ const MemberProfile = () => {
     }
 
 
+    const [provinces, setProvinces] = useState<any[]>([]);
+    const [cities, setCities] = useState<any[]>([]);
+    const [barangays, setBarangays] = useState<any[]>([]);
+    
+
+    const loadProvinces = () => {
+        axios.get('/load-provinces').then(res=>{
+            setProvinces(res.data);
+        })
+    }
+    const loadCities = (provCode:any) => {
+        axios.get('/load-cities?provcode=' + provCode).then(res=>{
+            setCities(res.data);
+        })
+    }
+    const loadBarangays = (brgy:any) => {
+        axios.get(`/load-barangays?citycode=${brgy}`).then(res=>{
+            setBarangays(res.data);
+        })
+    }
+
+    
+    const handleChangeProvince = (value:any) => {
+        form.setFields([
+            { name: 'city', value: null },
+            { name: 'barangay', value: null }
+        ]);
+        loadCities(value)
+    }
+    const handleChangeCity = (value:any) => {
+        form.setFields([
+            { name: 'barangay', value: null }
+        ]);
+        loadBarangays(value)
+    }
+
+    useEffect(()=>{
+        loadProvinces() 
+    }, [])
+    useEffect(()=>{
+        loadCities(form.getFieldValue('province'))
+    }, [form.getFieldValue('province')])
+
+    useEffect(()=>{
+        loadBarangays(form.getFieldValue('city'))
+    }, [form.getFieldValue('city')])
+
+
+
+
+
+
     return (
         <>
             <div className='font-bold mb-4'>Member Profile</div>
@@ -65,32 +120,36 @@ const MemberProfile = () => {
                     autoComplete='off'
                     form={form}
                     initialValues={{
-                        lname: user.lname,
-                        fname: user.fname,
-                        mname: user.mname,
-                        sex: user.sex,
-                        education_level: user.education_level,
-                        birthdate: dayjs(user.birthdate),
-                        birthplace: user.birthplace,
-                        civil_status: user.civil_status,
-                        religion: user.religion,
-                        ethnic_group: user.ethnic_group,
-                        nationality: user.nationality,
-                        height: user.height,
-                        weight: user.weight,
-                        blood_type: user.blood_type,
-                        sss: user.sss,
-                        tin: user.tin,
-                        id_type: user.id_type,
-                        id_no: user.id_no,
-                        household_size: user.household_size,
-                        contact_no: user.contact_no,
-                        email: user.email,
-                        occupation: user.occupation,
-                        monthly_income: user.monthly_income,
-                        office_address: user.office_address,
-                        contact_person: user.contact_person,
-                        contact_person_no: user.contact_person_no
+                        lname: profile.lname,
+                        fname: profile.fname,
+                        mname: profile.mname,
+                        sex: profile.sex,
+                        education_level: profile.education_level,
+                        birthdate: dayjs(profile.birthdate),
+                        birthplace: profile.birthplace,
+                        civil_status: profile.civil_status,
+                        religion: profile.religion,
+                        ethnic_group: profile.ethnic_group,
+                        nationality: profile.nationality,
+                        height: profile.height,
+                        weight: profile.weight,
+                        blood_type: profile.blood_type,
+                        sss: profile.sss,
+                        tin: profile.tin,
+                        id_type: profile.id_type,
+                        id_no: profile.id_no,
+                        household_size: profile.household_size,
+                        contact_no: profile.contact_no,
+                        email: profile.email,
+                        occupation: profile.occupation,
+                        monthly_income: profile.monthly_income,
+                        office_address: profile.office_address,
+                        contact_person: profile.contact_person,
+                        contact_person_no: profile.contact_person_no,
+                        province: profile.province ? profile.province.provCode : null,
+                        city: profile.city ? profile.city.citymunCode : null,
+                        barangay: profile.barangay ? profile.barangay.brgyDesc : null,
+                        street: profile.street,
                     }}
 
                     onFinish={onFinish}
@@ -181,7 +240,7 @@ const MemberProfile = () => {
                             validateStatus={errors.birthplace ? "error" : ""}
                             help={errors.birthplace ? errors.birthplace[0] : ""}>
                             
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Metro Manila...' />
+                            <Input type='text' className='w-full p-2' placeholder='e.g. Tangub City...' />
                         </Form.Item>
                     </div>
 
@@ -401,6 +460,74 @@ const MemberProfile = () => {
                             
                         </Form.Item>
                     </div>
+
+                    <div className='text-center my-4 font-bold'>ADDRESS INFORMATION</div>
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                        <Form.Item
+                            label="Province"
+                            name="province"
+                            className='w-full'
+                            validateStatus={errors.province ? "error" : ""}
+                            help={errors.province ? errors.province[0] : ""}
+                        >
+                            <Select
+                                disabled
+                                className="w-full h-10"
+                                onChange={handleChangeProvince}
+                                options={provinces.map((item: any) => ({ 
+                                    value: item.provCode, 
+                                    label: item.provDesc 
+                                }))}
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="City"
+                            name="city"
+                            className="w-full"
+                            validateStatus={errors.city ? "error" : ""}
+                            help={errors.city ? errors.city[0] : ""}
+                        >
+                            <Select
+                                className="w-full h-10"
+                                disabled
+                                onChange={handleChangeCity}
+                                options={cities.map((item: any) => ({ 
+                                    value: item.citymunCode, 
+                                    label: item.citymunDesc 
+                                }))}
+                            />
+                        </Form.Item>
+                    </div>
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                        <Form.Item
+                            label="Barangay"
+                            name="barangay"
+                            className="w-full"
+                            validateStatus={errors.barangay ? "error" : ""}
+                            help={errors.barangay ? errors.barangay[0] : ""}
+                        >
+                            <Select
+                                disabled
+                                className="w-full h-10"
+                                options={barangays.map((item: any) => ({ 
+                                    value: item.brgyCode, 
+                                    label: item.brgyDesc 
+                                }))}
+                            />
+                        </Form.Item>
+
+                        <Form.Item label="Street"
+                            name="street"
+                            className='w-full'
+                            validateStatus={errors?.street ? 'error' : ''}
+                            help={errors?.street ? errors?.street[0] : ''}
+                        >
+                            <Input placeholder="ex. Juan Dela Cruz St." readOnly size="large" />
+                        </Form.Item>
+                    </div>
+
 
                     <div>
                         <Button loading={loading} type='primary' 

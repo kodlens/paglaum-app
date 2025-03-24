@@ -32,6 +32,11 @@ Route::get('load-loan-subtypes', [App\Http\Controllers\OpenController::class , '
 Route::get('load-id-types', [App\Http\Controllers\OpenController::class , 'loadIdTypes'])->name('load-id-types')  ;
 
 
+Route::get('load-provinces', [App\Http\Controllers\AddressController::class , 'loadProvinces']);
+Route::get('load-cities', [App\Http\Controllers\AddressController::class , 'loadCities']);
+Route::get('load-barangays', [App\Http\Controllers\AddressController::class , 'loadBarangays']);
+
+
 require __DIR__.'/admin.php';
 require __DIR__.'/member.php';
 require __DIR__.'/bm.php';
