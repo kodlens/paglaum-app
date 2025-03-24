@@ -76,7 +76,7 @@ class MemberMyLoanController extends Controller
                     'terms_month' => $req->terms_month,
                 ]);
 
-                $this->monthlyBreakdown($loan, $req, $user);
+               // $this->monthlyBreakdown($loan, $req, $user);
                 
             });
 
@@ -98,7 +98,7 @@ class MemberMyLoanController extends Controller
 
 
 
-    /*=========================================*/
+    /*=========================================
     private function monthlyBreakdown($loan, $req, $user){
 
         $principal = $req->principal;
@@ -124,7 +124,7 @@ class MemberMyLoanController extends Controller
         }
 
         LoanDetail::insert($loanDetails);
-    }
+    }*/
 
 
 

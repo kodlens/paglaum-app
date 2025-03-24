@@ -29,7 +29,6 @@ export default function MyLoanIndex({ auth }: PageProps) {
                     </div>
                 </div>
 
-              
 
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6 ">
                     <div className='bg-white p-6 shadow-sm'>

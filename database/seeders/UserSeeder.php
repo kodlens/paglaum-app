@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
                 'email' => 'marianita@dev.org',
                 'contact_no' => '09951156624',
                 'password' => Hash::make('a'),
-                'role' => 'STAFF',
+                'role' => 'BM',
                 'province' => '',
                 'city' => '',
                 'barangay' => '',

@@ -7,6 +7,7 @@ Route::middleware(['auth', 'bm'])->group(function () {
 
     Route::resource('/bm/loans', App\Http\Controllers\Bm\BmLoanController::class)->names('bm.loans');
     Route::get('/bm/get-loans', [App\Http\Controllers\Bm\BmLoanController::class, 'getData']);
+    Route::post('/bm/approve-loan/{id}', [App\Http\Controllers\Bm\BmLoanController::class, 'approveLoan']);
 
     // Route::resource('/admin/users', App\Http\Controllers\Administrator\UserController::class)->names('admin.users');
     // Route::get('/admin/get-users', [App\Http\Controllers\Administrator\UserController::class, 'getData']);

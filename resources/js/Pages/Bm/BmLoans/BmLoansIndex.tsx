@@ -144,15 +144,16 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 		}
 	}
 
-    const handleClickApprove = (id:any) => {
-        modal.confirm({title: 'Delete?', content: 'Are you sure you want to delete this item?', 
+    const handleClickApprove = (loan:any) => {
+        modal.confirm({title: 'Approve?', content: 'Are you sure you want to approve this borrower?', 
             onOk: ()=>{
-            axios.delete('/admin/education-levels/' + id).then(res=>{
-                notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
-                loadDataAsync()
+            axios.post('/bm/approve-loan/' + loan.id, loan).then(res=>{
+                if(res.data.status === 'approved'){
+                    notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
+                    loadDataAsync()
+                }
             })
         }})
-        
     }
 
 
@@ -169,16 +170,21 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 					<div className="font-bold mb-4 text-lg">LIST OF LOAN</div>
 					{/* card body */}
 					<div className='z-0'>
+
+                        <div className='my-4'>
+                            <Button type='primary' onClick={ ()=> loadDataAsync() }>Refresh</Button>
+                        </div>
                         <Table dataSource={data}
                         loading={loading}
-                            
                             rowKey={(data) => data.id ?? 0}
                             pagination={false}>
 
 							<Column title="Id" dataIndex="id" key="id"/>
+
                             <Column title="Name" render={(_, data:any)=>(
                                 <span>{data.user.lname}, {data.user.fname }</span>
                             )}/>
+
 							<Column title="Loan Type" render={(_, data:any)=>(
                                 <span>{data.loan_type.loan_type}</span>
                             )}/>
@@ -188,10 +194,10 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
                             )}/>
 
 							<Column title="Terms (Mos)" dataIndex="terms_month" key="terms_month"/>
-							<Column title="Interest(%)" dataIndex="interest" key="interest"/>
+							
+                            <Column title="Interest(%)" dataIndex="interest" key="interest"/>
 
-
-							<Column title="Approve" key="is_approve" render={(is_approve:number)=>(
+							<Column title="Approve" dataIndex="is_approve" render={(is_approve:number)=>(
 								is_approve > 0 ? (
 									<span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
 								) : (
@@ -219,7 +225,7 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
                                                         label: 'Approve',
                                                         icon: <ThumbsUp  size={16} />,
                                                         onClick: ()=>{
-                                                            handleClickApprove(data.id)
+                                                            handleClickApprove(data)
                                                         }
                                                     },
                                                     {
@@ -227,7 +233,7 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
                                                         label: 'Details',
                                                         icon: <MessageSquareMore size={16} />,
                                                         onClick: ()=>{
-                                                            handleClickApprove(data.id)
+                                                            
                                                         }
                                                     },
                                                 ],

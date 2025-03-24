@@ -60,31 +60,37 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
               </div>
             </div>
           </div>
+          {loan.loan_details.length > 0 ? (
+            loan.loan_details.map((item:any, index:number) => (
+              <div key={index} className='bg-white shadow-sm mt-2 p-6'>
+                <div className=''>
+                  {item.is_paid > 0 ? (
+                    <div className='w-full md:w-[70px] text-center py-1 px-1 bg-green-600 rounded-2xl text-[10px] mb-2 text-white font-bold'>PAID</div>
+                  ) : (
+                    <div className='w-full md:w-[70px] text-center py-1 px-1 bg-red-400 rounded-2xl text-[10px] mb-2 text-white font-bold'>NOT PAID</div>
+                  )}
+                
+                  <div className='flex flex-col md:flex-row md:justify-between'>
+                    <div>
+                      <div className='font-bold text-gray-500'>Due Date</div>
+                      <div>{dateFormat(item.due_date, 'MMMM DD, YYYY')}</div>
+                    </div>
 
-          {loan.loan_details.map((item:any, index:number) => (
-            <div key={index} className='bg-white shadow-sm mt-2 p-6'>
-              <div className=''>
-                {item.is_paid > 0 ? (
-                  <div className='w-full md:w-[70px] text-center py-1 px-1 bg-green-600 rounded-2xl text-[10px] mb-2 text-white font-bold'>PAID</div>
-                ) : (
-                  <div className='w-full md:w-[70px] text-center py-1 px-1 bg-red-400 rounded-2xl text-[10px] mb-2 text-white font-bold'>NOT PAID</div>
-                )}
-              
-                <div className='flex flex-col md:flex-row md:justify-between'>
-                  <div>
-                    <div className='font-bold text-gray-500'>Due Date</div>
-                    <div>{dateFormat(item.due_date, 'MMMM DD, YYYY')}</div>
-                  </div>
-
-                  <div>
-                    <div className='font-bold text-gray-500'>Amount Due</div>
-                    <div>{item.amount.toLocaleString()}</div>
+                    <div>
+                      <div className='font-bold text-gray-500'>Amount Due</div>
+                      <div>{item.amount.toLocaleString()}</div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-            </div>
-          ))}
+              </div>
+            ))) : (
+              <div className='bg-white shadow-sm mt-2 p-6 text-red-600 italic font-bold'>
+                The loan application status is still pending.
+              </div>
+            )}
+
+          
         </div>
       </MemberAuthLayout>
  

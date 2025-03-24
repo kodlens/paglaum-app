@@ -19,7 +19,8 @@ class Loan extends Model
         'terms_month',
         'interest',
         'guarantor',
-        'purpose'
+        'purpose',
+        'is_approve'
     ];
 
 
