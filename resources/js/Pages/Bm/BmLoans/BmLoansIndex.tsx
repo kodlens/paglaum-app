@@ -147,7 +147,7 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
     const handleClickApprove = (loan:any) => {
         modal.confirm({title: 'Approve?', content: 'Are you sure you want to approve this borrower?', 
             onOk: ()=>{
-            axios.post('/bm/approve-loan/' + loan.id, loan).then(res=>{
+            axios.post('/bm/approve-loan', loan).then(res=>{
                 if(res.data.status === 'approved'){
                     notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
                     loadDataAsync()

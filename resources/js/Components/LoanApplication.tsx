@@ -50,7 +50,7 @@ const LoanApplication = () => {
 
     const onFinish = (values:any) => {
         //axios.post('/apply-loan', values).then(res=>{  });
-        console.log('submitted values ', values);
+        //console.log('submitted values ', values);
 
         setErrors({})
         setLoading(true)
@@ -71,9 +71,18 @@ const LoanApplication = () => {
 
             if(err.response.status === 422){
                 setErrors(err.response.data.errors)
+
+                if(errors.principal){
+                    notification.error({
+                        placement: 'bottomRight',
+                        description: 'Error: ' + err.response.data.message,
+                        message: 'Invalid!'
+                    });
+                }
+
             }
             if(err.response.status === 500){
-                console.log(err.response.data);
+                //console.log(err.response.data);
                 
                 notification.error({
                     placement: 'bottomRight',

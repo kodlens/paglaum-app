@@ -23,9 +23,20 @@ class BmLoanController extends Controller
         return $data;
     }
 
-    public function approveLoan(Request $req, $id){
+    public function approveLoan(Request $req){
         //return $req;
         $principal = (double)$req->principal;
+
+        $user = User::where('id', $req->user_id)->first(); //check if the member is allowed to LOAN
+
+        if($user->is_loan_allowed == 0){
+            return response()->json([
+                'errors' => [
+                    'principal' => ['Loan is now allowed to this member.']
+                ],
+                'message' => 'Loan is now allowed to this member.'
+            ], 422);
+        }
 
         if($principal < 100){
             return response()->json([
@@ -53,13 +64,11 @@ class BmLoanController extends Controller
 
         ]);
 
-
-        //return $req;
         try{
 
-            \DB::transaction(function () use ($req, $id) {
+            \DB::transaction(function () use ($req) {
 
-                $this->monthlyBreakdown($req, $req, $id);
+                $this->monthlyBreakdown($req);
 
                 Loan::find($req->id)
                     ->update([
@@ -78,22 +87,22 @@ class BmLoanController extends Controller
     }
 
     /*=========================================*/
-    private function monthlyBreakdown($loan, $req, $id){
+    private function monthlyBreakdown($loan){
 
-        $principal = $req->principal;
-        $terms = $req->terms_month / 12;
-        $interest = $req->interest / 100;
+        $principal = $loan->principal;
+        $terms = $loan->terms_month / 12;
+        $interest = $loan->interest / 100;
         
         $monthlyInterest = $principal * $interest * $terms;
-        $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
-        $monthlyAmortization = $totalPayment / $req->terms_month;
+        $totalPayment = $principal + ($monthlyInterest * $loan->terms_month);
+        $monthlyAmortization = $totalPayment / $loan->terms_month;
         
         $loanDetails = [];
 
-        for($i = 0; $i < $req->terms_month; $i++){
+        for($i = 0; $i < $loan->terms_month; $i++){
             $loanDetails[] = [
                 'loan_id' => $loan->id,
-                'user_id' => $id,
+                'user_id' => $loan->user_id,
                 'month' => $i + 1,
                 'amount' => round($monthlyAmortization, 2),
                 'due_date' => now()->addMonths($i + 1),

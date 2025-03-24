@@ -7,10 +7,12 @@ Route::middleware(['auth', 'bm'])->group(function () {
 
     Route::resource('/bm/loans', App\Http\Controllers\Bm\BmLoanController::class)->names('bm.loans');
     Route::get('/bm/get-loans', [App\Http\Controllers\Bm\BmLoanController::class, 'getData']);
-    Route::post('/bm/approve-loan/{id}', [App\Http\Controllers\Bm\BmLoanController::class, 'approveLoan']);
+    Route::post('/bm/approve-loan', [App\Http\Controllers\Bm\BmLoanController::class, 'approveLoan']);
 
-    // Route::resource('/admin/users', App\Http\Controllers\Administrator\UserController::class)->names('admin.users');
-    // Route::get('/admin/get-users', [App\Http\Controllers\Administrator\UserController::class, 'getData']);
+    Route::resource('/bm/users', App\Http\Controllers\Bm\BmMemberController::class)->names('bm.members');
+    Route::get('/bm/get-members', [App\Http\Controllers\Bm\BmMemberController::class, 'getData']);
+    Route::post('/bm/member-disallow-loan/{id}', [App\Http\Controllers\Bm\BmMemberController::class, 'userDisallowLoan']);
+    Route::post('/bm/member-allow-loan/{id}', [App\Http\Controllers\Bm\BmMemberController::class, 'userAllowLoan']);
     
     
     // Route::resource('/admin/areas', App\Http\Controllers\Administrator\AdminAreaContoller::class)->names('admin.areas');

@@ -35,10 +35,7 @@ export default function AdminAuthLayout(
         post(route('logout'));
     }
 
-
     type MenuItem = Required<MenuProps>['items'][number];
-
-    console.log('route current:', route().current());
 
     const navigationItems = () => {
 

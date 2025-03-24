@@ -59,7 +59,8 @@ class User extends Authenticatable
         'membership_date',
         'image',
         'active',
-        'last_login'
+        'last_login',
+        'is_loan_allowed'
     ];
 
     /**

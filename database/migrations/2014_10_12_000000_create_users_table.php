@@ -66,6 +66,8 @@ return new class extends Migration
             $table->date('membership_date')->nullable();
             $table->tinyInteger('active')->nullable()
                 ->default(1);
+            $table->tinyInteger('is_loan_allowed')->nullable()
+                ->default(0); 
             $table->rememberToken();
             $table->dateTime('last_login')->nullable();
             $table->timestamps();

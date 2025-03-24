@@ -35,10 +35,7 @@ export default function BmLAuthLayout(
         post(route('logout'));
     }
 
-
     type MenuItem = Required<MenuProps>['items'][number];
-
-    console.log('route current:', route().current());
 
     const navigationItems = () => {
 
@@ -58,6 +55,10 @@ export default function BmLAuthLayout(
             key: 'bm.loans.index',
             icon: <BarsOutlined />,
             label: 'Loans'
+        },{
+            key: 'bm.members.index',
+            icon: <UserOutlined />,
+            label: 'Members/Borrower'
         });
 
 		return items;

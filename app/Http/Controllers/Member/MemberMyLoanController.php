@@ -17,7 +17,6 @@ class MemberMyLoanController extends Controller
         return Inertia::render('Member/MyLoan/MyLoanIndex');
     }
 
-
     public function getMyLoans(Request $req){
         $user = Auth::user();
         
@@ -31,6 +30,17 @@ class MemberMyLoanController extends Controller
     public function store(Request $req){
       
         $principal = (double)$req->principal;
+        $user = Auth::user();
+
+        if($user->is_loan_allowed == 0){
+            return response()->json([
+                'errors' => [
+                    'principal' => ['Loan is now allowed. Please contact your Branch Manager.']
+                ],
+                'message' => 'Loan is now allowed. Please contact your Branch Manager.'
+            ], 422);
+        }
+
 
         if($principal < 100){
             return response()->json([
@@ -62,8 +72,8 @@ class MemberMyLoanController extends Controller
         //return $req;
         try{
 
-            \DB::transaction(function () use ($req) {
-                $user = Auth::user();
+            \DB::transaction(function () use ($req, $user) {
+               
         
                 $loan = Loan::create([
                     'user_id' => $user->id,
