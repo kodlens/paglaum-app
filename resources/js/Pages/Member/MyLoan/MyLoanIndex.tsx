@@ -36,7 +36,8 @@ export default function MyLoanIndex({ auth }: PageProps) {
                         <MyLoanTable />
 
                         <div className='my-4'>
-                            <Button type='primary' className='h-10'
+                            <Button type='primary' 
+                                className='h-10'
                                 onClick={handleClickApply}>Apply for Loan</Button>
                         </div>
                     </div>

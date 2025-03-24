@@ -26,11 +26,10 @@ export default function MyLoanTable() {
             </div>
 
 
-            <div>
+            <div className='relative overflow-x-auto'>
 
-                <table className='table-loan w-full text-sm text-left rtl:text-right text-gray-500'>
+                <table className='table-loan w-full text-sm text-left rtl:text-right text-gray-500 overflow-auto'>
                     <tbody>
-                    
                         {loans.map((item: any, index: number) => (
                             <tr key={index} className='bg-white border-bborder-gray-200 border-b'>
 
@@ -71,11 +70,11 @@ export default function MyLoanTable() {
                                 <td>
                                     <Link
                                         href={`/member/my-loans-details/${item.id}`}
-                                        className='bg-blue-700 text-white p-2.5 inline-flex rounded-md hover:bg-blue-600
-                                        focus:outline-none focus:ring-4 focus:ring-blue-300 w-full items-center text-center justify-center'
+                                        className='bg-blue-700 text-white p-1 inline-flex rounded-md hover:bg-blue-600
+                                        focus:outline-none focus:ring-4 focus:ring-blue-300 px-4 items-center text-center justify-center'
                                     >
-                                        <span className='mr-2 text-sm'>See More</span>
-                                        <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                        <span className='mr-2 text-sm'>Summary</span>
+                                        <svg className="h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                                         </svg>
                                         
