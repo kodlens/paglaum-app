@@ -15,8 +15,10 @@ class Loan extends Model
         'loan_type_id',
         'loan_subtype_id',
         'principal',
+        'mode_payment',
         'terms_month',
         'interest',
+        'guarantor',
         'purpose'
     ];
 
@@ -25,7 +27,16 @@ class Loan extends Model
         return $this->belongsTo(LoanType::class);
     }
 
+    public function loan_details(){
+        return $this->hasMany(LoanDetail::class);
+    }
+
     public function loan_subtype(){
         return $this->belongsTo(LoanSubtype::class);
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 }

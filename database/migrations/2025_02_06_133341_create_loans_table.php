@@ -45,6 +45,7 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
+            $table->string('mode_payment', 30)->nullable();
             $table->double('principal')->default(0);
             $table->double('interest')->default(0);
             $table->double('terms_month')->default(0);

@@ -44,3 +44,4 @@ input, select, textarea {
 .dashboard-card-item {
     @apply max-w-[calc(33.33%-1rem)] flex-1 p-4
 }
+

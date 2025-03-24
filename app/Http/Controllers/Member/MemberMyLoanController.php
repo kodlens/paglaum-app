@@ -19,7 +19,10 @@ class MemberMyLoanController extends Controller
 
 
     public function getMyLoans(Request $req){
+        $user = Auth::user();
+        
         return Loan::with(['loan_type', 'loan_subtype'])
+            ->where('user_id', $user->id)
             ->orderBy('id', 'desc')
             ->get();
     }
@@ -28,7 +31,7 @@ class MemberMyLoanController extends Controller
     public function store(Request $req){
       
         $principal = (double)$req->principal;
-      
+
         if($principal < 100){
             return response()->json([
                 'errors' => [
@@ -69,6 +72,7 @@ class MemberMyLoanController extends Controller
                     'loan_subtype_id' => $req->loan_subtype_id,
                     'principal' => $req->principal,
                     'interest' => $req->interest,
+                    'mode_payment' => $req->mode_payment,
                     'terms_month' => $req->terms_month,
                 ]);
                 $principal = $req->principal;
@@ -103,7 +107,6 @@ class MemberMyLoanController extends Controller
         }catch(\Exception  $e){
             return response()->json(['error' => ['Transaction failed: ' . $e->getMessage()], 'message' => $e->getMessage()], 500);
         }
-        
     }
 
 
