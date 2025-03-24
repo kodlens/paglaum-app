@@ -47,7 +47,7 @@ const ApplyLoan =  () => {
         } else {
             setLoanSubtypes([]); // Reset subtypes if no loan type is selected
         }
-    }, [fields.loan_type_id]);
+    }, [fields.loan_type_id]); 
 
     const handleChange = (e:any) => {
         const { name, value, type, checked } = e.target;

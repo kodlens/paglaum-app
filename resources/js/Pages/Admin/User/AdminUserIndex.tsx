@@ -4,10 +4,10 @@ import { Head, router } from '@inertiajs/react'
 import { FileAddOutlined,
 	EyeInvisibleOutlined,EyeTwoTone } from '@ant-design/icons';
 
-import { Space, Table, 
+import { Space, Table,
     Pagination, Button, Modal,
     Form, Input, Select, Checkbox,
-	App, 
+	App,
     Popconfirm,
     Dropdown} from 'antd';
 
@@ -22,8 +22,8 @@ import { Captions, FileLock2, MonitorCheck, Pencil, ShieldOff, Trash2 } from 'lu
 const { Column } = Table;
 
 
-export default function AdminUserIndex({ auth }: PageProps) {
-	
+const AdminUserIndex = ({ auth }: PageProps)=> {
+
 	const [form] = Form.useForm();
 
 	const  { notification } = App.useApp();
@@ -49,9 +49,9 @@ export default function AdminUserIndex({ auth }: PageProps) {
     });
 
     const [id, setId] = useState(0);
-	
 
-	
+
+
 	const loadDataAsync = async () => {
 
         setLoading(true)
@@ -94,13 +94,13 @@ export default function AdminUserIndex({ auth }: PageProps) {
 	}
 
 	const handleDeleteClick = async (id:number) => {
-        
+
 		const res = await axios.delete(`/admin/users/${id}`);
 		if(res.data.status === 'deleted'){
 			loadDataAsync()
 		}
 	}
-	
+
 
 	const onFinish = async (values:User) =>{
 
@@ -159,7 +159,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 					<div className='z-0'>
                         <Table dataSource={data}
                         loading={loading}
-                            
+
                             rowKey={(data) => data.id ?? 0}
                             pagination={false}>
 
@@ -177,7 +177,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 									<span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
 								)
 							)}/>
-							<Column title="Action" key="action" 
+							<Column title="Action" key="action"
 								render={(_, data:User) => (
 									<div className='flex gap-2'>
 
@@ -200,7 +200,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
                                                         onClick: ()=>{
                                                             handleClickActive(data.id)
                                                         }
-                                                    
+
                                                     },
                                                     {
                                                         key: '3',
@@ -209,7 +209,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
                                                         onClick: ()=>{
                                                             handleClickInactive(data.id)
                                                         }
-                                                    
+
                                                     },
                                                     {
                                                         key: '4',
@@ -229,9 +229,9 @@ export default function AdminUserIndex({ auth }: PageProps) {
                                             okText="Yes"
                                             cancelText="No"
                                         >
-                                            <button 
+                                            <button
                                                     className='red-button'
-                                                    // onClick={ ()=> handleDeleteClick(data.id ?? 0) } 
+                                                    // onClick={ ()=> handleDeleteClick(data.id ?? 0) }
                                                 >
                                                     <Trash2 size={12}/>
                                                 </button>
@@ -242,17 +242,17 @@ export default function AdminUserIndex({ auth }: PageProps) {
 							/>
 						</Table>
 
-						<Pagination className='mt-4' 
+						<Pagination className='mt-4'
 							onChange={onPageChange}
-							defaultCurrent={1} 
+							defaultCurrent={1}
 							total={total} />
 
 						<div className='flex flex-end mt-2'>
-							<Button className='ml-auto' 
-								icon={<FileAddOutlined />} 
+							<Button className='ml-auto'
+								icon={<FileAddOutlined />}
 								type="primary" onClick={handClickNew}>
 								New
-							</Button>     
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -388,7 +388,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
                 >
                     <Input placeholder="Email" />
                 </Form.Item>
-				
+
 
                 <div className="flex gap-4">
                     <Form.Item
@@ -428,4 +428,7 @@ export default function AdminUserIndex({ auth }: PageProps) {
 
 		</AdminAuthLayout>
 	)
-}
+};
+
+
+export default AdminUserIndex;

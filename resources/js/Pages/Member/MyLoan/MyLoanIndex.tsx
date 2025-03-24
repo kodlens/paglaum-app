@@ -4,6 +4,7 @@ import React from 'react'
 import ApplyLoan from "@/Components/ApplyLoan";
 import {Head} from "@inertiajs/react";
 import MyLoanTable from './partials/MyLoanTable';
+import LoanApplication from '@/Components/LoanApplication';
 
 export default function MyLoanIndex({ auth }: PageProps) {
 
@@ -33,7 +34,7 @@ export default function MyLoanIndex({ auth }: PageProps) {
                 </div>
 
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6 ">
-                    <ApplyLoan />
+                    <LoanApplication />
                 </div>
 
             </div>

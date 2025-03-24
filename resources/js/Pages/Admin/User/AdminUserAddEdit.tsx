@@ -8,14 +8,14 @@ import axios from 'axios'
 import { EducationLevel } from '@/types/educationLevel'
 
 
-export default function AdminUserAddEdit({ 
-        auth, 
-        user, 
-        educationLevels 
+export default function AdminUserAddEdit({
+        auth,
+        user,
+        educationLevels
     }
-    : PageProps<{ 
-        user: User, 
-        educationLevels: EducationLevel[] 
+    : PageProps<{
+        user: User,
+        educationLevels: EducationLevel[]
     }>) {
 
 
@@ -37,6 +37,7 @@ export default function AdminUserAddEdit({
             { name: 'suffix', value: user.suffix },
             { name: 'education_level', value: user.education_level },
             { name: 'email', value: user.email },
+            { name: 'contact_no', value: user.contact_no },
             { name: 'sex', value: user.sex },
             { name: 'role', value: user.role },
             { name: 'active', value: user.active ? user.active > 0 : false }
@@ -79,7 +80,7 @@ export default function AdminUserAddEdit({
 		}
 	}
 
-    
+
     return (
         <AdminAuthLayout user={auth.user}>
             <Head title="User Management"></Head>
@@ -105,6 +106,7 @@ export default function AdminUserAddEdit({
                             mname: '',
                             suffix: '',
                             email: '',
+                            contact_no: '',
                             sex: '',
                             birthdate: null,
                             birthplace: '',
@@ -120,7 +122,7 @@ export default function AdminUserAddEdit({
                         </Form.Item>
 
 
-                     
+
                         <Divider />
                         <Form.Item
                             name="title"
@@ -180,14 +182,26 @@ export default function AdminUserAddEdit({
                             </Form.Item>
                         </div>
 
+                        <div className="flex flex-col gap-x-4 sm:flex-row">
+                            <Form.Item label="Email"
+                                       className='w-full'
+                                       name="email"
+                                       validateStatus={errors?.email ? 'error' : ''}
+                                       help={errors?.email ? errors?.email[0] : ''}
+                            >
+                                <Input placeholder="ex. juan@mail.com" size="large" />
+                            </Form.Item>
 
-                        <Form.Item label="Email"
-                            name="email"
-                            validateStatus={errors?.email ? 'error' : ''}
-                            help={errors?.email ? errors?.email[0] : ''}
-                        >
-                            <Input placeholder="ex. juan@mail.com" size="large" />
-                        </Form.Item>
+                            <Form.Item label="Contact No."
+                                       name="contact_no"
+                                       className='w-full'
+                                       validateStatus={errors?.contact_no ? 'error' : ''}
+                                       help={errors?.contact_no ? errors?.contact_no[0] : ''}
+                            >
+                                <Input placeholder="ex. 09161231234" size="large" />
+                            </Form.Item>
+                        </div>
+
 
                         <Form.Item
                             name="sex"
@@ -213,9 +227,9 @@ export default function AdminUserAddEdit({
                             help={errors.education_level ? errors.education_level[0] : ""}
                         >
                             <Select
-                                options={educationLevels.map((level: EducationLevel) => ({ 
-                                    value: level.education_level, 
-                                    label: level.education_level 
+                                options={educationLevels.map((level: EducationLevel) => ({
+                                    value: level.education_level,
+                                    label: level.education_level
                                 }))}
                             />
                         </Form.Item>
@@ -227,7 +241,7 @@ export default function AdminUserAddEdit({
                             validateStatus={errors.role ? "error" : ""}
                             help={errors.role ? errors.role[0] : ""}
                         >
-                            <Select 
+                            <Select
                                 options={[
                                     { value: "MEMBER", label: "MEMBER" },
                                     { value: "BM", label: "BRANCH MANAGER" },

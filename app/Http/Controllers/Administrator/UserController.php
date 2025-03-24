@@ -28,7 +28,7 @@ class UserController extends Controller
         return User::find($id);
     }
 
-    public function create(){ 
+    public function create(){
         return Inertia::render('Admin/User/AdminUserAddEdit');
     }
 
@@ -61,6 +61,7 @@ class UserController extends Controller
             'sex' => $req->sex,
             'education_level' => $req->education_level,
             'email' => $req->email,
+            'contact_no' => $req->contact_no,
             'password' => Hash::make($req->password),
             'role' => $req->role,
             'active' => $req->active ? 1 : 0
@@ -72,11 +73,11 @@ class UserController extends Controller
     }
 
 
-    public function edit(Request $req, $id){ 
+    public function edit(Request $req, $id){
         $educationLevels = EducationLevel::orderBy('order_no', 'asc')->get();
         return Inertia::render('Admin/User/AdminUserAddEdit', [
             'user' => User::find($id),
-            'educationLevels' => $educationLevels   
+            'educationLevels' => $educationLevels
         ]);
     }
 
