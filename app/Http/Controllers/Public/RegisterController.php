@@ -65,7 +65,7 @@ class RegisterController extends Controller
             'blood_type' => $request->blood_type,
             'sss' => $request->sss,
             'tin' => $request->tin,
-            'driver_license' => $request->driver_license,
+            // 'driver_license' => $request->driver_license,
             'philhealth' => $request->philhealth,
             'umid' => $request->umid,
             'household_size' => $request->household_size,
