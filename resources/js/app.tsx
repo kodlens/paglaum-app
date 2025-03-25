@@ -56,6 +56,9 @@ createInertiaApp({
                         },
                         Form: {
                             
+                        },
+                        Steps: {
+                            
                         }
                     },
                     token: {
