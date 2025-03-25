@@ -39,7 +39,11 @@ class RegisterController extends Controller
             //'civil_status' => 'required|string|max:255',
             //'religion' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:users',
+            'contact_no' => 'required',
             'password' => ['required', 'confirmed', Rules\Password::defaults(), 'max:30'],
+            'province' => 'required',
+            'city' => 'required',
+            'barangay' => 'required',
         ]);
 
         $user = User::create([
