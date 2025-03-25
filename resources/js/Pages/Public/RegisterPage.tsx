@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { App, Button, Divider, Form, Input, Layout, Modal, Select, Steps } from 'antd'
+import { App, Button, Divider, Form, Input, InputNumber, Layout, Modal, Select, Steps } from 'antd'
 import { ArrowLeftOutlined, FileAddOutlined, UserOutlined } from '@ant-design/icons'
 import { User } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
@@ -47,6 +47,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
         philhealth: '',
         umid: '',
         household_size: 0,
+
         occupation: '',
         monthly_income: 0,
         office_address: '',
@@ -283,6 +284,34 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                                 label: level.education_level 
                             }))}
                         />
+                    </Form.Item>
+                </div>
+
+
+                <div className='flex flex-col gap-x-4 sm:flex-row'>
+                    <Form.Item label="Occupation"
+                        className='w-full'
+                        validateStatus={errors?.occupation ? 'error' : ''}
+                        help={errors?.occupation ? errors?.occupation[0] : ''}
+                    >
+                        <Input placeholder="ex. Office Staff"
+                            onChange={(e)=>setData('email', e.target.value)} 
+                            value={data.occupation} 
+                            size="large" />
+                    </Form.Item>
+
+                    <Form.Item label="Monthly Income"
+                        className='w-full'
+                        validateStatus={errors?.monthly_income ? 'error' : ''}
+                        help={errors?.monthly_income ? errors?.monthly_income[0] : ''}
+                    >
+                        <InputNumber 
+                            type='number' 
+                            className='w-full'
+                            placeholder="ex. 10000"
+                            onChange={ (value)=> setData('monthly_income', value ? value : 0)} 
+                            value={data.monthly_income} 
+                            size="large" />
                     </Form.Item>
                 </div>
             </>
