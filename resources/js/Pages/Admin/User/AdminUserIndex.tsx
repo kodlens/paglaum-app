@@ -139,7 +139,7 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
         })
     }
 
-    const handleClickInactive = (id:any) => {
+    const handleClickInactive = (id:number) => {
         axios.post('/admin/users-set-inactive/' + id).then(res=>{
             notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
         })
@@ -163,6 +163,8 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
                             rowKey={(data) => data.id ?? 0}
                             pagination={false}>
 
+                                
+
 							<Column title="Id" dataIndex="id" key="id"/>
 							<Column title="Username" dataIndex="username" key="username"/>
 							<Column title="Last Name" key="lname" dataIndex="lname"/>
@@ -172,6 +174,8 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
 							<Column title="Role" dataIndex="role" key="role"/>
 							<Column title="Active" key="active" render={(data:User)=>(
 								data.active ? (
+
+                                    
 									<span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
 								) : (
 									<span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
@@ -207,7 +211,7 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
                                                         label: 'Inactive',
                                                         icon: <ShieldOff size={16} />,
                                                         onClick: ()=>{
-                                                            handleClickInactive(data.id)
+                                                            handleClickInactive(data.id ?? 0)
                                                         }
 
                                                     },

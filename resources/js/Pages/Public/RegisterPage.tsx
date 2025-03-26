@@ -9,11 +9,18 @@ import { Captions, Divide } from 'lucide-react';
 
 export default function RegisterPage({ educationLevels }: { educationLevels: EducationLevel[] }) {
 
+    interface Province {
+        province: string;
+        id:number
+    }
+
     const { message, modal, notification } = App.useApp();
     const [loading, setLoading] = useState<boolean>(false);
     const [provinces, setProvinces] = useState<any[]>([]);
     const [cities, setCities] = useState<any[]>([]);
     const [barangays, setBarangays] = useState<any[]>([]);
+
+
 
 
 
