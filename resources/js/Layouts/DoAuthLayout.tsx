@@ -55,7 +55,8 @@ export default function DoAuthLayout(
             key: 'do.loans.index',
             icon: <BarsOutlined />,
             label: 'Loans'
-        },{
+        },
+        {
             key: 'do.members.index',
             icon: <UserOutlined />,
             label: 'Members/Borrower'

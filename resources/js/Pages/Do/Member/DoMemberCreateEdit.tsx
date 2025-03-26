@@ -1,0 +1,395 @@
+import { PageProps, User } from '@/types'
+import { Head, router } from '@inertiajs/react'
+import { App, Button, Checkbox, Divider, Form, Input, Select } from 'antd'
+import {  UserOutlined } from '@ant-design/icons'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { EducationLevel } from '@/types/educationLevel'
+import DoAuthLayout from '@/Layouts/DoAuthLayout'
+
+
+export default function BmMemberCreateEdit({
+        auth,
+        user,
+        educationLevels
+    }
+    : PageProps<{
+        user: User,
+        educationLevels: EducationLevel[]
+    }>) {
+
+
+    const { message, modal, notification } = App.useApp();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [provinces, setProvinces] = useState<any[]>([]);
+    const [cities, setCities] = useState<any[]>([]);
+    const [barangays, setBarangays] = useState<any[]>([]);
+
+
+    const [form] = Form.useForm();
+
+    const [errors, setErrors] = useState<any>({});
+
+    useEffect(() => {
+
+        form.setFields([
+            { name: 'username', value: user.username },
+            { name: 'lname', value: user.lname },
+            { name: 'fname', value: user.fname },
+            { name: 'mname', value: user.mname },
+            { name: 'suffix', value: user.suffix },
+            { name: 'education_level', value: user.education_level },
+            { name: 'email', value: user.email },
+            { name: 'contact_no', value: user.contact_no },
+            { name: 'sex', value: user.sex },
+            { name: 'role', value: user.role },
+            { name: 'province', value: user.province ? user.province.provCode : null },
+            { name: 'city', value: user.city ? user.city.citymunCode : null },
+            { name: 'barangay', value: user.barangay ? user.barangay.brgyCode : null },
+            { name: 'street', value: user.street },
+            { name: 'active', value: user.active ? user.active > 0 : false }
+        ]);
+    }, [user])
+
+    const onFinish = async (values:User) =>{
+        setLoading(true);
+        if(user && user.id && user.id > 0){
+			try{
+				const res = await axios.put('/bm/members/' + user.id, values)
+                setLoading(false);
+				if(res.data.status === 'updated'){
+					notification.success({ placement: 'topRight', message: 'Updated!', description: 'Member successfully updated.'})
+					router.visit('/bm/members');
+				}
+			}catch(err:any){
+                setLoading(false);
+
+				if(err.response.status === 422){
+                    setErrors(err.response.data.errors)
+				}
+			}
+		}else{
+			try{
+				const res = await axios.post('/do/members', values)
+                setLoading(false);
+
+				if(res.data.status === 'saved'){
+					notification.success({ placement: 'topRight', message: 'Saved!', description: 'Member successfully saved.'})
+                    router.visit('/bm/members');
+
+				}
+			}catch(err:any){
+                setLoading(false);
+
+				if(err.response.status === 422){
+                    setErrors(err.response.data.errors)
+				}
+			}
+		}
+	}
+
+    const loadProvinces = () => {
+        axios.get('/load-provinces').then(res=>{
+            setProvinces(res.data);
+        })
+    }
+    const loadCities = (provCode:any) => {
+        axios.get('/load-cities?provcode=' + provCode).then(res=>{
+            setCities(res.data);
+        })
+    }
+    const loadBarangays = (brgy:any) => {
+        axios.get(`/load-barangays?citycode=${brgy}`).then(res=>{
+            setBarangays(res.data);
+        })
+    }
+
+    
+    const handleChangeProvince = (value:any) => {
+        form.setFields([
+            { name: 'city', value: null },
+            { name: 'barangay', value: null }
+        ]);
+    }
+    const handleChangeCity = (value:any) => {
+        form.setFields([
+            { name: 'barangay', value: null }
+        ]);
+    }
+
+    useEffect(()=>{
+        loadProvinces() 
+    }, [])
+    useEffect(()=>{
+        loadCities(form.getFieldValue('province'))
+    }, [form.getFieldValue('province')])
+
+    useEffect(()=>{
+        loadBarangays(form.getFieldValue('city'))
+    }, [form.getFieldValue('city')])
+
+
+
+
+    
+
+
+    return (
+        <DoAuthLayout user={auth.user}>
+            <Head title="Member Management"></Head>
+
+            <div className='flex mt-10 justify-center items-center'>
+                {/* card */}
+                <div className='p-6 w-full mx-2 bg-white shadow-sm rounded-md
+					sm:max-w-screen-xl'>
+                    {/* card header */}
+                    <div className="font-bold mb-4 text-lg">ADD / EDIT USER</div>
+
+                    <Form layout="vertical"
+                        autoComplete='off'
+                        form={form}
+                        onFinish={onFinish}
+                        initialValues={{
+                            lname: '',
+                            fname: '',
+                            mname: '',
+                            suffix: '',
+                            email: '',
+                            contact_no: '',
+                            sex: '',
+                            birthdate: null,
+                            birthplace: '',
+                            is_loan_allowed: false,
+                            active: true,
+                        }}>
+
+                        <Divider />
+
+                        <div className='flex flex-col gap-x-4 sm:flex-row'>
+
+
+                            <Form.Item label="Last Name"
+                                name="lname"
+                                className='w-full'
+                                validateStatus={errors?.lname ? 'error' : ''}
+                                help={errors?.lname ? errors?.lname[0] : ''}
+                            >
+                                <Input placeholder="ex. Dela Cruz" size="large" autoComplete='off' />
+                            </Form.Item>
+
+                            <Form.Item label="First Name"
+                                name="fname"
+                                className='w-full'
+                                validateStatus={errors?.fname ? 'error' : ''}
+                                help={errors?.fname ? errors?.fname[0] : ''}
+                            >
+                                <Input placeholder="ex. Juan" size="large" autoComplete='off' />
+                            </Form.Item>
+
+                            <Form.Item label="Middle Name"
+                                name="mname"
+                                className='w-full'
+                                validateStatus={errors?.mname ? 'error' : ''}
+                                help={errors?.mname ? errors?.mname[0] : ''}
+                            >
+                                <Input placeholder="ex. Dela Cruz" size="large" />
+                            </Form.Item>
+
+                        </div>
+
+                        <div className='flex flex-col gap-x-4 sm:flex-row'>
+
+                            <Form.Item label="Suffix"
+                                name="suffix"
+                                validateStatus={errors?.suffix ? 'error' : ''}
+                                help={errors?.suffix ? errors?.suffix[0] : ''}
+                            >
+                                <Input placeholder="ex. Jr, II, III" size="large" />
+                            </Form.Item>
+
+                            <Form.Item label="Email"
+                                className='w-full'
+                                name="email"
+                                validateStatus={errors?.email ? 'error' : ''}
+                                help={errors?.email ? errors?.email[0] : ''}
+                            >
+                                <Input placeholder="ex. juan@mail.com" size="large" />
+                            </Form.Item>
+
+                            <Form.Item label="Contact No."
+                                name="contact_no"
+                                className='w-full'
+                                validateStatus={errors?.contact_no ? 'error' : ''}
+                                help={errors?.contact_no ? errors?.contact_no[0] : ''}
+                            >
+                                <Input placeholder="ex. 09161231234" size="large" />
+                            </Form.Item>
+                        </div>
+
+                        <div className="flex flex-col gap-x-4 sm:flex-row">
+                            
+                        </div>
+
+                        <div className="flex flex-col gap-x-4 sm:flex-row">
+                            
+                        </div>
+
+
+                        <div className="flex flex-col gap-x-4 sm:flex-row">
+                            <Form.Item
+                                name="sex"
+                                label="Sex"
+                                className="w-full"
+                                validateStatus={errors.sex ? "error" : ""}
+                                help={errors.sex ? errors.sex[0] : ""}
+                            >
+                                <Select
+                                    options={[
+                                        { value: "MALE", label: "MALE" },
+                                        { value: "FEMALE", label: "FEMALE" },
+
+                                    ]}
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="education_level"
+                                label="Education Level"
+                                className="w-full"
+                                validateStatus={errors.education_level ? "error" : ""}
+                                help={errors.education_level ? errors.education_level[0] : ""}
+                            >
+                                <Select
+                                    options={educationLevels.map((level: EducationLevel) => ({
+                                        value: level.education_level,
+                                        label: level.education_level
+                                    }))}
+                                />
+                            </Form.Item>
+
+                        </div>
+
+                        
+
+                        
+                        <div className='my-4 font-bold text-md text-center'>ADDRESS INFORMATION</div>
+
+                        <div className="flex flex-col gap-x-4 sm:flex-row">
+                            <Form.Item
+                                label="Province"
+                                name="province"
+                                className="w-full"
+                                validateStatus={errors.province ? "error" : ""}
+                                help={errors.province ? errors.province[0] : ""}
+                            >
+                                <Select
+                                    className="w-full h-10"
+                                    onChange={handleChangeProvince}
+                                    options={provinces.map((item: any) => ({ 
+                                        value: item.provCode, 
+                                        label: item.provDesc 
+                                    }))}
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="City"
+                                name="city"
+                                className="w-full"
+                                validateStatus={errors.city ? "error" : ""}
+                                help={errors.city ? errors.city[0] : ""}
+                            >
+                                <Select
+                                    className="w-full h-10"
+                                    onChange={handleChangeCity}
+                                    options={cities.map((item: any) => ({ 
+                                        value: item.citymunCode, 
+                                        label: item.citymunDesc 
+                                    }))}
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="Barangay"
+                                name="barangay"
+                                className="w-full"
+                                validateStatus={errors.barangay ? "error" : ""}
+                                help={errors.barangay ? errors.barangay[0] : ""}
+                            >
+                                <Select
+                                    className="w-full h-10"
+                                    options={barangays.map((item: any) => ({ 
+                                        value: item.brgyCode, 
+                                        label: item.brgyDesc 
+                                    }))}
+                                />
+                            </Form.Item>
+                        </div>
+
+
+                        <Form.Item label="Street"
+                            name="street"
+                            className='w-full'
+                            validateStatus={errors?.street ? 'error' : ''}
+                            help={errors?.street ? errors?.street[0] : ''}
+                        >
+                            <Input placeholder="ex. Juan Dela Cruz St." size="large" />
+                        </Form.Item>
+                        
+                        <div className="flex flex-col gap-x-4 sm:flex-row">
+                            <Form.Item
+                                name="active"
+                                valuePropName="checked"
+                                className="w-full"
+                                validateStatus={
+                                    errors.active ? "error" : ""
+                                }
+                                help={
+                                    errors.active
+                                        ? errors.active[0]
+                                        : ""
+                                }
+                            >
+                                <Checkbox>Active</Checkbox>
+                            </Form.Item>
+
+                            <Form.Item
+                                name="is_loan_allowed"
+                                valuePropName="checked"
+                                className="w-full"
+                                validateStatus={
+                                    errors.is_loan_allowed ? "error" : ""
+                                }
+                                help={
+                                    errors.is_loan_allowed
+                                        ? errors.is_loan_allowed[0]
+                                        : ""
+                                }
+                            >
+                                <Checkbox>Allow Loan</Checkbox>
+                            </Form.Item>
+
+                        </div>
+
+                        <Divider />
+
+                        <div className='flex flex-end mt-2'>
+                            <Button className='ml-auto font-bold'
+                                htmlType='submit'
+                                loading={loading}
+                                icon={<UserOutlined />}
+                                type="primary">
+                                UPDATE INFORMATION
+                            </Button>
+                        </div>
+
+                    </Form>
+
+
+
+
+                </div>
+            </div>
+        </DoAuthLayout>
+    )
+}

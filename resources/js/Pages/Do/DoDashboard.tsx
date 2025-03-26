@@ -22,7 +22,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
-import BmAuthLayout from '@/Layouts/BmAuthLayout'
+import DoAuthLayout from '@/Layouts/DoAuthLayout';
 
 
 ChartJS.register(
@@ -46,7 +46,7 @@ export default function Dashboard( { auth } : PageProps) {
             
         })
     }
-    
+
     const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
     const dataSets = {
@@ -81,10 +81,9 @@ export default function Dashboard( { auth } : PageProps) {
       };
 
     return (
-        <BmAuthLayout user={ auth.user }>
+        <DoAuthLayout user={ auth.user }>
 
             <Head title="Dashboard"/>
-
             
             <div className='bg-white shadow-sm p-5'>
                 <div className='font-bold'>DASHBOARD</div>
@@ -144,6 +143,6 @@ export default function Dashboard( { auth } : PageProps) {
             
 
 
-        </BmAuthLayout>
+        </DoAuthLayout>
     )
 }
