@@ -174,8 +174,6 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
 							<Column title="Role" dataIndex="role" key="role"/>
 							<Column title="Active" key="active" render={(data:User)=>(
 								data.active ? (
-
-                                    
 									<span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
 								) : (
 									<span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
