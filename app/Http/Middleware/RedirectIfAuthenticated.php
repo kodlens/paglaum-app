@@ -32,6 +32,9 @@ class RedirectIfAuthenticated
 
                 if(strtolower($role) == 'bm')
                     return redirect(RouteServiceProvider::BM);
+
+                if(strtolower($role) == 'do')
+                    return redirect(RouteServiceProvider::DO);
             }
         }
 

@@ -5,7 +5,7 @@ import {  UserOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { EducationLevel } from '@/types/educationLevel'
-import BmLAuthLayout from '@/Layouts/BmLAuthLayout'
+import BmLAuthLayout from '@/Layouts/BmAuthLayout'
 
 
 export default function BmMemberCreateEdit({

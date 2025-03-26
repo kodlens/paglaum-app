@@ -40,6 +40,7 @@ Route::get('load-barangays', [App\Http\Controllers\AddressController::class , 'l
 require __DIR__.'/admin.php';
 require __DIR__.'/member.php';
 require __DIR__.'/bm.php';
+require __DIR__.'/do.php';
 
 
 require __DIR__.'/auth.php';

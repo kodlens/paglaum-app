@@ -16,7 +16,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { PaginateResponse } from '@/types/apiResponse';
 import { Captions, FileLock2, MonitorCheck, Pencil, ShieldOff, Trash2 } from 'lucide-react';
-import BmLAuthLayout from '@/Layouts/BmLAuthLayout';
+import BmLAuthLayout from '@/Layouts/BmAuthLayout';
 import ChangePassword from './partials/ChangePassword';
 
 const { Column } = Table;

@@ -18,7 +18,7 @@ import axios from 'axios';
 import { Captions, FileLock2, MessageSquareMore, MonitorCheck, Pencil, ShieldOff, ThumbsUp, Trash2 } from 'lucide-react';
 import { Area } from '@/types/area';
 import { Loan } from '@/types/loan';
-import BmLAuthLayout from '@/Layouts/BmLAuthLayout';
+import BmLAuthLayout from '@/Layouts/BmAuthLayout';
 
 const { Column } = Table;
 

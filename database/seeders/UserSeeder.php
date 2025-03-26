@@ -109,7 +109,7 @@ class UserSeeder extends Seeder
                 'email' => 'juan@dev.org',
                 'contact_no' => '09951156625',
                 'password' => Hash::make('a'),
-                'role' => 'MEMBER',
+                'role' => 'DO',
                 'province' => '',
                 'city' => '',
                 'barangay' => '',
