@@ -1,12 +1,17 @@
 import { PageProps, User } from '@/types'
 import { Head, router } from '@inertiajs/react'
-import { App, Button, Checkbox, Divider, Form, Input, Select } from 'antd'
+import { App, Button, Checkbox, DatePicker, Divider, Form, Input, Select } from 'antd'
 import {  UserOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { EducationLevel } from '@/types/educationLevel'
 import DoAuthLayout from '@/Layouts/DoAuthLayout'
+import dayjs from 'dayjs';
 
+
+const formatDate = (dateValue:Date, customFormat:string) => {
+    return dayjs(dateValue).format(customFormat);
+}
 
 export default function BmMemberCreateEdit({
         auth,
@@ -42,7 +47,9 @@ export default function BmMemberCreateEdit({
             { name: 'email', value: user.email },
             { name: 'contact_no', value: user.contact_no },
             { name: 'sex', value: user.sex },
-            { name: 'role', value: user.role },
+          
+            { name: 'birthdate', value: dayjs(user.birthdate ?? null) },
+
             { name: 'province', value: user.province ? user.province.provCode : null },
             { name: 'city', value: user.city ? user.city.citymunCode : null },
             { name: 'barangay', value: user.barangay ? user.barangay.brgyCode : null },
@@ -105,33 +112,37 @@ export default function BmMemberCreateEdit({
     }
 
     
-    const handleChangeProvince = (value:any) => {
+    const handleChangeProvince = (value:string) => {
+        
         form.setFields([
             { name: 'city', value: null },
-            { name: 'barangay', value: null }
+            { name: 'barangay', value: null },
+            { name: 'province', value: value }
         ]);
+
+        loadCities(value)
     }
-    const handleChangeCity = (value:any) => {
+    const handleChangeCity = (value:string) => {
         form.setFields([
-            { name: 'barangay', value: null }
+            { name: 'barangay', value: null },
+            { name: 'city', value: value }
         ]);
+        loadBarangays(value)
     }
 
     useEffect(()=>{
         loadProvinces() 
     }, [])
-    useEffect(()=>{
-        loadCities(form.getFieldValue('province'))
-    }, [form.getFieldValue('province')])
 
-    useEffect(()=>{
-        loadBarangays(form.getFieldValue('city'))
-    }, [form.getFieldValue('city')])
+    // useEffect(()=>{
+    //     loadCities(form.getFieldValue('province'))
+    // }, [form.getFieldValue('province')])
+
+    // useEffect(()=>{
+    //     loadBarangays(form.getFieldValue('city'))
+    // }, [form.getFieldValue('city')])
 
 
-
-
-    
 
 
     return (
@@ -159,14 +170,20 @@ export default function BmMemberCreateEdit({
                             sex: '',
                             birthdate: null,
                             birthplace: '',
+                            province: '',
+                            city: '',
+                            barangay: '',
+                            street: '',
+
                             is_loan_allowed: false,
                             active: true,
                         }}>
 
                         <Divider />
 
-                        <div className='flex flex-col gap-x-4 sm:flex-row'>
+                        <div className='my-4 font-bold text-md text-center'>PERSONAL INFORMATION</div>
 
+                        <div className='flex flex-col gap-x-4 sm:flex-row'>
 
                             <Form.Item label="Last Name"
                                 name="lname"
@@ -227,15 +244,6 @@ export default function BmMemberCreateEdit({
                         </div>
 
                         <div className="flex flex-col gap-x-4 sm:flex-row">
-                            
-                        </div>
-
-                        <div className="flex flex-col gap-x-4 sm:flex-row">
-                            
-                        </div>
-
-
-                        <div className="flex flex-col gap-x-4 sm:flex-row">
                             <Form.Item
                                 name="sex"
                                 label="Sex"
@@ -244,6 +252,7 @@ export default function BmMemberCreateEdit({
                                 help={errors.sex ? errors.sex[0] : ""}
                             >
                                 <Select
+                                    className='h-10'
                                     options={[
                                         { value: "MALE", label: "MALE" },
                                         { value: "FEMALE", label: "FEMALE" },
@@ -260,6 +269,7 @@ export default function BmMemberCreateEdit({
                                 help={errors.education_level ? errors.education_level[0] : ""}
                             >
                                 <Select
+                                    className='h-10'
                                     options={educationLevels.map((level: EducationLevel) => ({
                                         value: level.education_level,
                                         label: level.education_level
@@ -267,7 +277,55 @@ export default function BmMemberCreateEdit({
                                 />
                             </Form.Item>
 
+                            <Form.Item
+                                label="Civil Status"
+                                name="civil_status"
+                                className="w-full"
+                                validateStatus={errors.civil_status ? "error" : ""}
+                                help={errors.civil_status ? errors.civil_status[0] : ""}
+                            >
+                                <Select
+                                    className="w-full h-10"
+                                    options={[
+                                        { value: 'SINGLE', label: 'SINGLE' },
+                                        { value: 'MARRIED', label: 'MARRIED' },
+                                        { value: 'DIVORCED', label: 'DIVORCED' },
+                                        { value: 'WIDOWED', label: 'WIDOWED' },
+                                    ]}
+                                />
+                            </Form.Item>
+
                         </div>
+                        
+
+                        <div className="flex flex-col gap-x-4 sm:flex-row">
+                            
+                        </div>
+
+                        <div className="flex flex-col gap-x-4 sm:flex-row">
+                            <Form.Item
+                                label="Birthdate"
+                                name="birthdate"
+                                className='w-full'
+                                validateStatus={errors?.birthdate ? 'error' : ''}
+                                help={errors?.birthdate ? errors?.birthdate[0] : ''}>
+                                <DatePicker className='w-full h-10' />
+                            </Form.Item>
+
+                            <Form.Item
+                                label='Birthplace'
+                                name='birthplace'
+                                className='w-full'
+                                validateStatus={errors?.birthplace ? 'error' : ''}
+                                help={errors?.birthplace ? errors.birthplace[0] : ''}>
+                                <Input className="h-10 " placeholder="Your Birthplace" />
+                            </Form.Item>
+
+                            
+
+                        </div>
+
+                        
 
                         
 
