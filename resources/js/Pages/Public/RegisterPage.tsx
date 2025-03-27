@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { App, Button, Divider, Form, Input, InputNumber, Layout, Modal, Select, Steps } from 'antd'
+import { App, Button, DatePicker, Divider, Form, Input, InputNumber, Layout, Modal, Select, Steps } from 'antd'
 import { ArrowLeftOutlined, FileAddOutlined, UserOutlined } from '@ant-design/icons'
 import { User } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
@@ -34,13 +34,16 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
         lname: '',
         fname: '',
         mname: '',
-        sex: '',
         suffix: '',
         email: '',
         contact_no: '',
-        education_level: '',
 
+        sex: '',
+        education_level: '',
+        birthplace: '',
+        birthdate: null,
         civil_status: '',
+
         religion: '',
         ethnic_group: '',
         nationality: '',
@@ -61,8 +64,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
         contact_person: '',
         contact_person_no: '',
         
-        birthplace: '',
-        birthdate: null,
+       
         license: '',
 
         province: null,
@@ -95,6 +97,11 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
             setLoading(false);
             if (error.response.status === 422) {
                 setErrors(error.response.data.errors);
+                notification.error({
+                    placement: 'bottomRight',
+                    message: 'Invalid Input',
+                    description: errors.message,
+                })
             }
         })
 
@@ -142,7 +149,12 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     const accountInformation = () => {
         return (
             <>
-                <div className='my-6 font-bold text-md text-center'>ACCOUNT INFORMATION</div>
+                <div className="inline-flex items-center justify-center w-full">
+                    <hr className="w-full h-px my-8 bg-gray-200 border-0" />
+                    <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">
+                        ACCOUNT INFORMATION
+                    </span>
+                </div>
                 <Form.Item label="Username"
                     validateStatus={errors?.username ? 'error' : ''}
                     help={errors?.username ? errors?.username[0] : ''}
@@ -180,7 +192,11 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     const personalInformation = () => {
         return (
             <>
-                <div className='my-4 font-bold text-md text-center'>PERSONAL INFORMATION</div>
+                <div className="inline-flex items-center justify-center w-full">
+                    <hr className="w-full h-px my-8 bg-gray-200 border-0" />
+                    <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">PERSONAL INFORMATION</span>
+                </div>
+
                 <div className='flex flex-col gap-x-4 sm:flex-row'>
                     <Form.Item label="Last Name"
                         className="w-full"
@@ -254,8 +270,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             value={data.contact_no} 
                             size="large" />
                     </Form.Item>
-
-                    
                 </div>
                 
                 <div className='flex flex-col gap-x-4 sm:flex-row'>
@@ -294,6 +308,83 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                     </Form.Item>
                 </div>
 
+                <div className='flex flex-col gap-x-4 sm:flex-row'>
+                    <Form.Item
+                        label="Birthdate"
+                        className="w-full"
+                        validateStatus={errors.birthdate ? "error" : ""}
+                        help={errors.birthdate ? errors.birthdate[0] : ""}
+                    >
+                       <DatePicker className='h-10 w-full' placeholder="Select date..." />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Birthplace"
+                        className="w-full"
+                        validateStatus={errors.birthplace ? "error" : ""}
+                        help={errors.birthplace ? errors.birthplace[0] : ""}
+                    >
+                        <Input size='large' placeholder='Birthplace...' />
+                    </Form.Item>
+                </div>
+
+                <div className='flex flex-col gap-x-4 sm:flex-row'>
+                    <Form.Item
+                        label="Civil Status"
+                        className="w-full"
+                        validateStatus={errors.civil_status ? "error" : ""}
+                        help={errors.civil_status ? errors.civil_status[0] : ""}
+                    >
+                       <Select className='h-10 w-full' placeholder="Select date..."
+                        options={[
+                            { value: 'SINGLE', label: 'SINGLE' },
+                            { value: 'MARRIED', label: 'MARRIED' },
+                            { value: 'DIVORCED', label: 'DIVORCED' },
+                            { value: 'WIDOWED', label: 'WIDOWED' },
+                        ]} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Household Size"
+                        className="w-full"
+                        validateStatus={errors.household_size ? "error" : ""}
+                        help={errors.household_size ? errors.household_size[0] : ""}
+                    >
+                        <InputNumber size='large' className='w-full' placeholder='Household Size...' />
+                    </Form.Item>
+                </div>
+
+
+                <div className='flex flex-col gap-x-4 sm:flex-row'>
+                    <Form.Item label="ID Type"
+                        className='w-full'
+                        validateStatus={errors?.id_type ? 'error' : ''}
+                        help={errors?.id_type ? errors?.id_type[0] : ''}
+                    >
+                        <Input placeholder="ex. Driver License / UMID etc."
+                            onChange={(e)=>setData('email', e.target.value)} 
+                            value={data.id_type} 
+                            size="large" />
+                    </Form.Item>
+
+                    <Form.Item label="ID No."
+                        className='w-full'
+                        validateStatus={errors?.id_no ? 'error' : ''}
+                        help={errors?.id_no ? errors?.id_no[0] : ''}
+                    >
+                        <Input placeholder="ex. 1234567"
+                            onChange={(e)=>setData('email', e.target.value)} 
+                            value={data.id_no} 
+                            size="large" />
+                    </Form.Item>
+                </div>
+
+                <div className="inline-flex items-center justify-center w-full">
+                    <hr className="w-full h-px my-8 bg-gray-200 border-0" />
+                    <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">
+                        WORK INFORMATION
+                    </span>
+                </div>
 
                 <div className='flex flex-col gap-x-4 sm:flex-row'>
                     <Form.Item label="Occupation"
@@ -321,6 +412,47 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             size="large" />
                     </Form.Item>
                 </div>
+
+                <div className='flex flex-col gap-x-4 sm:flex-row'>
+                    <Form.Item label="Office Address"
+                        className='w-full'
+                        validateStatus={errors?.office_address ? 'error' : ''}
+                        help={errors?.office_address ? errors?.office_address[0] : ''}
+                    >
+                        <Input placeholder="ex. Office Address...a"
+                            onChange={(e)=>setData('office_address', e.target.value)} 
+                            value={data.office_address} 
+                            size="large" />
+                    </Form.Item>
+
+                   
+                </div>
+
+                <div className='flex flex-col gap-x-4 sm:flex-row'>
+                    <Form.Item label="Contact Person"
+                        className='w-full'
+                        validateStatus={errors?.contact_person ? 'error' : ''}
+                        help={errors?.contact_person ? errors?.contact_person[0] : ''}
+                    >
+                        <Input placeholder="ex. Juan Cruz"
+                            onChange={(e)=>setData('contact_person', e.target.value)} 
+                            value={data.office_address} 
+                            size="large" />
+                    </Form.Item>
+
+                    <Form.Item label="Contact Person No."
+                        className='w-full'
+                        validateStatus={errors?.contact_person_no ? 'error' : ''}
+                        help={errors?.contact_person_no ? errors?.contact_person_no[0] : ''}
+                    >
+                        <Input placeholder="ex. 09361234123"
+                            onChange={(e)=>setData('contact_person_no', e.target.value)} 
+                            value={data.contact_person_no} 
+                            size="large" />
+                    </Form.Item>
+
+                   
+                </div>
             </>
         );
     }
@@ -328,7 +460,12 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     const addressInformation = () => {
         return (
             <>
-                <div className='my-4 font-bold text-md text-center'>ADDRESS INFORMATION</div>
+                <div className="inline-flex items-center justify-center w-full">
+                    <hr className="w-full h-px my-8 bg-gray-200 border-0" />
+                    <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">
+                        ADDRESS INFORMATION
+                    </span>
+                </div>
                             
                 <Form.Item
                     label="Province"

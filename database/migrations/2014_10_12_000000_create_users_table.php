@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('username')->nullable()
                 ->unique();
-            $table->string('title', 10)->nullable();
+
             $table->string('lname', 100)->nullable();
             $table->string('fname', 100)->nullable();
             $table->string('mname', 100)->nullable();
             $table->string('suffix', 30)->nullable();
+
+            $table->string('contact_no', 30)->nullable();
+            $table->string('email')->unique();
            
             $table->string('education_level')->nullable();
             $table->date('birthdate')->nullable();
@@ -27,33 +30,40 @@ return new class extends Migration
 
             $table->string('sex', 30)->nullable();
             $table->string('civil_status', 30)->nullable();
+
             $table->string('religion', 30)->nullable();
             $table->string('ethnic_group', 30)->nullable();
+
             $table->string('nationality', 30)->nullable();
             $table->double('height')->default(0)->nullable();
             $table->double('weight')->default(0)->nullable();
             $table->string('blood_type', 10)->nullable();
+
             $table->string('sss', 15)->nullable();
+            $table->string('gsis', 15)->nullable();
             $table->string('tin', 15)->nullable();
-            $table->string('driver_license', 15)->nullable();
+            //$table->string('driver_license', 15)->nullable();
+
             $table->string('id_type', 30)->nullable();
             $table->string('id_no', 30)->nullable();
-            $table->string('philhealth', 15)->nullable();
-            $table->string('umid', 15)->nullable();
+            //$table->string('philhealth', 15)->nullable();
+            //$table->string('umid', 15)->nullable();
+            
             $table->integer('household_size')->nullable()
                 ->default(0);
+
             $table->string('occupation')->nullable();
-            $table->string('industry_code', 20)->nullable();
-            $table->string('occupational_code', 20)->nullable();
             $table->string('monthly_income', 30)->nullable();
             $table->string('office_address', 100)->nullable();
             $table->string('contact_person', 50)->nullable();
             $table->string('contact_person_no', 30)->nullable();
+
+            $table->string('industry_code', 20)->nullable();
+            $table->string('occupational_code', 20)->nullable();
             $table->string('sector_presented', 50)->nullable();
             $table->string('organization_affiliated', 50)->nullable();
             $table->string('org_aff_address', 50)->nullable();
-            $table->string('contact_no', 30)->nullable();
-            $table->string('email')->unique();
+          
             $table->string('province', 30)->nullable();
             $table->string('city', 30)->nullable();
             $table->string('barangay', 30)->nullable();
