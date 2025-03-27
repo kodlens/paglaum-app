@@ -68,6 +68,19 @@ class MemberMyLoanController extends Controller
 
         ]);
 
+        /* -------------- add checking if allowed reloan ------------------ */
+        /* -------------- prevent the user to reloan ------------------ */
+        require __DIR__.'/partials/check_reloan.php';
+        if($totalMonthsMustPaid > $countMonthsPaid){
+            return response()->json([
+                'errors' => [
+                    'principal' => ['Reloan is not allowed this time.']
+                ],
+                'message' => 'Reloan is not allowed this time.'
+            ], 422);
+        }
+        /* -------------- *************END*********** ------------------ */
+
 
         //return $req;
         try{

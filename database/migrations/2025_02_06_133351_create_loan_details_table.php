@@ -37,6 +37,7 @@ return new class extends Migration
             $table->date('due_date')->nullable();
             $table->date('date_paid')->nullable();
             $table->double('amount')->default(0);
+            $table->double('amount_paid')->default(0);
 
             $table->tinyInteger('is_paid')->default(0);
             

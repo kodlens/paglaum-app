@@ -65,17 +65,25 @@ class DoLoanController extends Controller
 
         ]);
 
+        $loan = Loan::find($req->id);
+      
+
+        if($loan->is_do_approve > 0){
+            return response()->json([
+                'errors' => [
+                    'loan' => ['Loan already approved.']
+                ],
+                'message' => 'Loan already approved.'
+            ], 422);
+        }
+
         try{
 
-            \DB::transaction(function () use ($req) {
+            \DB::transaction(function () use ($req, $loan) {
 
-                $this->monthlyBreakdown($req);
-
-                Loan::find($req->id)
-                    ->update([
-                        'is_approve' => 1
-                    ]);
-                
+                //$this->monthlyBreakdown($req);
+                $loan->is_do_approve = 1;
+                $loan->save();
             });
 
             return response()->json([
@@ -86,34 +94,54 @@ class DoLoanController extends Controller
             return response()->json(['error' => ['Transaction failed: ' . $e->getMessage()], 'message' => $e->getMessage()], 500);
         }
     }
+    public function disapproveLoan(Request $req){
 
-    /*=========================================*/
-    private function monthlyBreakdown($loan){
+        $loan = Loan::find($req->id);
 
-        $principal = $loan->principal;
-        $terms = $loan->terms_month / 12;
-        $interest = $loan->interest / 100;
-        
-        $monthlyInterest = $principal * $interest * $terms;
-        $totalPayment = $principal + ($monthlyInterest * $loan->terms_month);
-        $monthlyAmortization = $totalPayment / $loan->terms_month;
-        
-        $loanDetails = [];
-
-        for($i = 0; $i < $loan->terms_month; $i++){
-            $loanDetails[] = [
-                'loan_id' => $loan->id,
-                'user_id' => $loan->user_id,
-                'month' => $i + 1,
-                'amount' => round($monthlyAmortization, 2),
-                'due_date' => now()->addMonths($i + 1),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];   
+        if($loan->is_bm_approve > 0){
+            return response()->json([
+                'errors' => [
+                    'bm' => ['This loan is already approved by the Branch Manager.']    
+                ],
+                'message' => 'This loan is already approved by the Branch Manager.'
+            ], 422);
         }
 
-        LoanDetail::insert($loanDetails);
+        $loan->is_do_approve = 0;
+        $loan->save();
+
+        return response()->json([
+            'status' => 'disapproved'
+        ], 200);
     }
+
+    /*=========================================*/
+    // private function monthlyBreakdown($loan){
+
+    //     $principal = $loan->principal;
+    //     $terms = $loan->terms_month / 12;
+    //     $interest = $loan->interest / 100;
+        
+    //     $monthlyInterest = $principal * $interest * $terms;
+    //     $totalPayment = $principal + ($monthlyInterest * $loan->terms_month);
+    //     $monthlyAmortization = $totalPayment / $loan->terms_month;
+        
+    //     $loanDetails = [];
+
+    //     for($i = 0; $i < $loan->terms_month; $i++){
+    //         $loanDetails[] = [
+    //             'loan_id' => $loan->id,
+    //             'user_id' => $loan->user_id,
+    //             'month' => $i + 1,
+    //             'amount' => round($monthlyAmortization, 2),
+    //             'due_date' => now()->addMonths($i + 1),
+    //             'created_at' => now(),
+    //             'updated_at' => now(),
+    //         ];   
+    //     }
+
+    //     LoanDetail::insert($loanDetails);
+    // }
 
 
 

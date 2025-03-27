@@ -49,6 +49,7 @@ return new class extends Migration
             $table->double('principal')->default(0);
             $table->double('interest')->default(0);
             $table->double('terms_month')->default(0);
+            $table->double('previous_balance')->default(0);
             
             $table->tinyInteger('is_approve')->default(0);
             $table->tinyInteger('is_paid')->default(0);

@@ -43,8 +43,6 @@ const LoanApplication = () => {
             { name: 'terms_month', value: selectedLoanSubtypes.terms_month },
             { name: 'interest', value: selectedLoanSubtypes.percent }
         ]);
-
-
     } 
 
 
@@ -79,7 +77,6 @@ const LoanApplication = () => {
                         message: 'Invalid!'
                     });
                 }
-
             }
             if(err.response.status === 500){
                 //console.log(err.response.data);

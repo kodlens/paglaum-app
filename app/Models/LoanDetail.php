@@ -16,6 +16,7 @@ class LoanDetail extends Model
         'due_date',
         'date_paid',
         'amount',
+        'amount_paid',
         'is_paid'
     ];
 

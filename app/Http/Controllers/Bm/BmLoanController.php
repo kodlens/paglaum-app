@@ -63,7 +63,27 @@ class BmLoanController extends Controller
             'terms_month.gt' => 'Please select loan sub type',
 
         ]);
+        $loan = Loan::find($req->id);
+        
+        if($loan->is_do_approve < 1){
+            return response()->json([
+                'errors' => [
+                    'loan' => ['Development Officer need to approve this loan first.']
+                ],
+                'message' => 'Development Officer need to approve this loan first'
+            ], 422);
+        }
 
+        if($loan->is_bm_approve > 0){
+            return response()->json([
+                'errors' => [
+                    'loan' => ['Loan already approved.']
+                ],
+                'message' => 'Loan already approved.'
+            ], 422);
+        }
+
+        
         try{
 
             \DB::transaction(function () use ($req) {

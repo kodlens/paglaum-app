@@ -17,6 +17,8 @@ export interface Loan {
     guarantor?: string;
     mode_payment?: string;
     active?: number;
+    is_do_approve:number;
+    is_bm_approve:number;
     updated_at?: Date|unknown;
     created_at?: Date|unknown;
 }

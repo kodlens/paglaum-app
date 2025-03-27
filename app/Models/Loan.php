@@ -17,10 +17,13 @@ class Loan extends Model
         'principal',
         'mode_payment',
         'terms_month',
+        'previous_balance',
         'interest',
         'guarantor',
         'purpose',
-        'is_approve'
+        'is_approve',
+        'is_do_approve',
+        'is_bm_approve'
     ];
 
 
