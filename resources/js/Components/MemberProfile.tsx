@@ -124,32 +124,40 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                         fname: profile.fname,
                         mname: profile.mname,
                         sex: profile.sex,
+
+                        contact_no: profile.contact_no,
+                        email: profile.email,
+
                         education_level: profile.education_level,
                         birthdate: dayjs(profile.birthdate),
                         birthplace: profile.birthplace,
                         civil_status: profile.civil_status,
-                        religion: profile.religion,
-                        ethnic_group: profile.ethnic_group,
-                        nationality: profile.nationality,
-                        height: profile.height,
-                        weight: profile.weight,
-                        blood_type: profile.blood_type,
+                        //religion: profile.religion,
+                        // ethnic_group: profile.ethnic_group,
+                        // nationality: profile.nationality,
+                        // height: profile.height,
+                        // weight: profile.weight,
+                        // blood_type: profile.blood_type,
                         sss: profile.sss,
+                        gsis: profile.gsis,
                         tin: profile.tin,
                         id_type: profile.id_type,
                         id_no: profile.id_no,
                         household_size: profile.household_size,
-                        contact_no: profile.contact_no,
-                        email: profile.email,
-                        occupation: profile.occupation,
-                        monthly_income: profile.monthly_income,
-                        office_address: profile.office_address,
-                        contact_person: profile.contact_person,
-                        contact_person_no: profile.contact_person_no,
+
                         province: profile.province ? profile.province.provCode : null,
                         city: profile.city ? profile.city.citymunCode : null,
                         barangay: profile.barangay ? profile.barangay.brgyDesc : null,
                         street: profile.street,
+                       
+                       
+                        occupation: profile.occupation,
+                        monthly_income: profile.monthly_income,
+                        business_name: profile.business_name,
+                        business_address: profile.business_address,
+                        contact_person: profile.contact_person,
+                        contact_person_no: profile.contact_person_no,
+                        
                     }}
 
                     onFinish={onFinish}
@@ -162,7 +170,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors?.lname ? 'error' : ''}
                             help={errors?.lname ? errors?.lname[0] : ''}
                         >
-                            <Input type='text' className='w-full p-2' placeholder='e.g Dela Cruz' />
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g Dela Cruz' />
                         </Form.Item>
 
                         <Form.Item label='First Name'
@@ -171,19 +179,21 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors?.fname ? 'error' : ''}
                             help={errors?.fname ? errors?.fname[0] : ''}
                         >
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Juan' />
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Juan' />
                         </Form.Item>
-                    </div>
 
-                    <div className='flex md:flex-row flex-col md:gap-4'>
                         <Form.Item label='Middle Name'
                             name="mname"
                             className='w-full'
                             validateStatus={errors?.mname ? 'error' : ''}
                             help={errors?.mname ? errors?.mname[0] : ''}
                         >
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Juan' />
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Juan' />
                         </Form.Item>
+                    </div>
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                       
 
                         <Form.Item label='Suffix'
                             name="suffix"
@@ -191,7 +201,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors?.suffix ? 'error' : ''}
                             help={errors?.suffix ? errors?.suffix[0] : ''}
                         >
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Jr., II, III' />
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Jr., II, III' />
                         </Form.Item>
 
                         <Form.Item
@@ -201,6 +211,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.sex ? "error" : ""}
                             help={errors.sex ? errors.sex[0] : ""}>
                             <Select
+                                disabled
                                 className='h-10'
                                 options={[
                                     { value: "MALE", label: "MALE" },
@@ -209,20 +220,46 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             />
 
                         </Form.Item>
+
+                        <Form.Item label="Education Level"
+                            name="education_level"
+                            className='w-full'
+                            validateStatus={errors.education_level ? "error" : ""}
+                            help={errors.education_level ? errors.education_level[0] : ""}>
+                            <Select
+                                className='h-10'
+                                disabled
+                                options={educationLevels.map((level: any) => ({
+                                    value: level.education_level,
+                                    label: level.education_level
+                                }))}
+                            />
+                        </Form.Item>
                     </div>
 
-                    <Form.Item label="Education Level"
-                        name="education_level"
-                        validateStatus={errors.education_level ? "error" : ""}
-                        help={errors.education_level ? errors.education_level[0] : ""}>
-                        <Select
-                            className='h-10'
-                            options={educationLevels.map((level: any) => ({
-                                value: level.education_level,
-                                label: level.education_level
-                            }))}
-                        />
-                    </Form.Item>
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                        <Form.Item label="Contact No."
+                            name="contact_no"
+                            className="w-full"
+                            validateStatus={errors.contact_no ? "error" : ""}
+                            help={errors.contact_no ? errors.contact_no[0] : ""}>
+                         
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Contact no...' />
+                        
+                        </Form.Item>
+
+                        <Form.Item label="Email"
+                            name="email"
+                            className="w-full"
+                            validateStatus={errors.email ? "error" : ""}
+                            help={errors.email ? errors.email[0] : ""}>
+
+                            <Input type='email' readOnly className='w-full p-2' placeholder='e.g. Email' />
+                        </Form.Item>
+   
+                    </div>
+
+                    
 
                     <div className='flex md:flex-row flex-col md:gap-4'>
                         <Form.Item label="Birthdate"
@@ -234,7 +271,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             <DatePicker className='h-10 w-full'/>
                         </Form.Item>
 
-                        <Form.Item label="Birth Place"
+                        <Form.Item label="Birthplace"
                             name="birthplace"
                             className="w-full"
                             validateStatus={errors.birthplace ? "error" : ""}
@@ -242,9 +279,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             
                             <Input type='text' className='w-full p-2' placeholder='e.g. Tangub City...' />
                         </Form.Item>
-                    </div>
 
-                    <div className='flex md:flex-row flex-col md:gap-4'>
                         <Form.Item label="Civil Status"
                             name="civil_status"
                             className="w-full"
@@ -260,28 +295,12 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                                 ]}
                             />
                         </Form.Item>
-
-                        <Form.Item label="Religion"
-                            name="religion"
-                            className="w-full"
-                            validateStatus={errors.religion ? "error" : ""}
-                            help={errors.religion ? errors.religion[0] : ""}>
-                            
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Roman Catholic...' />
-                        </Form.Item>
-
-                        <Form.Item label="Ethnic Group"
-                            name="ethnic_group"
-                            className="w-full"
-                            validateStatus={errors.ethnic_group ? "error" : ""}
-                            help={errors.ethnic_group ? errors.ethnic_group[0] : ""}>
-                            
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Tagalog' />
-                        </Form.Item>
                     </div>
 
+                   
 
-                    <div className='flex md:flex-row flex-col md:gap-4'>
+
+                    {/* <div className='flex md:flex-row flex-col md:gap-4'>
                         <Form.Item label="Nationality"
                             name="nationality"
                             className="w-full"
@@ -309,18 +328,9 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             
                             <InputNumber type='text' className='w-full p-1' placeholder='e.g. Weight in KG' />
                         </Form.Item>
-                    </div>
+                    </div> */}
 
                     <div className='flex md:flex-row flex-col md:gap-4'>
-                        <Form.Item label="Blood Type"
-                            name="blood_type"
-                            className="w-full"
-                            validateStatus={errors.blood_type ? "error" : ""}
-                            help={errors.blood_type ? errors.blood_type[0] : ""}>
-
-                            <Input type='text' className='w-full p-2' placeholder='e.g. AB, A+, A...' />
-                            
-                        </Form.Item>
 
                         <Form.Item label="SSS"
                             name="sss"
@@ -329,6 +339,17 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             help={errors.sss ? errors.sss[0] : ""}>
 
                             <Input type='text' className='w-full p-2' placeholder='e.g. SSS No...' />
+                            
+                        </Form.Item>
+
+                        
+                        <Form.Item label="GSIS"
+                            name="gsis"
+                            className="w-full"
+                            validateStatus={errors.gsis ? "error" : ""}
+                            help={errors.gsis ? errors.gsis[0] : ""}>
+
+                            <Input type='text' className='w-full p-2' placeholder='e.g. GSIS No...' />
                             
                         </Form.Item>
 
@@ -351,6 +372,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             help={errors.id_type ? errors.id_type[0] : ""}>
                             
                             <Select
+                                disabled
                                 className='h-10'
                                 options={idTypes.map((type: any) => ({
                                     value: type.id_type,
@@ -365,7 +387,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.id_no ? "error" : ""}
                             help={errors.id_no ? errors.id_no[0] : ""}>
 
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Id No...' />
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Id No...' />
                         </Form.Item>
 
                         <Form.Item label="Household Size"
@@ -374,92 +396,12 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.household_size ? "error" : ""}
                             help={errors.household_size ? errors.household_size[0] : ""}>
 
-                            <InputNumber type='number' className='w-full p-1' placeholder='e.g. 12...' />
+                            <InputNumber readOnly type='number' className='w-full p-1' placeholder='e.g. 12...' />
                             
                         </Form.Item>
    
                     </div>
 
-                    <div className='text-center my-4 font-bold'>CONTACT INFORMATION</div>
-
-                    <div className='flex md:flex-row flex-col md:gap-4'>
-                        <Form.Item label="Contact No."
-                            name="contact_no"
-                            className="w-full"
-                            validateStatus={errors.contact_no ? "error" : ""}
-                            help={errors.contact_no ? errors.contact_no[0] : ""}>
-                         
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Contact no...' />
-                        
-                        </Form.Item>
-
-                        <Form.Item label="Email"
-                            name="email"
-                            className="w-full"
-                            validateStatus={errors.email ? "error" : ""}
-                            help={errors.email ? errors.email[0] : ""}>
-
-                            <Input type='email' className='w-full p-2' placeholder='e.g. Email' />
-                        </Form.Item>
-   
-                    </div>
-          
-
-                    <div className='text-center my-4 font-bold'>WORK INFORMATION</div>
-
-                    <div className='flex md:flex-row flex-col md:gap-4'>
-                        <Form.Item label="Occupation"
-                            name="occupation"
-                            className="w-full"
-                            validateStatus={errors.occupation ? "error" : ""}
-                            help={errors.occupation ? errors.occupation[0] : ""}>
-                         
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Occupation' />
-                        
-                        </Form.Item>
-
-                        <Form.Item label="Monthly Income"
-                            name="monthly_income"
-                            className="w-full"
-                            validateStatus={errors.monthly_income ? "error" : ""}
-                            help={errors.monthly_income ? errors.monthly_income[0] : ""}>
-
-                            <InputNumber type='number' className='w-full p-1' placeholder='e.g. Id No...' />
-                        </Form.Item>
-
-                        <Form.Item label="Office Address"
-                            name="office_address"
-                            className="w-full"
-                            validateStatus={errors.office_address ? "error" : ""}
-                            help={errors.office_address ? errors.office_address[0] : ""}>
-
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Office Address...' />
-                            
-                        </Form.Item>
-   
-                    </div>
-
-                    <div className='flex md:flex-row flex-col md:gap-4'>
-                        <Form.Item label="Contact Person"
-                            name="contact_person"
-                            className="w-full"
-                            validateStatus={errors.contact_person ? "error" : ""}
-                            help={errors.contact_person ? errors.contact_person[0] : ""}>
-
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Contact Person' />
-                            
-                        </Form.Item>
-
-                        <Form.Item label="Contact Person No."
-                            name="contact_person_no"
-                            className="w-full"
-                            validateStatus={errors.contact_person_no ? "error" : ""}
-                            help={errors.contact_person_no ? errors.contact_person_no[0] : ""}>
-
-                            <Input type='text' className='w-full p-2' placeholder='e.g. Contact Person No...' />
-                            
-                        </Form.Item>
-                    </div>
 
                     <div className='text-center my-4 font-bold'>ADDRESS INFORMATION</div>
 
@@ -527,6 +469,83 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             <Input placeholder="ex. Juan Dela Cruz St." readOnly size="large" />
                         </Form.Item>
                     </div>
+
+
+                    <div className='text-center my-4 font-bold'>WORK INFORMATION</div>
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+                        <Form.Item label="Occupation"
+                            name="occupation"
+                            className="w-full"
+                            validateStatus={errors.occupation ? "error" : ""}
+                            help={errors.occupation ? errors.occupation[0] : ""}>
+                         
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Occupation' />
+                        
+                        </Form.Item>
+
+                        <Form.Item label="Monthly Income"
+                            name="monthly_income"
+                            className="w-full"
+                            validateStatus={errors.monthly_income ? "error" : ""}
+                            help={errors.monthly_income ? errors.monthly_income[0] : ""}>
+
+                            <InputNumber type='number' readOnly className='w-full p-1' placeholder='e.g. Id No...' />
+                        </Form.Item>
+
+                      
+   
+                    </div>
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+
+                        <Form.Item label="Business Name"
+                            name="business_name"
+                            className="w-full"
+                            validateStatus={errors.business_name ? "error" : ""}
+                            help={errors.business_name ? errors.business_name[0] : ""}>
+
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Business Name...' />
+                            
+                        </Form.Item>
+
+                        <Form.Item label="Business Address"
+                            name="business_address"
+                            className="w-full"
+                            validateStatus={errors.business_address ? "error" : ""}
+                            help={errors.business_address ? errors.business_address[0] : ""}>
+
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Business Address...' />
+                            
+                        </Form.Item>
+
+                      
+                    </div>
+
+                    <div className='flex md:flex-row flex-col md:gap-4'>
+
+                        <Form.Item label="Contact Person"
+                            name="contact_person"
+                            className="w-full"
+                            validateStatus={errors.contact_person ? "error" : ""}
+                            help={errors.contact_person ? errors.contact_person[0] : ""}>
+
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Contact Person' />
+                            
+                        </Form.Item>
+
+                        <Form.Item label="Contact Person No."
+                            name="contact_person_no"
+                            className="w-full"
+                            validateStatus={errors.contact_person_no ? "error" : ""}
+                            help={errors.contact_person_no ? errors.contact_person_no[0] : ""}>
+
+                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Contact Person No...' />
+                            
+                        </Form.Item>
+                    </div>
+
+                    
 
 
                     <div>

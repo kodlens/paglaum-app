@@ -35,9 +35,9 @@ class MemberMyLoanController extends Controller
         if($user->is_loan_allowed == 0){
             return response()->json([
                 'errors' => [
-                    'principal' => ['Loan is now allowed. Please contact your Branch Manager.']
+                    'principal' => ['Your account is not yet approved for any loan at this time.']
                 ],
-                'message' => 'Loan is now allowed. Please contact your Branch Manager.'
+                'message' => 'Your account is not yet approved for any loan at this time.'
             ], 422);
         }
 

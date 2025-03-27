@@ -19,10 +19,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     const [provinces, setProvinces] = useState<any[]>([]);
     const [cities, setCities] = useState<any[]>([]);
     const [barangays, setBarangays] = useState<any[]>([]);
-
-
-
-
+    const [idTypes, setIdTypes] = React.useState<any>([])
 
     const [form] = Form.useForm();
     const [errors, setErrors] = useState<any>({});
@@ -73,6 +70,15 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
         street: '',
     });
 
+    const loadIdTypes = () => {
+        axios.get('/load-id-types').then(res => {
+            setIdTypes(res.data);
+        })
+    }
+    
+    useEffect(()=>{
+        loadIdTypes()
+    }, [])
     const submit = () => {
         
         console.log('data', data);
@@ -408,14 +414,19 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
                 <div className='flex flex-col gap-x-4 sm:flex-row'>
                     <Form.Item label="ID Type"
-                        className='w-full'
-                        validateStatus={errors?.id_type ? 'error' : ''}
-                        help={errors?.id_type ? errors?.id_type[0] : ''}
-                    >
-                        <Input placeholder="ex. Driver License / UMID etc."
-                            onChange={(e)=>setData('id_type', e.target.value)} 
-                            value={data.id_type} 
-                            size="large" />
+                        className="w-full"
+                        validateStatus={errors.id_type ? "error" : ""}
+                        help={errors.id_type ? errors.id_type[0] : ""}>
+                        
+                        <Select
+                            value={data.id_type}
+                            onChange={(value) => setData('id_type', value)}
+                            className='h-10'
+                            options={idTypes.map((type: any) => ({
+                                value: type.id_type,
+                                label: type.id_type
+                            }))}
+                        />
                     </Form.Item>
 
                     <Form.Item label="ID No."

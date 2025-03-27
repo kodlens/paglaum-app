@@ -192,7 +192,6 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
                                                         onClick: ()=>{
                                                             handleClickAllowDisallow(data)
                                                         }
-
                                                     },
                                                     
                                                     // {

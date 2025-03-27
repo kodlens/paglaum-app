@@ -227,6 +227,7 @@ const LoanApplication = () => {
                 <Form.Item
                     hidden
                     name="interest">
+                    <Input />
                 </Form.Item>
 
 

@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Loan;
 use App\Models\LoanDetail;
+use App\Models\User;
 
 class DoLoanController extends Controller
 {
