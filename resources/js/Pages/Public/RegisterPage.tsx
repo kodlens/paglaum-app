@@ -61,7 +61,8 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
         occupation: '',
         monthly_income: 0,
-        office_address: '',
+        business_name: '',
+        business_address: '',
         contact_person: '',
         contact_person_no: '',
 
@@ -464,14 +465,25 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                 </div>
 
                 <div className='flex flex-col gap-x-4 sm:flex-row'>
-                    <Form.Item label="Office Address"
+                    <Form.Item label="Business Name"
                         className='w-full'
-                        validateStatus={errors?.office_address ? 'error' : ''}
-                        help={errors?.office_address ? errors?.office_address[0] : ''}
+                        validateStatus={errors?.business_name ? 'error' : ''}
+                        help={errors?.business_name ? errors?.business_name[0] : ''}
                     >
-                        <Input placeholder="ex. Office Address...a"
-                            onChange={(e)=>setData('office_address', e.target.value)} 
-                            value={data.office_address} 
+                        <Input placeholder="ex. Business Name..."
+                            onChange={(e)=>setData('business_name', e.target.value)} 
+                            value={data.business_name} 
+                            size="large" />
+                    </Form.Item>
+
+                    <Form.Item label="Business Address"
+                        className='w-full'
+                        validateStatus={errors?.business_address ? 'error' : ''}
+                        help={errors?.business_address ? errors?.business_address[0] : ''}
+                    >
+                        <Input placeholder="ex. Business Address..."
+                            onChange={(e)=>setData('business_address', e.target.value)} 
+                            value={data.business_address} 
                             size="large" />
                     </Form.Item>
 
@@ -614,7 +626,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
             <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
 
-                <div className="w-full sm:max-w-xl mt-6 px-6 py-4 bg-white border border-1 overflow-hidden sm:rounded-lg shadow-sm my-5">
+                <div className="w-full sm:max-w-2xl mt-6 px-6 py-4 bg-white border border-1 overflow-hidden sm:rounded-lg shadow-sm my-5">
 
                     <div className="font-bold mb-4 text-lg flex gap-x-2">
                         <Button icon={<ArrowLeftOutlined/>}
@@ -623,34 +635,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                     </div>
 
                     <Divider />
-
-                    {/* <Form layout="vertical"
-                        autoComplete='off'
-                        form={form}
-                        onFinish={submit}
-                        initialValues={{
-                            username: '',
-                            password: '',
-                            password_confirmation: '',
-
-                            lname: '',
-                            fname: '',
-                            mname: '',
-                            suffix: '',
-                            email: '',
-                            sex: '',
-                            birthdate: null,
-                            birthplace: '',
-
-                            province: '',
-                            city: '',
-                            barangay: '',
-                            street: '',
-                            zipcode: '',
-                        }}
-                    >
-                        
-                    </Form> */}
+                  
                     <Form layout='vertical'>
                         <Steps current={current} items={items} />
                         <div>{steps[current].content}</div>

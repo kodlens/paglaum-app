@@ -93,36 +93,68 @@ class DoMemberController extends Controller
 
     public function update(Request $req, $id){
 
+        $dob = null;
+        if($req->birthdate != null || $req->birthdate != ''){
+            $dob = date('Y-m-d', strtotime($req->birthdate));
+        }
+
         $req->validate([
             'fname' => 'required',
             'lname' => 'required',
             'sex' => 'required',
+            'education_level' => 'required',
+            'contact_no' => 'required',
             'email' => 'required|email|unique:users,email,' . $id . ',id',
-            'role' => 'required'
+            'birthdate' => ['required'],
+
+           
         ],[
             'fname.required' => 'First name is required',
             'lname.required' => 'Last name is required',
             'email.required' => 'Email is required',
             'email.email' => 'Email is invalid',
-            'email.unique' => 'Email is already taken',
-            'role.required' => 'Role is required'
+            'email.unique' => 'Email is already taken'
         ]);
 
+        
+
         $user = User::find($id);
-        $user->title = $req->title;
+
         $user->lname = strtoupper($req->lname);
         $user->fname = strtoupper($req->fname);
         $user->mname = strtoupper($req->mname);
         $user->suffix = strtoupper($req->suffix);
-        $user->sex = $req->sex;
-        $user->education_level = $req->education_level;
+        $user->contact_no = $req->contact_no;
         $user->email = $req->email;
-        $user->role = $req->role;
-        $user->active = $req->active ? 1 : 0;
+        $user->education_level = $req->education_level;
+        $user->birthdate = $dob;
+        $user->birthplace = $req->birthplace;
+        
+        $user->sex = $req->sex;
+        $user->civil_status = $req->civil_status;
+        $user->sss = $req->sss;
+        $user->gsis = $req->gsis;
+        $user->tin = $req->tin;
+
+        $user->id_type = $req->id_type;
+        $user->id_no = $req->id_no;
+        $user->household_size = $req->household_size;
+
         $user->province = $req->province;
         $user->city = $req->city;
         $user->barangay = $req->barangay;
         $user->street = $req->street;
+
+        $user->occupation = $req->occupation;
+        $user->monthly_income = $req->monthly_income;
+        $user->business_name = $req->business_name;
+        $user->business_address = $req->business_address;
+        $user->contact_person = $req->contact_person;
+        $user->contact_person_no = $req->contact_person_no;
+
+
+        $user->active = $req->active ? 1 : 0;
+        $user->is_loan_allowed = $req->is_loan_allowed ? 1 : 0;
 
         $user->save();
 

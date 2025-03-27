@@ -54,7 +54,8 @@ return new class extends Migration
 
             $table->string('occupation')->nullable();
             $table->string('monthly_income', 30)->nullable();
-            $table->string('office_address', 100)->nullable();
+            $table->string('business_name', 100)->nullable();
+            $table->string('business_address', 100)->nullable();
             $table->string('contact_person', 50)->nullable();
             $table->string('contact_person_no', 30)->nullable();
 

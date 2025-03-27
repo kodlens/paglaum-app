@@ -9,6 +9,8 @@ export interface User {
     fname?: string;
     mname?: string;
     suffix?: string;
+    contact_no?: string;
+    email?: string;
     education_level?: string;
     birthdate?: Date | null;
     birthplace?: string;
@@ -22,6 +24,7 @@ export interface User {
     blood_type?: string;
     sss?: string;
     tin?: string;
+    gsis?:string;
     id_type?: string;
     id_no?: string;
     drivers_license?: string;
@@ -32,15 +35,16 @@ export interface User {
     industry_code?: string;
     occupational_code?: string;
     monthly_income?: string;
-    office_address?: string;
+    business_name?:string;
+    business_address?: string;
     contact_person?: string;
     contact_person_no?: string;
     sector_presented?: string;
     organization_affiliated?: string;
     org_aff_address?: string;
-    contact_no?: string;
+    
     name?: string;
-    email?: string;
+    
     province?: any;
     city?: any;
     barangay?: any;
@@ -51,6 +55,7 @@ export interface User {
     role?: string;
     membership_date?: Date|null;
     active?: number;
+    is_loan_allowed?: number;
     created_at?: Date|null;
     updated_at?: Date|null;
     last_login?: Date|null;
