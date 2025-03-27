@@ -13,6 +13,9 @@ Route::middleware(['auth', 'do'])->group(function () {
     Route::get('/do/get-members', [App\Http\Controllers\Do\DoMemberController::class, 'getData']);
     Route::post('/do/member-disallow-loan/{id}', [App\Http\Controllers\Do\DoMemberController::class, 'userDisallowLoan']);
     Route::post('/do/member-allow-loan/{id}', [App\Http\Controllers\Do\DoMemberController::class, 'userAllowLoan']);
+    Route::post('/do/users-set-inactive/{id}', [App\Http\Controllers\Do\DoMemberController::class, 'setInactive']);
+    Route::post('/do/users-set-active/{id}', [App\Http\Controllers\Do\DoMemberController::class, 'setActive']);
+
     
    
 });

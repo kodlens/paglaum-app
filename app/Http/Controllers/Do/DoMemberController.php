@@ -163,4 +163,26 @@ class DoMemberController extends Controller
         ], 200);
     }
 
+    public function setActive($id){
+        User::find($id)
+            ->update([
+                'active' => 1
+            ]);
+
+        return response()->json([
+            'status' => 'active'
+        ], 200);
+    }
+
+    public function setInactive($id){
+        User::find($id)
+            ->update([
+                'active' => 0
+            ]);
+
+        return response()->json([
+            'status' => 'inactive'
+        ], 200);
+    }
+
 }

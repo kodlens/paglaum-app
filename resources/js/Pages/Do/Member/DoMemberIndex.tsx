@@ -15,7 +15,7 @@ import { Space, Table,
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { PaginateResponse } from '@/types/apiResponse';
-import { Captions, FileLock2, MonitorCheck, Pencil, ShieldOff, Trash2 } from 'lucide-react';
+import { Captions, CheckCheck, FileLock2, MonitorCheck, Pencil, Pocket, ShieldOff, Trash2 } from 'lucide-react';
 import DoAuthLayout from '@/Layouts/DoAuthLayout';
 
 const { Column } = Table;
@@ -76,24 +76,20 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
         router.visit('/do/members/' + id + '/edit');
 	}
 
-	const handleDeleteClick = async (id:number) => {
 
-		const res = await axios.delete(`/do/members/${id}`);
-		if(res.data.status === 'deleted'){
-			loadDataAsync()
-		}
-	}
 
-    const handleClickActive = (id:any) => {
-        axios.post('/admin/users-set-active/' + id).then(res=>{
-            notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
-        })
-    }
-
-    const handleClickInactive = (id:any) => {
-        axios.post('/admin/users-set-inactive/' + id).then(res=>{
-            notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
-        })
+    const handleClickActiveInactive = (user:User) =>{
+        if(user.active){
+            axios.post('/do/users-set-inactive/' + user.id).then(res=>{
+                notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to inactive.'})
+                loadDataAsync()
+            })
+        }else{
+            axios.post('/do/users-set-active/' + user.id).then(res=>{
+                notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
+                loadDataAsync()
+            })
+        }
     }
 
     const handleClickAllowDisallow = (user:any) => {
@@ -101,7 +97,7 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
         if(user.is_loan_allowed > 0){
             modal.confirm({title: 'Disallow?', content: 'Are you sure you want to disallow this member to loan?', 
                 onOk: ()=>{
-                axios.post('/bm/member-disallow-loan/' + user.id).then(res=>{
+                axios.post('/do/member-disallow-loan/' + user.id).then(res=>{
                     notification.success({ placement: 'bottomRight', message: 'Updated!', description: 'Member set to disallow.'})
                     loadDataAsync()
                 })
@@ -109,7 +105,7 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
         }else{
             modal.confirm({title: 'Allow?', content: 'Are you sure you want to allow this member to loan?', 
                 onOk: ()=>{
-                axios.post('/bm/member-allow-loan/' + user.id).then(res=>{
+                axios.post('/do/member-allow-loan/' + user.id).then(res=>{
                     notification.success({ placement: 'bottomRight', message: 'Updated!', description: 'Member set to allow.'})
                     loadDataAsync()
                 })
@@ -182,31 +178,23 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
                                                     },
                                                     {
                                                         key: '2',
-                                                        label: 'Acitve',
-                                                        icon: <MonitorCheck  size={16} />,
+                                                        label: data.active ? 'Inactive' : 'Active',
+                                                        icon: <CheckCheck  size={16} />,
                                                         onClick: ()=>{
-                                                            handleClickActive(data.id)
+                                                            handleClickActiveInactive(data)
                                                         }
 
                                                     },
                                                     {
                                                         key: '3',
-                                                        label: 'Allow / Disallow Loan',
-                                                        icon: <MonitorCheck  size={16} />,
+                                                        label: data.is_loan_allowed ? 'Disallow Loan' : 'Allow Loan',
+                                                        icon: <Pocket  size={16} />,
                                                         onClick: ()=>{
                                                             handleClickAllowDisallow(data)
                                                         }
 
                                                     },
-                                                    {
-                                                        key: '4',
-                                                        label: 'Inactive',
-                                                        icon: <ShieldOff size={16} />,
-                                                        onClick: ()=>{
-                                                            handleClickInactive(data.id)
-                                                        }
-
-                                                    },
+                                                    
                                                     // {
                                                     //     key: '5',
                                                     //     label: (<ChangePassword data={data} onSuccess={loadDataAsync}/>),
