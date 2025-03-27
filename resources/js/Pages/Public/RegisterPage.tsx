@@ -52,6 +52,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
         blood_type:'',
         sss:'',
         tin:'',
+        gsis: '',
         id_type:'',
         id_no: '',
         philhealth: '',
@@ -63,9 +64,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
         office_address: '',
         contact_person: '',
         contact_person_no: '',
-        
-       
-        license: '',
+
 
         province: null,
         city: null,
@@ -96,11 +95,14 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
         }).catch((error: any) => {
             setLoading(false);
             if (error.response.status === 422) {
+                
                 setErrors(error.response.data.errors);
+                
+
                 notification.error({
                     placement: 'bottomRight',
                     message: 'Invalid Input',
-                    description: errors.message,
+                    description: error.response.data.message,
                 })
             }
         })
@@ -315,7 +317,9 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                         validateStatus={errors.birthdate ? "error" : ""}
                         help={errors.birthdate ? errors.birthdate[0] : ""}
                     >
-                       <DatePicker className='h-10 w-full' placeholder="Select date..." />
+                       <DatePicker className='h-10 w-full'
+                        onChange={(value) =>setData('birthdate', value)}
+                        value={data.birthdate} placeholder="Select date..." />
                     </Form.Item>
 
                     <Form.Item
@@ -324,7 +328,10 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                         validateStatus={errors.birthplace ? "error" : ""}
                         help={errors.birthplace ? errors.birthplace[0] : ""}
                     >
-                        <Input size='large' placeholder='Birthplace...' />
+                        <Input size='large' 
+                            value={data.birthplace} 
+                            onChange={(e) => setData('birthplace', e.target.value)} 
+                            placeholder='Birthplace...' />
                     </Form.Item>
                 </div>
 
@@ -335,13 +342,16 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                         validateStatus={errors.civil_status ? "error" : ""}
                         help={errors.civil_status ? errors.civil_status[0] : ""}
                     >
-                       <Select className='h-10 w-full' placeholder="Select date..."
-                        options={[
-                            { value: 'SINGLE', label: 'SINGLE' },
-                            { value: 'MARRIED', label: 'MARRIED' },
-                            { value: 'DIVORCED', label: 'DIVORCED' },
-                            { value: 'WIDOWED', label: 'WIDOWED' },
-                        ]} />
+                       <Select className='h-10 w-full'
+                            placeholder="CIVIL STATUS..."
+                            value={data.civil_status}
+                            onChange={(value) => setData('civil_status', value)}
+                            options={[
+                                { value: 'SINGLE', label: 'SINGLE' },
+                                { value: 'MARRIED', label: 'MARRIED' },
+                                { value: 'DIVORCED', label: 'DIVORCED' },
+                                { value: 'WIDOWED', label: 'WIDOWED' },
+                            ]} />
                     </Form.Item>
 
                     <Form.Item
@@ -350,7 +360,47 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                         validateStatus={errors.household_size ? "error" : ""}
                         help={errors.household_size ? errors.household_size[0] : ""}
                     >
-                        <InputNumber size='large' className='w-full' placeholder='Household Size...' />
+                        <InputNumber size='large' className='w-full' 
+                            value={data.household_size} 
+                            onChange={(value) => setData('household_size', value ? value : 0)}
+                            placeholder='Household Size...' />
+                    </Form.Item>
+                </div>
+
+                <div className='flex flex-col gap-x-4 sm:flex-row'>
+                    <Form.Item label="GSIS"
+                        className='w-full'
+                        validateStatus={errors?.gsis ? 'error' : ''}
+                        help={errors?.gsis ? errors?.gsis[0] : ''}
+                    >
+                        <Input placeholder="GSIS"
+                            onChange={(e)=>setData('gsis', e.target.value)} 
+                            value={data.gsis} 
+                            size="large" />
+                    </Form.Item>
+
+                    <Form.Item label="SSS"
+                        className='w-full'
+                        validateStatus={errors?.sss ? 'error' : ''}
+                        help={errors?.sss ? errors?.sss[0] : ''}
+                    >
+                        <Input placeholder="SSS"
+                            onChange={(e)=>setData('sss', e.target.value)} 
+                            value={data.sss} 
+                            size="large" />
+                    </Form.Item>
+                </div>
+
+                <div className='flex flex-col gap-x-4 sm:flex-row'>
+                    <Form.Item label="TIN"
+                        className='w-full'
+                        validateStatus={errors?.tin ? 'error' : ''}
+                        help={errors?.tin ? errors?.tin[0] : ''}
+                    >
+                        <Input placeholder="TIN"
+                            onChange={(e)=>setData('tin', e.target.value)} 
+                            value={data.tin} 
+                            size="large" />
                     </Form.Item>
                 </div>
 
@@ -362,7 +412,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                         help={errors?.id_type ? errors?.id_type[0] : ''}
                     >
                         <Input placeholder="ex. Driver License / UMID etc."
-                            onChange={(e)=>setData('email', e.target.value)} 
+                            onChange={(e)=>setData('id_type', e.target.value)} 
                             value={data.id_type} 
                             size="large" />
                     </Form.Item>
@@ -373,7 +423,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                         help={errors?.id_no ? errors?.id_no[0] : ''}
                     >
                         <Input placeholder="ex. 1234567"
-                            onChange={(e)=>setData('email', e.target.value)} 
+                            onChange={(e)=>setData('id_no', e.target.value)} 
                             value={data.id_no} 
                             size="large" />
                     </Form.Item>
@@ -393,7 +443,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                         help={errors?.occupation ? errors?.occupation[0] : ''}
                     >
                         <Input placeholder="ex. Office Staff"
-                            onChange={(e)=>setData('email', e.target.value)} 
+                            onChange={(e)=>setData('occupation', e.target.value)} 
                             value={data.occupation} 
                             size="large" />
                     </Form.Item>
@@ -436,7 +486,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                     >
                         <Input placeholder="ex. Juan Cruz"
                             onChange={(e)=>setData('contact_person', e.target.value)} 
-                            value={data.office_address} 
+                            value={data.contact_person} 
                             size="large" />
                     </Form.Item>
 

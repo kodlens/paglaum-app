@@ -26,35 +26,44 @@ class RegisterController extends Controller
 
     public function store(Request $request){
 
-        //return $request;
+      
+
+        $dob = null;
+        if($request->birthdate != null || $request->birthdate != ''){
+            $dob = date('Y-m-d', strtotime($request->birthdate));
+        }
 
         $request->validate([
             'username' => 'required|string|max:30|unique:users',
             'lname' => 'required|string|max:255',
             'fname' => 'required|string|max:255',
             //'education_level' => 'required|string|max:255',
-            //'birthdate' => 'required',
+            'birthdate' => 'required',
+            'civil_status' => 'required|max:30',
             //'birthplace' => 'required|string|max:255',
-            'sex' => 'required|string|max:255',
-            //'civil_status' => 'required|string|max:255',
-            //'religion' => 'required|string|max:255',
+            'sex' => 'required|string|max:20',
             'email' => 'required|string|lowercase|email|max:255|unique:users',
             'contact_no' => 'required',
             'password' => ['required', 'confirmed', Rules\Password::defaults(), 'max:30'],
             'province' => 'required',
             'city' => 'required',
             'barangay' => 'required',
+            'occupation' => 'required|string|max:255',
+            'office_address' => 'required|string|max:255',
+            'contact_person' => 'required|string|max:255',
+            'contact_person_no' => 'required|string|max:255',
         ]);
 
         $user = User::create([
             'username' => $request->username,
             'lname' => $request->lname,
-            'fname' => $request->lname,
+            'fname' => $request->fname,
+            'mname' => $request->mname,
             'suffix' => $request->suffix,
             'contact_no' => $request->contact_no,
             'email' => $request->email,
             'education_level' => $request->education_level,
-            'birthdate' => $request->birthdate,
+            'birthdate' => $dob,
             'birthplace' => $request->birthplace,
             'sex' => $request->sex,
             'civil_status' => $request->civil_status,
