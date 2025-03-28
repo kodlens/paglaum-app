@@ -18,6 +18,7 @@ import axios from 'axios';
 import { Captions, FileLock2, MessageSquareMore, MonitorCheck, Pencil, ShieldOff, ThumbsUp, Trash2 } from 'lucide-react';
 import { Loan } from '@/types/loan';
 import DoAuthLayout from '@/Layouts/DoAuthLayout';
+import { LoanType } from '@/types/loanType';
 
 const { Column } = Table;
 
@@ -39,12 +40,49 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
     const [search, setSearch] = useState('');
     const [errors, setErrors] = useState<any>({});
 
+    const [loanTypes, setLoanTypes] = useState<any[]>([])
+    const [loanSubtypes, setLoanSubtypes] = useState<any[]>([])
+
+
     const [id, setId] = useState(0);
 	
     interface PaginateResponse {
         data: any[],
         total: number;
     }
+       
+    const loadLoanTypes = () => {
+        axios.get('/load-loan-types').then(res=>{
+            setLoanTypes(res.data);
+        });
+    }
+
+    useEffect(() => { 
+        loadLoanTypes();
+    }, []);
+
+    const handleChangeLoanType = (value:any) => { 
+        const selectedLoanType = loanTypes.find((item:any) => item.id === Number(value));
+        form.setFieldsValue({ name: 'loan_subtype_id', value: null });
+        console.log(selectedLoanType.loan_subtypes);
+        
+        if (selectedLoanType) {
+            setLoanSubtypes(selectedLoanType.loan_subtypes || []); // Fallback to an empty array if no subtypes exist
+        } else {
+            setLoanSubtypes([]); // Reset subtypes if no loan type is selected
+        }
+    }
+
+    const handleChangeLoanSubtype = (value: any) => {
+        const selectedLoanSubtypes = loanSubtypes.find((item:any) => item.id === Number(value));
+        console.log('handle change loan subtype', selectedLoanSubtypes);
+
+        form.setFieldsValue([
+            { name: 'terms_month', value: selectedLoanSubtypes.terms_month },
+            { name: 'interest', value: selectedLoanSubtypes.percent }
+        ]);
+    } 
+
 
 	const loadDataAsync = async () => {
 
@@ -74,33 +112,12 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
         setPerPage(perPage)
     }
 
-	const handClickNew = () => {
-        //router.visit('/');
-		setId(0)
-        setOpen(true)
-    }
-
-    // const getData = (id:number) => {
-
-    //     axios.get('/do/get-loans/' + id).then(res=>{
-    //         form.setFieldsValue({
-    //             education_level: res.data.education_level,
-    //             description: res.data.description,
-    //             order_no: res.data.order_no,
-    //             active: res.data.active > 0 ? true : false,
-    //         })
-
-    //         console.log(res.data.active);
-            
-    //     });
-    // }
-	
 
 	const onFinish = async (values:Loan) =>{
 
 		if(id > 0){
 			try{
-				const res = await axios.put('/do/education-levels/' + id, values)
+				const res = await axios.put('/do/loans/' + id, values)
 				if(res.data.status === 'updated'){
 					notification.info({ placement: 'bottomRight', message: 'Updated!', description: 'Education Level successfully updated.'})
 					setOpen(false)
@@ -165,8 +182,14 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
         }})
     }
 
-    const showLoanInformation = () => {
+    const showLoanInformation = (loan:Loan) => {
         setOpen(true);
+        form.setFieldsValue({
+            'purpose': loan.purpose,
+            'guarantor': loan.guarantor,
+            'loan_type_id': loan.loan_type_id,
+            'is_do_approve': loan.is_do_approve,
+        });
     }
 
 
@@ -253,7 +276,7 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
                                                         label: 'Details',
                                                         icon: <MessageSquareMore size={16} />,
                                                         onClick: ()=>{
-                                                            showLoanInformation()
+                                                            showLoanInformation(data)
                                                         }
                                                     },
                                                 ],
@@ -306,10 +329,15 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
                         name="form_in_modal"
                         autoComplete="off"
                         initialValues={{
-                            education_level: "",
-                            description: "",
-                            order_no: 0,
-                            active: true,
+                            purpose: '',
+                            guarantor: '',
+                            loan_type_id: 0,
+                            loan_subtype_id: null,
+                            mode_payment: '',
+                            principal: 0,
+                            interest: 0,
+                            terms_month: 0,
+                            is_do_approve: 0
                         }}
                         clearOnDestroy
                         onFinish={(values) => onFinish(values)}
@@ -320,37 +348,53 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
             >
 
                 <Form.Item
-                    name="education_level"
-                    label="Education Level"
-                    validateStatus={errors.education_level ? "error" : ""}
-                    help={errors.education_level ? errors.education_level[0] : ""}
+                    label="Purpose" 
+                    name="purpose"
+                    validateStatus={errors.purpose ? "error" : ""}
+                    help={errors.purpose ? errors.purpose[0] : ""}
                 >
-                    <Input placeholder="Area" />
+                    <Input placeholder="Purpose" />
                 </Form.Item>
 
                 <Form.Item
-                    name="description"
-                    label="Description"
-                    validateStatus={errors.description ? "error" : ""}
-                    help={errors.description ? errors.description[0] : ""}
+                    label="Guarantor"
+                    name="guarantor"
+                    validateStatus={errors.guarantor ? "error" : ""}
+                    help={errors.guarantor ? errors.guarantor[0] : ""}
                 >
-                    <Input placeholder="Description" />
+                    <Input placeholder="Guarantor" />
                 </Form.Item>
 
                 <Form.Item
+                    label="Loan Type"
+                    name="loan_type_id"
                     className='w-full'
-                    name="order_no"
-                    label="Order No"
-                    validateStatus={errors.order_no ? "error" : ""}
-                    help={errors.order_no ? errors.order_no[0] : ""}
+                    validateStatus={errors.loan_type_id ? "error" : ""}
+                    help={errors.loan_type_id ? errors.loan_type_id[0] : ""}
                 >
-                    <InputNumber type='number' className='w-full' placeholder="Order No." />
+                    <Select onChange={handleChangeLoanType} 
+                        options={loanTypes.map((loanType:LoanType) => (
+                         { value: loanType.id, label: loanType.loan_type}
+                    ))}/>
+                </Form.Item>
+
+                <Form.Item
+                    label="Loan Subtype"
+                    name="loan_subtype_id"
+                    className='w-full'
+                    validateStatus={errors.loan_subtype_id ? "error" : ""}
+                    help={errors.loan_subtype_id ? errors.loan_subtype_id[0] : ""}
+                >
+                    <Select onChange={handleChangeLoanSubtype} 
+                        options={loanSubtypes.map((loanSubtype:any) => (
+                         { value: loanSubtype.id, label: loanSubtype.loan_subtype}
+                    ))}/>
                 </Form.Item>
 
                 <Form.Item
                     valuePropName='checked'
-                    name="active">
-                    <Checkbox>Active</Checkbox>
+                    name="is_do_approve">
+                    <Checkbox>Approve(DO)</Checkbox>
                 </Form.Item>
 
             </Modal>
