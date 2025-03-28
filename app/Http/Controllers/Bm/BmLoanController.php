@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Loan;
 use App\Models\LoanDetail;
+use App\Models\User;
 
 class BmLoanController extends Controller
 {
@@ -92,7 +93,7 @@ class BmLoanController extends Controller
 
                 Loan::find($req->id)
                     ->update([
-                        'is_approve' => 1
+                        'is_bm_approve' => 1,
                     ]);
                 
             });

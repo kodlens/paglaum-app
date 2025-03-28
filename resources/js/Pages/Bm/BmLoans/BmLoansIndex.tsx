@@ -144,15 +144,40 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 		}
 	}
 
-    const handleClickApprove = (loan:any) => {
+    const handleClickApprove = (loan:Loan) => {
         modal.confirm({title: 'Approve?', content: 'Are you sure you want to approve this borrower?', 
             onOk: ()=>{
-            axios.post('/bm/approve-loan', loan).then(res=>{
-                if(res.data.status === 'approved'){
-                    notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
-                    loadDataAsync()
-                }
-            })
+                axios.post('/bm/approve-loan', loan).then(res=>{
+                    if(res.data.status === 'approved'){
+                        notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
+                        loadDataAsync()
+                    }
+                }).catch(err=>{
+                    if(err.response.data.errors.loan){
+                        notification.error({
+                            placement: 'bottomRight',
+                            description: 'Error: ' + err.response.data.message,
+                            message: 'Approved Already!'
+                        });
+                    }
+                })
+
+                // if(loan.is_bm_approve){
+                //     axios.post('/bm/disapprove-loan', loan).then(res=>{
+                //         if(res.data.status === 'approved'){
+                //             notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
+                //             loadDataAsync()
+                //         }
+                //     })
+                // }else{
+                //     axios.post('/bm/approve-loan', loan).then(res=>{
+                //         if(res.data.status === 'approved'){
+                //             notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
+                //             loadDataAsync()
+                //         }
+                //     })
+                // }
+            
         }})
     }
 
@@ -197,29 +222,37 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 							
                             <Column title="Interest(%)" dataIndex="interest" key="interest"/>
 
-							<Column title="Approve" dataIndex="is_approve" render={(is_approve:number)=>(
-								is_approve > 0 ? (
+							<Column title="Approve(DO)" dataIndex="is_do_approve" render={(is_do_approve:number)=>(
+								is_do_approve > 0 ? (
 									<span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
 								) : (
 									<span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
 								)
-							)}/>
+							)} />
+
+                            <Column title="Approve(BM)" dataIndex="is_bm_approve" render={(is_bm_approve:number)=>(
+								is_bm_approve > 0 ? (
+									<span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
+								) : (
+									<span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
+								)
+							)} />
 							<Column title="Action" key="action" 
-								render={(_, data:Area) => (
+								render={(_, data:Loan) => (
 									<div className='flex gap-2'>
 
                                         <Dropdown.Button type="primary"
                                             placement="bottomRight"
                                             menu={{
                                                 items: [
-                                                    {
-                                                        key: '1',
-                                                        label: 'Edit',
-                                                        icon: <Pencil size={16} />,
-                                                        onClick: ()=>{
-                                                            handleEditClick(data.id)
-                                                        }
-                                                    },
+                                                    // {
+                                                    //     key: '1',
+                                                    //     label: 'Edit',
+                                                    //     icon: <Pencil size={16} />,
+                                                    //     onClick: ()=>{
+                                                    //         handleEditClick(data.id)
+                                                    //     }
+                                                    // },
                                                     {
                                                         key: '2',
                                                         label: 'Approve',

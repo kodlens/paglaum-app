@@ -16,7 +16,6 @@ import { Space, Table,
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Captions, FileLock2, MessageSquareMore, MonitorCheck, Pencil, ShieldOff, ThumbsUp, Trash2 } from 'lucide-react';
-import { Area } from '@/types/area';
 import { Loan } from '@/types/loan';
 import DoAuthLayout from '@/Layouts/DoAuthLayout';
 
@@ -166,6 +165,10 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
         }})
     }
 
+    const showLoanInformation = () => {
+        setOpen(true);
+    }
+
 
 
 	return (
@@ -250,7 +253,7 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
                                                         label: 'Details',
                                                         icon: <MessageSquareMore size={16} />,
                                                         onClick: ()=>{
-                                                            
+                                                            showLoanInformation()
                                                         }
                                                     },
                                                 ],
@@ -287,7 +290,7 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
 			{/* Modal */}
             <Modal
                 open={open}
-                title="EDUCATION LEVEL INFORMATION"
+                title="LOAN INFORMATION"
                 okText="Save"
                 cancelText="Cancel"
                 okButtonProps={{

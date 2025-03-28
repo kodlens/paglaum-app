@@ -32,18 +32,23 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-
+        $user = Auth::user();
         $request->session()->regenerate();
 
-        $user = Auth::user();
-        $user->update(['last_login' => now()]);
-
+        
         $role = $user->role;
         
         if(strtolower($role) == 'admin')
             return redirect()->intended(RouteServiceProvider::ADMIN);
-        else
-            return redirect()->intended(RouteServiceProvider::HOME);    
+        
+        if(strtolower($role) == 'do')
+            return redirect()->intended(RouteServiceProvider::DO);    
+
+        if(strtolower($role) == 'bm')
+            return redirect()->intended(RouteServiceProvider::BM);   
+        
+        if(strtolower($role) == 'member')
+            return redirect()->intended(RouteServiceProvider::MEMBER);    
         //return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -52,6 +57,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+        $user->update(['last_login' => now()]);
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
