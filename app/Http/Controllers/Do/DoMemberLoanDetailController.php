@@ -13,7 +13,7 @@ class DoMemberLoanDetailController extends Controller
 {
     //
     public function index($id){
-        $loan = Loan::with('loan_details')
+        $loan = Loan::with(['loan_details', 'user'])
             ->where('id', $id)->first();
 
         return Inertia::render('Do/DoLoans/DoMemberLoanDetails', [

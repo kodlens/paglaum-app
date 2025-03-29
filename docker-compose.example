@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # MySQL service
+  mysql:
+    image: mysql:latest
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: db_here
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+
+  # PHP + Apache service
+  apache-php:
+    image: php:8.2-apache
+    container_name: apache_php_container
+    ports:
+      - "8080:80"  # Exposes Apache on port 8080
+    volumes:
+      - src_dir:/var/www/html  # Mounts the 'src' directory to the Apache container
+    networks:
+      - app_network
+    depends_on:
+      - mysql  # Ensures MySQL starts before Apache
+
+  # Node.js service
+  # node:
+  #   image: node:22
+  #   container_name: node_container
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - ./node-app:/usr/src/app  # Mounts the 'node-app' directory to the Node container
+  #   command: ["npm", "start"]  # Replace with your command to start the Node.js app
+  #   networks:
+  #     - app_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge

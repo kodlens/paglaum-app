@@ -10,6 +10,7 @@ export interface Loan {
     loan_subtype_id?: number|string|null;
     loan_type?: string;
     loan_subtype?: string;
+    user?: User;
     // loan_subtypes: LoanSubtype[]
     // loan_subtypes: LoanSubtype[]
     interest?: number;
