@@ -10,6 +10,9 @@ Route::middleware(['auth', 'do'])->group(function () {
     Route::post('/do/approve-loan', [App\Http\Controllers\Do\DoLoanController::class, 'approveLoan']);
     Route::post('/do/disapprove-loan', [App\Http\Controllers\Do\DoLoanController::class, 'disapproveLoan']);
 
+    Route::get('/do/do-member-loan-details/{id}',[App\Http\Controllers\Do\DoMemberLoanDetailController::class, 'index']);
+
+
     Route::resource('/do/members', App\Http\Controllers\Do\DoMemberController::class)->names('do.members');
     Route::get('/do/get-members', [App\Http\Controllers\Do\DoMemberController::class, 'getData']);
     Route::post('/do/member-disallow-loan/{id}', [App\Http\Controllers\Do\DoMemberController::class, 'userDisallowLoan']);

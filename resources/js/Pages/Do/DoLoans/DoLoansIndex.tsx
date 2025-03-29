@@ -26,10 +26,11 @@ const { Column } = Table;
 const DoLoansIndex = ({ auth }: PageProps)  => {
 	
 	const [form] = Form.useForm();
-
+    //const { form } = useForm();
 	const  { notification, modal } = App.useApp();
 
     const [data, setData] = useState<Loan[]>([]);
+    const [loan, setLoan] = useState<Loan>();
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
 
@@ -51,38 +52,7 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
         total: number;
     }
        
-    const loadLoanTypes = () => {
-        axios.get('/load-loan-types').then(res=>{
-            setLoanTypes(res.data);
-        });
-    }
-
-    useEffect(() => { 
-        loadLoanTypes();
-    }, []);
-
-    const handleChangeLoanType = (value:any) => { 
-        const selectedLoanType = loanTypes.find((item:any) => item.id === Number(value));
-        form.setFieldsValue({ name: 'loan_subtype_id', value: null });
-        console.log(selectedLoanType.loan_subtypes);
-        
-        if (selectedLoanType) {
-            setLoanSubtypes(selectedLoanType.loan_subtypes || []); // Fallback to an empty array if no subtypes exist
-        } else {
-            setLoanSubtypes([]); // Reset subtypes if no loan type is selected
-        }
-    }
-
-    const handleChangeLoanSubtype = (value: any) => {
-        const selectedLoanSubtypes = loanSubtypes.find((item:any) => item.id === Number(value));
-        console.log('handle change loan subtype', selectedLoanSubtypes);
-
-        form.setFieldsValue([
-            { name: 'terms_month', value: selectedLoanSubtypes.terms_month },
-            { name: 'interest', value: selectedLoanSubtypes.percent }
-        ]);
-    } 
-
+  
 
 	const loadDataAsync = async () => {
 
@@ -147,7 +117,7 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
     const handleClickApprove = (loan:Loan) => {
         modal.confirm({title: loan.is_do_approve ? 'Disapprove?' : 'Approve?', content: `Are you sure you want to ${loan.is_do_approve ? 'dispprove' : 'approve'} this borrower?`, 
             onOk: ()=>{
-                if(loan.is_do_approve > 0){
+                if(!!loan.is_do_approve){
                     axios.post('/do/disapprove-loan', loan).then(res=>{
                         if(res.data.status === 'disapproved'){
                             notification.success({ placement: 'bottomRight', message: 'Disapproved!', description: 'Disapproved successfully.'})
@@ -183,14 +153,9 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
     }
 
     const showLoanInformation = (loan:Loan) => {
-        setOpen(true);
-        form.setFieldsValue({
-            'purpose': loan.purpose,
-            'guarantor': loan.guarantor,
-            'loan_type_id': loan.loan_type_id,
-            'is_do_approve': loan.is_do_approve,
-        });
+       router.visit(`/do/do-member-loan-details/${loan.id}`)
     }
+
 
 
 
@@ -310,94 +275,7 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
 			</div>
 
 
-			{/* Modal */}
-            <Modal
-                open={open}
-                title="LOAN INFORMATION"
-                okText="Save"
-                cancelText="Cancel"
-                okButtonProps={{
-                    autoFocus: true,
-                    htmlType: "submit",
-                }}
-                onCancel={() => {setOpen(false); setErrors({});}}
-                destroyOnClose
-                modalRender={(dom) => (
-                    <Form
-                        layout="vertical"
-                        form={form}
-                        name="form_in_modal"
-                        autoComplete="off"
-                        initialValues={{
-                            purpose: '',
-                            guarantor: '',
-                            loan_type_id: 0,
-                            loan_subtype_id: null,
-                            mode_payment: '',
-                            principal: 0,
-                            interest: 0,
-                            terms_month: 0,
-                            is_do_approve: 0
-                        }}
-                        clearOnDestroy
-                        onFinish={(values) => onFinish(values)}
-                    >
-                        {dom}
-                    </Form>
-                )}
-            >
-
-                <Form.Item
-                    label="Purpose" 
-                    name="purpose"
-                    validateStatus={errors.purpose ? "error" : ""}
-                    help={errors.purpose ? errors.purpose[0] : ""}
-                >
-                    <Input placeholder="Purpose" />
-                </Form.Item>
-
-                <Form.Item
-                    label="Guarantor"
-                    name="guarantor"
-                    validateStatus={errors.guarantor ? "error" : ""}
-                    help={errors.guarantor ? errors.guarantor[0] : ""}
-                >
-                    <Input placeholder="Guarantor" />
-                </Form.Item>
-
-                <Form.Item
-                    label="Loan Type"
-                    name="loan_type_id"
-                    className='w-full'
-                    validateStatus={errors.loan_type_id ? "error" : ""}
-                    help={errors.loan_type_id ? errors.loan_type_id[0] : ""}
-                >
-                    <Select onChange={handleChangeLoanType} 
-                        options={loanTypes.map((loanType:LoanType) => (
-                         { value: loanType.id, label: loanType.loan_type}
-                    ))}/>
-                </Form.Item>
-
-                <Form.Item
-                    label="Loan Subtype"
-                    name="loan_subtype_id"
-                    className='w-full'
-                    validateStatus={errors.loan_subtype_id ? "error" : ""}
-                    help={errors.loan_subtype_id ? errors.loan_subtype_id[0] : ""}
-                >
-                    <Select onChange={handleChangeLoanSubtype} 
-                        options={loanSubtypes.map((loanSubtype:any) => (
-                         { value: loanSubtype.id, label: loanSubtype.loan_subtype}
-                    ))}/>
-                </Form.Item>
-
-                <Form.Item
-                    valuePropName='checked'
-                    name="is_do_approve">
-                    <Checkbox>Approve(DO)</Checkbox>
-                </Form.Item>
-
-            </Modal>
+			
 
 
 		</DoAuthLayout>
