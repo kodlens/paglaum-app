@@ -1,7 +1,6 @@
 import MemberAuthLayout from '@/Layouts/MemberAuthLayout'
 import { PageProps } from '@/types'
 import React from 'react'
-import ApplyLoan from "@/Components/ApplyLoan";
 import {Head, router} from "@inertiajs/react";
 import MyLoanTable from './partials/MyLoanTable';
 import LoanApplication from '@/Components/LoanApplication';
