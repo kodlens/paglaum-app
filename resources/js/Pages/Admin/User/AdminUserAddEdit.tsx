@@ -243,6 +243,7 @@ export default function AdminUserAddEdit({
                         >
                             <Select
                                 options={[
+                                    { value: "DO", label: "DEVELOPMENT OFFICER" },
                                     { value: "MEMBER", label: "MEMBER" },
                                     { value: "BM", label: "BRANCH MANAGER" },
                                     { value: "ADMIN", label: "ADMINISTRATOR" },
