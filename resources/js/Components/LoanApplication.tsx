@@ -213,8 +213,8 @@ const LoanApplication = () => {
                         options={[
                             {value: 'DAILY',  label: 'DAILY'},
                             {value: 'WEEKLY',  label: 'WEEKLY'},
-                            {value: 'SEMI-MONTHLY',  label: 'SEMI-MONTHLY'},
-                            {value: 'MONTHLY',  label: 'MONTHLYLY'},
+                            // {value: 'SEMI-MONTHLY',  label: 'SEMI-MONTHLY'},
+                            {value: 'MONTHLY',  label: 'MONTHLY'},
                             {value: 'QUARTERLY',  label: 'QUARTERLY'},
                             {value: 'LUMP-SUM',  label: 'LUMP-SUM'},
                         ]}

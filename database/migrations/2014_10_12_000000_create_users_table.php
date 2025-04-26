@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('username')->nullable()
                 ->unique();
 
+            $table->string('password');
+            $table->string('role', 30)->nullable();
+
             $table->string('lname', 100)->nullable();
             $table->string('fname', 100)->nullable();
             $table->string('mname', 100)->nullable();
@@ -71,9 +74,8 @@ return new class extends Migration
             $table->string('street', 30)->nullable();
             $table->string('zip', 30)->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+          
             $table->string('image')->nullable();
-            $table->string('role', 30)->nullable();
             $table->date('membership_date')->nullable();
             $table->tinyInteger('active')->nullable()
                 ->default(1);

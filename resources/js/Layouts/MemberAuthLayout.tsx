@@ -109,6 +109,7 @@ export default function Authenticated({ user, header, children }: PropsWithChild
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('member.profile.edit')}>Profile</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('member.my-loans.index')}>My Loan</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Log Out
                             </ResponsiveNavLink>

@@ -9,6 +9,8 @@ use Inertia\Response;
 use App\Models\Loan;
 use App\Models\LoanDetail;
 use Auth;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 class MemberMyLoanController extends Controller
 {
@@ -41,7 +43,6 @@ class MemberMyLoanController extends Controller
             ], 422);
         }
 
-
         if($principal < 100){
             return response()->json([
                 'errors' => [
@@ -68,28 +69,31 @@ class MemberMyLoanController extends Controller
 
         ]);
 
-        /* -------------- add checking if allowed reloan ------------------ */
-        /* -------------- prevent the user to reloan ------------------ */
-        require __DIR__.'/partials/check_reloan.php';
-        if($totalMonthsMustPaid > $countMonthsPaid){
-            return response()->json([
-                'errors' => [
-                    'principal' => ['Reloan is not allowed this time.']
-                ],
-                'message' => 'Reloan is not allowed this time.'
-            ], 422);
-        }
-        /* -------------- *************END*********** ------------------ */
+        // // check if the user have loan history
+        // $exists = Loan::where('user_id', $user->id)->existS();
+        // if($exists){
+        //     /* -------------- add checking if allowed reloan ------------------ */
+        //     /* -------------- prevent the user to reloan ------------------ */
+        //     require __DIR__.'/partials/check_reloan.php';
+        //     if($totalMonthsMustPaid > $countMonthsPaid){
+        //         return response()->json([
+        //             'errors' => [
+        //                 'principal' => ['Reloan is not allowed this time.']
+        //             ],
+        //             'message' => 'Reloan is not allowed this time.'
+        //         ], 422);
+        //     }
+        //     /* -------------- *************END*********** ------------------ */
+        // }
 
-
-        //return $req;
         try{
 
             \DB::transaction(function () use ($req, $user) {
                
-        
+               
                 $loan = Loan::create([
                     'user_id' => $user->id,
+                    'guarantor' => $req->guarantor,
                     'purpose' => $req->purpose,
                     'loan_type_id' => $req->loan_type_id,
                     'loan_subtype_id' => $req->loan_subtype_id,
@@ -99,12 +103,32 @@ class MemberMyLoanController extends Controller
                     'terms_month' => $req->terms_month,
                 ]);
 
-               // $this->monthlyBreakdown($loan, $req, $user);
+                /* -------------- filter by mode of payment (daily, weekly, monthly) ------------------ */
+                if($req->mode_payment == 'MONTHLY'){
+                    $this->monthlyBreakdown($loan, $req, $user);
+                }
+
+                if($req->mode_payment == 'DAILY'){
+                    $this->dailyBreakDown($loan, $req, $user);
+                }
+
+                if($req->mode_payment == 'WEEKLY'){
+                    $this->weeklyBreakdown($loan, $req, $user);
+                }
+
+                if($req->mode_payment == 'QUARTERLY'){
+                    $this->quarterlyBreakdown($loan, $req, $user);
+                }
+
+                if($req->mode_payment == 'LUMP-SUM'){
+                    $this->lumpSumBreakdown($loan, $req, $user);
+                }
+                
                 
             });
-
+            
             return response()->json([
-                'status' => 'saved'
+                'status' => 'saved11'
             ], 200);
             
         }catch(\Exception  $e){
@@ -121,7 +145,7 @@ class MemberMyLoanController extends Controller
 
 
 
-    /*=========================================
+    /*==================MONTHLY=======================*/
     private function monthlyBreakdown($loan, $req, $user){
 
         $principal = $req->principal;
@@ -147,7 +171,149 @@ class MemberMyLoanController extends Controller
         }
 
         LoanDetail::insert($loanDetails);
-    }*/
+    }
+
+    /* ================= DAILY ================== */
+    private function dailyBreakDown($loan, $req, $user){
+        
+        //Starting date
+        $startDate = Carbon::now()->addDay();  // Add one day to current date
+
+        //End date = $req->terms_month months later
+        $endDate = $startDate->copy()->addMonths($req->terms_month);
+
+        //Create daily period
+        $period = CarbonPeriod::create($startDate, '1 day', $endDate);
+
+
+        $principal = $req->principal;
+        $terms = $req->terms_month / 12;
+        $interest = $req->interest / 100;
+        
+        $monthlyInterest = $principal * $interest * $terms;
+        $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
+        $monthlyAmortization = $totalPayment / $req->terms_month;
+
+        $payment = $totalPayment / count($period);
+
+        //Loop through each day
+        foreach ($period as $i => $date) {
+            //echo $date->format('Y-m-d') . "\n";
+            $loanDetails[] = [
+                'loan_id' => $loan->id,
+                'user_id' => $user->id,
+                'month' => $date->month,
+                'amount' => round($payment, 2),
+                'due_date' => $date->format('Y-m-d'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]; 
+        }
+
+        LoanDetail::insert($loanDetails);
+    }
+
+
+    /* ================= WEEKLY ================== */
+    private function weeklyBreakdown($loan, $req, $user){
+        //Starting date
+        $startDate = Carbon::now()->addDay();  // Add one day to current date
+
+        //End date = $req->terms_month months later
+        $endDate = $startDate->copy()->addMonths($req->terms_month);
+
+        //Create daily period
+        $period = CarbonPeriod::create($startDate, '1 week', $endDate);
+
+        $principal = $req->principal;
+        $terms = $req->terms_month / 12;
+        $interest = $req->interest / 100;
+        
+        $monthlyInterest = $principal * $interest * $terms;
+        $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
+        $monthlyAmortization = $totalPayment / $req->terms_month;
+
+        $payment = $totalPayment / count($period);
+
+        //Loop through each day
+        foreach ($period as $i => $date) {
+            echo $date->format('Y-m-d') . "\n";
+            $loanDetails[] = [
+                'loan_id' => $loan->id,
+                'user_id' => $user->id,
+                'month' => $date->month,
+                'amount' => round($payment, 2),
+                'due_date' => $date->format('Y-m-d'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]; 
+        }
+        LoanDetail::insert($loanDetails);
+    }
+
+    /* ================= QUARTERLY ================== */
+    private function quarterlyBreakdown($loan, $req, $user){
+        //Starting date
+        $startDate = Carbon::now()->addDay();  // Add one day to current date
+
+        //End date = $req->terms_month months later
+        $endDate = $startDate->copy()->addMonths($req->terms_month);
+
+        //Create daily period
+        $period = CarbonPeriod::create($startDate, '3 months', $endDate);
+
+        $principal = $req->principal;
+        $terms = $req->terms_month / 12;
+        $interest = $req->interest / 100;
+        
+        $monthlyInterest = $principal * $interest * $terms;
+        $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
+        $monthlyAmortization = $totalPayment / $req->terms_month;
+
+        $payment = $totalPayment / count($period);
+
+        //Loop through each day
+        foreach ($period as $i => $date) {
+            echo $date->format('Y-m-d') . "\n";
+            $loanDetails[] = [
+                'loan_id' => $loan->id,
+                'user_id' => $user->id,
+                'month' => $date->month,
+                'amount' => round($payment, 2),
+                'due_date' => $date->format('Y-m-d'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]; 
+        }
+
+        LoanDetail::insert($loanDetails);
+    }
+
+    /* ================= lumpsum ================== */
+    private function lumpSumBreakdown($loan, $req, $user){
+        //Starting date
+        $startDate = Carbon::now()->addDay();  // Add one day to current date
+        //End date = $req->terms_month months later
+        $endDate = Carbon::now()->addMonth();
+        echo $endDate->month;
+
+        $principal = $req->principal;
+        $terms = $req->terms_month / 12;
+        $interest = $req->interest / 100;
+        
+        $monthlyInterest = $principal * $interest * $terms;
+        $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
+
+        LoanDetail::create([
+            'loan_id' => $loan->id,
+            'user_id' => $user->id,
+            'month' => $endDate->month,
+            'amount' => round($totalPayment, 2),
+            'due_date' => $endDate->format('Y-m-d'),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
 
 
 

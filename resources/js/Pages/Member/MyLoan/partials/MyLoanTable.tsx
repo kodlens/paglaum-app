@@ -33,7 +33,7 @@ export default function MyLoanTable() {
                         {loans.map((item: any, index: number) => (
                             <tr key={index} className='bg-white border-bborder-gray-200 border-b'>
 
-                                <td className=''>
+                                <td className='py-2'>
                                     <div className='mb-2'>
                                         <div className='font-bold text-gray-500 text-[.7rem]'>LOAN TYPE</div>
                                         <div>{item.loan_type.loan_type}</div>
@@ -42,6 +42,11 @@ export default function MyLoanTable() {
                                     <div>
                                         <div className='font-bold text-gray-500 text-[.7rem]'>LOAN SUBTYPE</div>
                                         <div>{item.loan_subtype.loan_subtype}</div>
+                                    </div>
+
+                                    <div className='mt-2'>
+                                        <div className='font-bold text-gray-500 text-[.7rem]'>MODE OF PAYMENT</div>
+                                        <div>{item.mode_payment}</div>
                                     </div>
 
                                 </td>
@@ -82,6 +87,7 @@ export default function MyLoanTable() {
                                         <div className='text-lg'> &#8369; {item.principal.toLocaleString()}</div>
                                     </div>
                                 </td>
+
                                 <td>
                                     <Link
                                         href={`/member/my-loans-details/${item.id}`}
