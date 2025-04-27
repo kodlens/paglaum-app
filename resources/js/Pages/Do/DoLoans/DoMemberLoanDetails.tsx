@@ -48,7 +48,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
             loan_type_id: value
         }));
 
-        console.log(selectedLoanType.loan_subtypes);
+        //console.log(selectedLoanType.loan_subtypes);
 
         if (selectedLoanType) {
             setLoanSubtypes(selectedLoanType.loan_subtypes || []); // Fallback to an empty array if no subtypes exist
@@ -59,7 +59,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
 
     const handleChangeLoanSubtype = (value: string | number | null | undefined) => {
         const selectedLoanSubtypes: LoanSubtype = loanSubtypes.find((item: any) => item.id === Number(value));
-        console.log('handle change loan subtype', selectedLoanSubtypes);
+        //console.log('handle change loan subtype', selectedLoanSubtypes);
 
         setFields(prev => ({
             ...prev,
@@ -227,6 +227,12 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                 <Select 
                                     placeholder="Mode of Payment"
                                     className='w-full h-10'
+                                    onChange={ (value) => {
+                                        setFields(prev => ({
+                                            ...prev,
+                                            mode_payment: value
+                                        }));
+                                    }}
                                     value={fields?.mode_payment}
                                     options={[
                                         {value: 'DAILY',  label: 'DAILY'},
