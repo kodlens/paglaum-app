@@ -41,6 +41,11 @@ return new class extends Migration
 
             $table->tinyInteger('is_paid')->default(0);
             
+            $table->string('ref', 30)->nullable();
+            $table->string('payment_method', 30)->nullable();
+            $table->string('payment_transaction', 30)->nullable();
+            $table->string('payment_session')->nullable();
+
             $table->timestamps();
         });
     }

@@ -17,7 +17,11 @@ class LoanDetail extends Model
         'date_paid',
         'amount',
         'amount_paid',
-        'is_paid'
+        'is_paid',
+        'ref',
+        'payment_method',
+        'payment_transaction',
+        'payment_session'
     ];
 
 }

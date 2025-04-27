@@ -1,14 +1,41 @@
 import MemberAuthLayout from '@/Layouts/MemberAuthLayout';
 import { PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
-import React from 'react'
+import React, { useState } from 'react'
 import dayjs from 'dayjs';
+import { Button } from 'antd';
+import axios from 'axios';
 
 
 const dateFormat =(date:string, customFormat:string) => {
   return dayjs(date).format(customFormat);
 }
 export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any }>) {
+
+  const [loading, setLoading] = useState<boolean>(false);
+  
+  const handleMakePayment = (loandetail:any) => {
+    setLoading(true)
+    const fields = {
+      amount: loandetail.amount,
+      name: '',
+      paymentmethod: 'gcash',
+      refno: 'REF'+loandetail.id,
+      loanid: loandetail.loan_id,
+      loandetailid: loandetail.id
+    }
+
+    axios.post('/paymongo/pay', fields).then(res=>{
+      setLoading(false)
+      console.log('axios responded');
+      
+      console.log('response: ', res.data.data.attributes.checkout_url);
+      window.location = res.data.data.attributes.checkout_url
+ 
+    }).catch(err => {
+      setLoading(false)
+    })
+  }
 
   return (
     <>
@@ -81,7 +108,19 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
                       <div>
                         <div className='font-bold text-gray-500'>Amount Due</div>
                         <div>{item.amount.toLocaleString()}</div>
+
+                          { !item.is_paid ? (
+                            <div>
+                              <Button 
+                                onClick={() => handleMakePayment(item)} 
+                                loading={loading}>
+                                  Make payment
+                              </Button>
+                            </div>
+                          ) : ''}
+    
                       </div>
+                      
                     </div>
                   </div>
 

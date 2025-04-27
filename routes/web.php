@@ -76,3 +76,20 @@ function generateWeeklyDates($startDate, $numWeeks) {
 
     return $dates;
 }
+
+
+
+/* ============ PAYMONGO ====================== */
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::post('/paymongo/pay', [App\Http\Controllers\PaymongoController::class , 'pay'])->name('paymongo.pay')  ;
+    Route::get('/paymongo/cancel', [App\Http\Controllers\PaymongoController::class , 'cancel'])->name('paymongo.cancel');
+    Route::get('/paymongo/success', [App\Http\Controllers\PaymongoController::class , 'success'])->name('paymongo.success');
+
+    Route::get('/paymongo/payment-method/{id}', [App\Http\Controllers\PaymongoController::class , 'paymentMethod'])->name('paymongo.payment-method');
+
+    
+
+});
+
