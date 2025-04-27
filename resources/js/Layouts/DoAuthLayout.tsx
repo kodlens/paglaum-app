@@ -56,6 +56,7 @@ export default function DoAuthLayout(
             icon: <BarsOutlined />,
             label: 'Loans'
         },
+        
         {
             key: 'do.members.index',
             icon: <UserOutlined />,
