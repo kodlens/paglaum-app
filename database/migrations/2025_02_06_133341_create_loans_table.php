@@ -54,6 +54,11 @@ return new class extends Migration
             $table->tinyInteger('is_approve')->default(0);
             $table->tinyInteger('is_paid')->default(0);
 
+            $table->tinyInteger('is_do_approve')->default(0);
+            $table->tinyInteger('is_bm_approve')->default(0);
+            $table->double('total_amount')->default(0);
+
+            
             $table->timestamps();
         });
     }

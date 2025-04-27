@@ -114,7 +114,7 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
                               <Button 
                                 onClick={() => handleMakePayment(item)} 
                                 loading={loading}>
-                                  Make payment
+                                  Make a payment
                               </Button>
                             </div>
                           ) : ''}

@@ -222,6 +222,8 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 							
                             <Column title="Interest(%)" dataIndex="interest" key="interest"/>
 
+                            <Column title="Mode" dataIndex="mode_payment" key="mode_payment"/>
+
 							<Column title="Approve(DO)" dataIndex="is_do_approve" render={(is_do_approve:number)=>(
 								is_do_approve > 0 ? (
 									<span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>

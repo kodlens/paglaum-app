@@ -23,7 +23,8 @@ class Loan extends Model
         'purpose',
         'is_approve',
         'is_do_approve',
-        'is_bm_approve'
+        'is_bm_approve',
+        'total_payment'
     ];
 
 

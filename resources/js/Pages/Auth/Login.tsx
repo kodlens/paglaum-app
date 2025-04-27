@@ -37,18 +37,16 @@ export default function Login() {
             setErrors(err.response.data.errors)
             form.resetFields()
             setLoading(false)
-
         })
-
     };
 
     return (
         <>
-            <div className='min-h-screen flex justify-center items-center bg-page-1'>
+            <div className='min-h-screen flex justify-center items-center bg-gray-100'>
                 <Head title="Log in" />
 
 
-                <div className='bg-white p-6 drop-shadow-2xl shadow-lg rounded-md w-full m-3 sm:w-[400px]'>
+                <div className='bg-white p-6 shadow-md rounded-md w-full m-3 sm:w-[400px]'>
                     <div className='mb-5'>
                         {/* <ApplicationLogo></ApplicationLogo> */}
                     </div>
