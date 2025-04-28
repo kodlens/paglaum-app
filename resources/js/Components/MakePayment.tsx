@@ -2,15 +2,16 @@ import { PageProps, User } from '@/types'
 import { Head, router } from '@inertiajs/react'
 
 import { Space, Table, 
-    Pagination, Button, Modal,
+    Pagination, Button,
     Form, Input, Select, Checkbox,
 	App, 
     Popconfirm,
     Dropdown,
-    InputNumber} from 'antd';
+    InputNumber,
+    Modal} from 'antd';
 
 
-import  { useEffect, useState } from 'react'
+import  { ChangeEvent, useEffect, useState } from 'react'
 import axios from 'axios';
 import { Captions,  Wallet } from 'lucide-react';
 
@@ -22,11 +23,18 @@ const customDateFormat = (item:string, format:string) => {
     return dayjs(item).format(format)
 }
 
+interface FormData {
+    id?: number;
+    amount_paid?: number;
+}
+
 const MakePayment = ({ loanId }: { loanId:number })  => {
     
 	
-	const [form] = Form.useForm();
-    //const { form } = useForm();
+	const [fields, setFields] = useState<FormData>({
+        amount_paid: 0
+    })
+
 	const  { notification, modal } = App.useApp();
 
     const [data, setData] = useState<any[]>([]);
@@ -38,7 +46,7 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
 	const [perPage, setPerPage] = useState(10);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
-    const [errors, setErrors] = useState<any>();
+    const [errors, setErrors] = useState<any>({});
 
 
     const [id, setId] = useState(0);
@@ -58,6 +66,8 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
 			//console.log(err)
 		}
     }
+
+    
 
     useEffect(()=>{
         loadDataAsync()
@@ -110,7 +120,14 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
         setModalOpen(true)
     }
 
+    const handleCloseModal = () => {
+        setModalOpen(false)
+    }
 
+
+    const handleModalPaymentSubmit = () => {
+        console.log(fields);
+    }
 
 	return (
         <>
@@ -191,44 +208,34 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
 
 
 
-              {/* Modal */}
-        <Modal
-            open={modalOpen}
-            title="USER INFORMATION"
-            okText="Save"
-            cancelText="Cancel"
-            okButtonProps={{
-                autoFocus: true,
-                htmlType: "submit",
-            }}
-            onCancel={() => {setModalOpen(false); setErrors({});}}
-            destroyOnClose
-            modalRender={(dom) => (
-                <Form
-                    layout="vertical"
-                    form={form}
-                    name="form_in_modal"
-                    autoComplete="off"
-                    initialValues={{
-                        amount_paid: "",
-                    }}
-                    clearOnDestroy
-                    onFinish={(values) => onFinish(values)}
-                >
-                    {dom}
-                </Form>
-            )}
-        >
-            <Form.Item
-                label="Amount to be pay"
-                validateStatus={errors.amount_paid ? "error" : ""}
-                help={errors.amount_paid ? errors.amount_paid[0] : ""}
-            >
-                <Input placeholder="Amount to be pay" />
-            </Form.Item>
+            {/* Modal */}
+            <Modal title="PAYMENT" open={modalOpen} 
+                onOk={()=> handleModalPaymentSubmit} 
+                onCancel={()=>{setModalOpen(false)}}>
 
+                <div>
+                    <Form.Item
+                        layout='vertical'
+                        label="Amount to be pay"
+                        validateStatus={errors.amount_paid ? "error" : ""}
+                        help={errors.amount_paid ? errors.amount_paid[0] : ""}
+                    >
+                        <InputNumber 
+                            name='amount_paid'
+                            value={fields.amount_paid} 
+                            className='w-full'
+                            onChange={(value:number|null) => 
+                                setFields(prev => ({
+                                    ...prev,
+                                    amount_paid: value ?? 0
+                                }))
+                            }
+                            placeholder="Amount to be pay"  />
+                    </Form.Item>
+                </div>
+            </Modal>
 
-        </Modal>
+           
         </>
 	)
 }
