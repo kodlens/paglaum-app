@@ -24,4 +24,8 @@ class LoanDetail extends Model
         'payment_session'
     ];
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 }

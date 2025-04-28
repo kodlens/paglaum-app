@@ -198,6 +198,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                 help={errors.terms_month ? errors.terms_month[0] : ''}>
                                 <InputNumber type='number'
                                     value={fields?.terms_month}
+                                    readOnly
                                     className='w-full'
                                     onChange={(value) => setFields(prev => ({ ...prev, terms_month: value ?? 0 }))}
                                     placeholder="Terms in Month" />
@@ -210,6 +211,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                 validateStatus={errors.interest ? 'error' : ''}
                                 help={errors.interest ? errors.interest[0] : ''}>
                                 <InputNumber type='number'
+                                    readOnly
                                     className='w-full'
                                     value={fields?.interest}
                                     onChange={(value) => setFields(prev => ({ ...prev, interest: value ?? 0 }))}

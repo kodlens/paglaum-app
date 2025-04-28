@@ -101,9 +101,9 @@ class DoLoanController extends Controller
         if($loan->is_bm_approve > 0){
             return response()->json([
                 'errors' => [
-                    'bm' => ['This loan is already approved by the Branch Manager.']    
+                    'bm' => ['This loan was already approved by the Branch Manager.']    
                 ],
-                'message' => 'This loan is already approved by the Branch Manager.'
+                'message' => 'This loan was already approved by the Branch Manager.'
             ], 422);
         }
 
@@ -114,6 +114,8 @@ class DoLoanController extends Controller
             'status' => 'disapproved'
         ], 200);
     }
+
+    
 
     /*=========================================*/
     // private function monthlyBreakdown($loan){
@@ -143,6 +145,6 @@ class DoLoanController extends Controller
     //     LoanDetail::insert($loanDetails);
     // }
 
-
+   
 
 }

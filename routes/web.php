@@ -91,5 +91,8 @@ Route::middleware(['auth'])->group(function () {
 
     
 
+    Route::get('/get-member-loans/{id}', [App\Http\Controllers\MakeAPaymentController::class, 'getMemberLoans']);
+
+
 });
 

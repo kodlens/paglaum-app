@@ -1,9 +1,6 @@
 import { PageProps, User } from '@/types'
 import { Head, router } from '@inertiajs/react'
 
-import { FileAddOutlined,
-	EyeInvisibleOutlined,EyeTwoTone } from '@ant-design/icons';
-
 import { Space, Table, 
     Pagination, Button, Modal,
     Form, Input, Select, Checkbox,
@@ -15,7 +12,7 @@ import { Space, Table,
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { Captions, FileLock2, MessageSquareMore, MonitorCheck, Pencil, ShieldOff, ThumbsUp, Trash2 } from 'lucide-react';
+import { Captions, FileLock2, MessageSquareMore, MonitorCheck, Pencil, ShieldOff, ThumbsUp, Trash2, Wallet } from 'lucide-react';
 import { Loan } from '@/types/loan';
 import DoAuthLayout from '@/Layouts/DoAuthLayout';
 import { LoanType } from '@/types/loanType';
@@ -115,6 +112,7 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
 	}
 
     const handleClickApprove = (loan:Loan) => {
+
         modal.confirm({title: loan.is_do_approve ? 'Disapprove?' : 'Approve?', content: `Are you sure you want to ${loan.is_do_approve ? 'dispprove' : 'approve'} this borrower?`, 
             onOk: ()=>{
                 if(!!loan.is_do_approve){
@@ -124,12 +122,23 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
                             loadDataAsync()
                         }
                     }).catch(err => {
-                        if(err.response.data.errors.loan){
+                        
+                        if(err.response.status === 422){
                             notification.error({
                                 placement: 'bottomRight',
                                 description: 'Error: ' + err.response.data.message,
                                 message: 'Approved Already!'
                             });
+                        }
+
+                        if(err.response.data.status === 500){
+                            if(err.response.data.errors.loan){
+                                notification.error({
+                                    placement: 'bottomRight',
+                                    description: 'Error: Unknown',
+                                    message: 'Contact System Administrator'
+                                });
+                            }
                         }
                     })
                 }else{
@@ -155,9 +164,6 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
     const showLoanInformation = (loan:Loan) => {
        router.visit(`/do/do-member-loan-details/${loan.id}`)
     }
-
-
-
 
 	return (
 		<DoAuthLayout user={auth.user}>
@@ -242,6 +248,14 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
                                                         icon: <MessageSquareMore size={16} />,
                                                         onClick: ()=>{
                                                             showLoanInformation(data)
+                                                        }
+                                                    },
+                                                    {
+                                                        key: '4',
+                                                        label: 'Make A Payment',
+                                                        icon: <Wallet  size={16} />,
+                                                        onClick: ()=>{
+                                                            router.visit('/do/make-a-payment/' + data.id)
                                                         }
                                                     },
                                                 ],
