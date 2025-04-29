@@ -7,6 +7,7 @@ import { Head } from '@inertiajs/react'
 import { Button, Form, Input, InputNumber, Select } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import axios from 'axios'
+import { ArrowLeft } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
@@ -109,6 +110,11 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
 					md:w-[720px] overflow-auto'>
 
                     <div>
+                        <Button className='mb-4'
+                            icon={<ArrowLeft size={16} />}
+                            iconPosition='start' 
+                            onClick={ () => { window.history.back() } }>Back</Button>
+                            
 
                         <div className='flex flex-col gap-2 md:flex-row'>
                             <Form.Item
@@ -260,7 +266,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                     placeholder="Loan Amount" />
                             </Form.Item>
                         </div>
-                        <Button type={"primary"} onClick={handleApproveLoan}>Approve Loan</Button>
+                        {/* <Button type={"primary"} onClick={handleApproveLoan}>Approve Loan</Button> */}
 
                     </div>
 

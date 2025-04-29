@@ -8,14 +8,15 @@ import { Space, Table,
     Popconfirm,
     Dropdown,
     InputNumber,
-    Modal} from 'antd';
+    Modal,
+    DatePicker} from 'antd';
 
 
 import  { ChangeEvent, useEffect, useState } from 'react'
 import axios from 'axios';
-import { Captions,  Wallet } from 'lucide-react';
+import { ArrowLeft, Captions,  RefreshCcwIcon,  Wallet } from 'lucide-react';
 
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 const { Column } = Table;
 
@@ -26,13 +27,17 @@ const customDateFormat = (item:string, format:string) => {
 interface FormData {
     id?: number;
     amount_paid?: number;
+    date_paid: Dayjs | undefined | Date | null;
+    amount?: number;
 }
 
-const MakePayment = ({ loanId }: { loanId:number })  => {
+const MakePayment = ({ loanId, loan }: { loanId:number, loan:any })  => {
     
 	
 	const [fields, setFields] = useState<FormData>({
-        amount_paid: 0
+        amount_paid: 0,
+        amount: 0,
+        date_paid: dayjs(new Date()).toDate()
     })
 
 	const  { notification, modal } = App.useApp();
@@ -67,8 +72,6 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
 		}
     }
 
-    
-
     useEffect(()=>{
         loadDataAsync()
     },[perPage, page])
@@ -79,45 +82,18 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
         setPerPage(perPage)
     }
 
-
-	const onFinish = async (values:any) =>{
-
-        console.log(values);
-        
-        return;
-		if(id > 0){
-			try{
-				const res = await axios.put('/do/loans/' + id, values)
-				if(res.data.status === 'updated'){
-					notification.info({ placement: 'bottomRight', message: 'Updated!', description: 'Education Level successfully updated.'})
-					setModalOpen(false)
-					loadDataAsync()
-				}
-			}catch(err:any){
-				if(err.response.status === 422){
-                 setErrors(err.response.data.errors)
-				}
-			}
-		}else{
-			try{
-				const res = await axios.post('/do/education-levels', values)
-				if(res.data.status === 'saved'){
-					notification.info({ placement: 'bottomRight', message: 'Saved!', description: 'Education Level successfully saved.'})
-					setModalOpen(false)
-					loadDataAsync()
-				}
-			}catch(err:any){
-				if(err.response.status === 422){
-                    setErrors(err.response.data.errors)
-				}
-			}
-		}
-	}
-
-    const handleModalPaymentOpen = (id:number) => {
-        console.log(id);
+    const handleModalPaymentOpen = (detail:any) => {
+        //console.log(id);
         
         setModalOpen(true)
+        setErrors({})
+        setFields(prev => ({
+            ...prev,
+            id: detail.id,
+            amount: detail.amount,
+            amount_paid: detail.amount,
+            date_paid: dayjs(new Date())
+        }))
     }
 
     const handleCloseModal = () => {
@@ -126,7 +102,24 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
 
 
     const handleModalPaymentSubmit = () => {
-        console.log(fields);
+        //console.log('fired');
+        axios.post(`/make-a-payment/${fields.id}`, fields).then(res=>{
+            setLoading(true)
+            if(res.data.status === 'saved'){
+                notification.success({
+                    placement: 'bottomRight',
+                    message: 'Successfully Recorded!',
+                    description: 'Payment recorded.',
+                })
+                loadDataAsync()
+                setModalOpen(false)
+                setLoading(false)
+
+            }
+        }).catch(err => {
+            setErrors(err.response.data.errors)
+            setLoading(false)
+        })
     }
 
 	return (
@@ -136,19 +129,28 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
                 <div className='p-6 w-full md:mx-2 bg-white shadow-sm rounded-md
                     md:w-[1120px] overflow-auto'>
                     {/* card header */}
-                    <div className="font-bold mb-4 text-lg">LOAN BREAKDOWN OF JUAN DELA CRUZ</div>
+                    <div className="font-bold mb-4 text-lg">LOAN BREAKDOWN OF {loan.user.lname}, {loan.user.fname}</div>
                     {/* card body */}
                     <div className='z-0'>
 
-                        <div className='my-4'>
-                            <Button type='primary' onClick={ ()=> loadDataAsync() }>Refresh</Button>
+                        <div className='flex my-4 gap-2'>
+                            <Button className='mb-4'
+                                icon={<ArrowLeft size={16} />}
+                                iconPosition='start' 
+                                onClick={ () => { window.history.back() } }>Back</Button>
+                            
+                            <Button type='primary' 
+                                icon={<RefreshCcwIcon size={16} />}
+                                iconPosition='start' 
+                                onClick={ ()=> loadDataAsync() }>Refresh</Button>
                         </div>
+                        
                         <Table dataSource={data}
                             loading={loading}
                             rowKey={(data) => data.id ?? 0}
                             pagination={false}>
 
-                            <Column title="Id" dataIndex="id" key="id"/>
+                            <Column title="Ref/Id" dataIndex="id" key="id"/>
 
                             <Column title="Due Date" dataIndex='due_date' render={due_date=>(
                                 <span>{customDateFormat(due_date, 'MMM-DD-YYYY')}</span>
@@ -182,7 +184,7 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
                                                         key: '1',
                                                         label: 'PAY NOW',
                                                         icon: <Wallet  size={16} />,
-                                                        onClick: ()=>{handleModalPaymentOpen(data.id)}
+                                                        onClick: ()=>{handleModalPaymentOpen(data)}
                                                     },
                                                 ],
                                             }}
@@ -209,14 +211,26 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
 
 
             {/* Modal */}
-            <Modal title="PAYMENT" open={modalOpen} 
-                onOk={()=> handleModalPaymentSubmit} 
-                onCancel={()=>{setModalOpen(false)}}>
+            <Modal 
+                title="PAYMENT" 
+                open={modalOpen} 
+                onOk={handleModalPaymentSubmit} 
+                onCancel={ handleCloseModal }
+            >
 
                 <div>
+
                     <Form.Item
                         layout='vertical'
-                        label="Amount to be pay"
+                        label="Amount to be paid">
+                        <InputNumber 
+                            value={fields.amount} 
+                            className='w-full' readOnly  />
+                    </Form.Item>
+
+                    <Form.Item
+                        layout='vertical'
+                        label="Amount"
                         validateStatus={errors.amount_paid ? "error" : ""}
                         help={errors.amount_paid ? errors.amount_paid[0] : ""}
                     >
@@ -232,6 +246,27 @@ const MakePayment = ({ loanId }: { loanId:number })  => {
                             }
                             placeholder="Amount to be pay"  />
                     </Form.Item>
+
+
+                    <Form.Item
+                        layout='vertical'
+                        label="Payment Date"
+                        validateStatus={errors.date_paid ? "error" : ""}
+                        help={errors.date_paid ? errors.date_paid[0] : ""}
+                    >
+                        <DatePicker 
+                            name='amount_paid'
+                            value={dayjs(fields.date_paid)} 
+                            className='w-full'
+                            onChange={(value:Dayjs) => 
+                                setFields(prev => ({
+                                    ...prev,
+                                    date_paid: value ?? dayjs(new Date())
+                                }))
+                            }
+                            placeholder="Amount to be pay"  />
+                    </Form.Item>
+
                 </div>
             </Modal>
 

@@ -92,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
     
 
     Route::get('/get-member-loans/{id}', [App\Http\Controllers\MakeAPaymentController::class, 'getMemberLoans']);
+    Route::post('/make-a-payment/{id}', [App\Http\Controllers\MakeAPaymentController::class, 'makePayment']); //this route for making a payment
 
 
 });

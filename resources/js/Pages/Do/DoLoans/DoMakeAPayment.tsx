@@ -3,14 +3,14 @@ import DoAuthLayout from "@/Layouts/DoAuthLayout";
 import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 
-const DoMakeAPayment = ({ auth, loanId }: PageProps<{ loanId:number }>)  => {
+const DoMakeAPayment = ({ auth, loanId, loan }: PageProps<{ loanId:number, loan:any }>)  => {
     
 	
 	return (
 		<DoAuthLayout user={auth.user}>
 			<Head title="Loan Management"></Head>
 
-			<MakePayment loanId={loanId} />
+			<MakePayment loanId={loanId} loan={loan} />
 
 
 		</DoAuthLayout>

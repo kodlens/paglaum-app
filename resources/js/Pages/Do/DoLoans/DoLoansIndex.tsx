@@ -12,7 +12,7 @@ import { Space, Table,
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { Captions, FileLock2, MessageSquareMore, MonitorCheck, Pencil, ShieldOff, ThumbsUp, Trash2, Wallet } from 'lucide-react';
+import { Captions, FileLock2, MessageSquareMore, MonitorCheck, Pencil, RefreshCcwIcon, ShieldOff, ThumbsUp, Trash2, Wallet } from 'lucide-react';
 import { Loan } from '@/types/loan';
 import DoAuthLayout from '@/Layouts/DoAuthLayout';
 import { LoanType } from '@/types/loanType';
@@ -179,7 +179,10 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
 					<div className='z-0'>
 
                         <div className='my-4'>
-                            <Button type='primary' onClick={ ()=> loadDataAsync() }>Refresh</Button>
+                            <Button type='primary' 
+                                icon={<RefreshCcwIcon size={16} />}
+                                iconPosition='start' 
+                                onClick={ ()=> loadDataAsync() }>Refresh</Button>
                         </div>
                         <Table dataSource={data}
                             loading={loading}
@@ -197,7 +200,7 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
                             )}/>
 
 							<Column title="Loan Amount" dataIndex='principal' render={(principal:number)=>(
-                                <span className='font-bold'>{principal.toLocaleString()}</span>
+                                <span className='font-bold'>&#8369; {principal.toLocaleString()}</span>
                             )}/>
 
 							<Column title="Terms (Mos)" dataIndex="terms_month" key="terms_month"/>
