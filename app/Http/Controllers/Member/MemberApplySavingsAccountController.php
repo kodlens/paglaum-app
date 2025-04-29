@@ -25,6 +25,8 @@ class MemberApplySavingsAccountController extends Controller
             'user_id' => $user->id,
             'account_no' => $accountNumber,
             'account_name' => strtoupper($user->lname) . ' ' . strtoupper($user->fname),
+            'balance' => 0,
+            'interest_rate' => 0,
             'is_approved' => 0,
             'is_active' => 0
         ]);

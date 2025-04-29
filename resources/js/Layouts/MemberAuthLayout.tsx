@@ -16,7 +16,7 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                     <div className="flex justify-between h-16">
                         <div className="flex">
 
-                           
+
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -26,9 +26,17 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                                         Dashboard
                                     </NavLink>
                                 </div>
+                              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink href={route('member.my-loans.index')} active={route().current('member.my-loans.index')}>
-                                    My Loans
+                                  My Loans
                                 </NavLink>
+                              </div>
+                              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink href={route('member.my-savings.index')} active={route().current('member.my-savings.index')}>
+                                  My Savings
+                                </NavLink>
+                              </div>
+
                             </div>
                             <div className="ms-3 relative">
                                 <Dropdown>
@@ -110,6 +118,7 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('member.profile.edit')}>Profile</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('member.my-loans.index')}>My Loan</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('member.my-savings.index')}>My Savings</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Log Out
                             </ResponsiveNavLink>

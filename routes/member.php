@@ -28,6 +28,10 @@ Route::middleware(['auth', 'active'])->group(function () {
     /* ================SAVINGS ACCOUNT========================= */
     Route::post('/member/apply-savings-account', [App\Http\Controllers\Member\MemberApplySavingsAccountController::class, 'applySavingsAccount']);
 
+
+    Route::resource('/member/my-savings', App\Http\Controllers\Member\MemberMySavingsController::class)->names('member.my-savings');
+    Route::get('/member/get-my-savings', [App\Http\Controllers\Member\MemberMySavingsController::class, 'getData']);
+
 });
 
 
