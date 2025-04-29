@@ -26,12 +26,11 @@ class RegisterController extends Controller
 
     public function store(Request $request){
 
-      
-
         $dob = null;
         if($request->birthdate != null || $request->birthdate != ''){
             $dob = date('Y-m-d', strtotime($request->birthdate));
         }
+
 
         $request->validate([
             'username' => 'required|string|max:30|unique:users',
@@ -43,15 +42,21 @@ class RegisterController extends Controller
             //'birthplace' => 'required|string|max:255',
             'sex' => 'required|string|max:20',
             'email' => 'required|string|lowercase|email|max:255|unique:users',
-            'contact_no' => 'required',
+            'contact_no' => 'required|regex:/^9\d{9}$/',
             'password' => ['required', 'confirmed', Rules\Password::defaults(), 'max:30'],
+            'id_type' => 'required',
             'province' => 'required',
             'city' => 'required',
             'barangay' => 'required',
+            'monthly_income' => 'required|gt:1000',
             'occupation' => 'required|string|max:255',
-            'office_address' => 'required|string|max:255',
+            'business_name' => 'required|string|max:255',
+            'business_address' => 'required|string|max:255',
             'contact_person' => 'required|string|max:255',
             'contact_person_no' => 'required|string|max:255',
+        ],[
+            'business_name.required' => 'Office/Business name is required.',
+            'business_address.required' => 'Office/Business address is required.'
         ]);
 
         $user = User::create([
@@ -82,7 +87,10 @@ class RegisterController extends Controller
             // 'umid' => $request->umid,
             // 'household_size' => $request->household_size,
 
+            'monthly_income' => $request->monthly_income,
             'occupation' => $request->occupation,
+            'business_name' => $request->business_name,
+            'business_address' => $request->business_address,
             //'industry_code' => $request->industry_code,
             //'occupational_code' => $request->occupational_code,
             'monthly_income' => $request->monthly_income,

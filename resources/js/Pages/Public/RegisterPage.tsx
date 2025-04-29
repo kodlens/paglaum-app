@@ -81,7 +81,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     }, [])
     const submit = () => {
         
-        console.log('data', data);
+       // console.log('data', data);
   
         //return;
         setLoading(true);
@@ -147,6 +147,15 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
             setBarangays(res.data);
         })
     }
+
+    const validateContactNo = (value: string) => {
+        const regex = /^9\d{9}$/;
+        if (!regex.test(value)) {
+            setErrors((prev:any) => ({ ...prev, contact_no: ['Invalid contact number. Must start with 9 and be 10 digits.'] }));
+        } else {
+            setErrors((prev:any) => ({ ...prev, contact_no: null }));
+        }
+    };
 
     useEffect(()=>{
         loadProvinces()
@@ -271,11 +280,15 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
                     <Form.Item label="Contact No."
                         className='w-full'
+                        
                         validateStatus={errors?.contact_no ? 'error' : ''}
                         help={errors?.contact_no ? errors?.contact_no[0] : ''}
                     >
-                        <Input placeholder="ex. 09361122334"
-                            onChange={(e)=>setData('contact_no', e.target.value)} 
+                        <Input prefix="+63" placeholder="9361122334"
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setData('contact_no', value);
+                              }}
                             value={data.contact_no} 
                             size="large" />
                     </Form.Item>
@@ -476,7 +489,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                 </div>
 
                 <div className='flex flex-col gap-x-4 sm:flex-row'>
-                    <Form.Item label="Business Name"
+                    <Form.Item label="Office/Business Name"
                         className='w-full'
                         validateStatus={errors?.business_name ? 'error' : ''}
                         help={errors?.business_name ? errors?.business_name[0] : ''}
@@ -487,7 +500,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             size="large" />
                     </Form.Item>
 
-                    <Form.Item label="Business Address"
+                    <Form.Item label="Office/Business Address"
                         className='w-full'
                         validateStatus={errors?.business_address ? 'error' : ''}
                         help={errors?.business_address ? errors?.business_address[0] : ''}
