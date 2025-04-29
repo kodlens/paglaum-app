@@ -1,9 +1,12 @@
 import MemberAuthLayout from '@/Layouts/MemberAuthLayout';
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
+import ApplyNow from './partials/ApplyNow';
 import { User } from 'lucide-react';
 
+
 export default function Dashboard({ auth }: PageProps) {
+
     return (
         <MemberAuthLayout
             user={auth.user}
@@ -29,15 +32,12 @@ export default function Dashboard({ auth }: PageProps) {
 
                     </div>
                 </div>
-{/* 
-                <div className="mx-2 max-w-7xl md:mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            WELCOME 
-                            <span className='font-bold ml-2'>{auth.user.lname}, {auth.user.fname}</span>
-                        </div>
-                    </div>
-                </div> */}
+
+                <div className="mx-2 max-w-7xl md:mx-auto sm:px-6 lg:px-8 mb-4">
+                    <ApplyNow />
+                </div>
+                
+
 
             </div>
         </MemberAuthLayout>

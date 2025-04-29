@@ -134,14 +134,16 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
 	}
 
     const handleClickActive = (id:any) => {
-        axios.post('/admin/users-set-active/' + id).then(res=>{
+        axios.post('/admin/user-set-active/' + id).then(res=>{
             notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
+            loadDataAsync()
         })
     }
 
     const handleClickInactive = (id:number) => {
-        axios.post('/admin/users-set-inactive/' + id).then(res=>{
+        axios.post('/admin/user-set-inactive/' + id).then(res=>{
             notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
+            loadDataAsync()
         })
     }
 
