@@ -25,7 +25,8 @@ Route::middleware(['auth', 'active'])->group(function () {
 
     Route::get('/member/my-loans-details/{id}', [App\Http\Controllers\Member\MemeberMyLoanDetailController::class, 'index']);
 
-
+    /* ================SAVINGS ACCOUNT========================= */
+    Route::post('/member/apply-savings-account', [App\Http\Controllers\Member\MemberApplySavingsAccountController::class, 'applySavingsAccount']);
 
 });
 
