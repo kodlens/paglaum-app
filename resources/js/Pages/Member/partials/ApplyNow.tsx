@@ -35,7 +35,6 @@ export default function ApplyNow() {
                     </div>
                 </div>
             </div>
-
         </div>
 
 
