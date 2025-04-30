@@ -39,6 +39,9 @@ const MySavings = ( {auth}:PageProps) => {
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
             <div className="p-6 text-gray-900 ">
+              <div>
+                ACCOUNTS
+              </div>
               { data.map((item:SavingsAccount) => (
                 <div key={item.id} className='flex gap-4'>
 
@@ -47,12 +50,15 @@ const MySavings = ( {auth}:PageProps) => {
                     <div className='ml-2'>{item.account_no}</div>
                   </div>
 
-                  <div className='w-[200px]'>
+                  <div className='w-[200px] my-4'>
                     <div className='font-semibold text-gray-500'>ACCOUNT NAME</div>
                     <div className='ml-2'>{item.account_name}</div>
                   </div>
 
-                  <div className='w-[200px]'>{item.balance}</div>
+                  <div className='w-[200px] my-4'>
+                    <div className='font-semibold text-gray-500 text-right'>AVAILABLE BALANCE</div>
+                    <div className='ml-2 text-right'>{ (item.balance).toFixed(2) }</div>
+                  </div>
 
                 </div>
               ))}

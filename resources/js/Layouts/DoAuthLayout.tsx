@@ -24,7 +24,7 @@ const siderStyle: React.CSSProperties = {
 };
 
 export default function DoAuthLayout(
-    
+
     { user, children }: PropsWithChildren<{ user:User }>) {
 
     const { post } = useForm();
@@ -56,7 +56,12 @@ export default function DoAuthLayout(
             icon: <BarsOutlined />,
             label: 'Loans'
         },
-        
+        {
+          key: 'do.member-savings-accounts.index',
+          icon: <BarsOutlined />,
+          label: 'Savings Accounts'
+        },
+
         {
             key: 'do.members.index',
             icon: <UserOutlined />,
@@ -75,7 +80,7 @@ export default function DoAuthLayout(
     return (
         <>
             <Layout>
-                <Sider className='z-10' 
+                <Sider className='z-10'
                     trigger={null}
                     collapsible
                     breakpoint='md'
@@ -114,7 +119,7 @@ export default function DoAuthLayout(
                                 <Link href=''>
                                     {user.lname}, {user.fname ? user.fname[0] : ''}
                                 </Link>
-                                <Button className='' 
+                                <Button className=''
                                     danger
                                     onClick={handleLogout}>
                                     <LogOut size={16} />

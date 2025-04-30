@@ -21,4 +21,12 @@ class SavingAccount extends Model
         'opened_at',
         'closed_at'
     ];
+
+    public function saving_transactions(){
+        return $this->hasMany(SavingTransaction::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

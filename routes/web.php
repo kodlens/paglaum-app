@@ -69,7 +69,7 @@ function generateWeeklyDates($startDate, $numWeeks) {
     for ($i = 0; $i < $numWeeks; $i++) {
         // Add the current date to the array in 'Y-m-d' format
         $dates[] = date('Y-m-d', $currentDate);
-        
+
         // Increment the current date by 7 days (1 week)
         $currentDate = strtotime('+1 week', $currentDate);
     }
@@ -89,11 +89,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/paymongo/payment-method/{id}', [App\Http\Controllers\PaymongoController::class , 'paymentMethod'])->name('paymongo.payment-method');
 
-    
+
 
     Route::get('/get-member-loans/{id}', [App\Http\Controllers\MakeAPaymentController::class, 'getMemberLoans']);
     Route::post('/make-a-payment/{id}', [App\Http\Controllers\MakeAPaymentController::class, 'makePayment']); //this route for making a payment
 
 
 });
+
+/* ============ PAYMONGO ====================== */
+
+
 
