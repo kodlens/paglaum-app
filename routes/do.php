@@ -37,4 +37,8 @@ Route::middleware(['auth', 'do'])->group(function () {
     Route::post('/do/deactivate-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'deactivate']); //disapprove
 
 
+    /* ================WITHDRAWAL/DEPOSIT========================= */
+    Route::get('/do/member-withdrawal-deposit/{id}', [App\Http\Controllers\Do\MemberWithdrawalDepositController::class, 'index']);
+
+
 });

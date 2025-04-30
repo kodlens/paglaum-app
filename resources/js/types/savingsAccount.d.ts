@@ -1,6 +1,12 @@
 export interface SavingsAccount {
   id?: number;
   data?: any[],
+  user: {
+    lname: string;
+    fname: string;
+    mname: string;
+    sex: string;
+  };
   account_no?: string;
   account_name: string;
   account_type: string;

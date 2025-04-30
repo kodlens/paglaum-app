@@ -32,6 +32,7 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::resource('/member/my-savings', App\Http\Controllers\Member\MemberMySavingsController::class)->names('member.my-savings');
     Route::get('/member/get-my-savings', [App\Http\Controllers\Member\MemberMySavingsController::class, 'getData']);
 
+
 });
 
 
