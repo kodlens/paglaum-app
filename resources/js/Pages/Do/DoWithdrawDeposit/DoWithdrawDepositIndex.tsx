@@ -18,7 +18,7 @@ const DoWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccoun
         amount: 0
     });
 
-    const handleSubmit:FormEventHandler = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         console.log(data);
