@@ -287,14 +287,14 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                                                         }
                                                     },
 
-                                                    {
-                                                        key: '3',
-                                                        label: 'Details',
-                                                        icon: <MessageSquareMore size={16} />,
-                                                        onClick: () => {
-                                                            showLoanInformation(data)
-                                                        }
-                                                    },
+                                                    // {
+                                                    //     key: '3',
+                                                    //     label: 'Details',
+                                                    //     icon: <MessageSquareMore size={16} />,
+                                                    //     onClick: () => {
+                                                    //         showLoanInformation(data)
+                                                    //     }
+                                                    // },
 
                                                     {
                                                         key: '4',

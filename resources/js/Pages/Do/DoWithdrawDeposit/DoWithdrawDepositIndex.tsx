@@ -1,7 +1,7 @@
 import DoAuthLayout from "@/Layouts/DoAuthLayout";
 import { PageProps } from "@/types";
 import { SavingsAccount } from "@/types/savingsAccount";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import { App, Button, Form, InputNumber, message, notification, Select } from "antd";
 import { valueType } from "antd/es/statistic/utils";
 import axios from "axios";
@@ -35,6 +35,9 @@ const DoWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccoun
                     description: 'Deposit successfully recorded.',
                     placement: 'bottomRight'
                 });
+
+                // router.visit('/do/member-withdrawal-desposit' + savingsAccount.id)
+                window.history.back()
             }
         }).catch(err=>{
             if(err.response.status === 422){
@@ -65,6 +68,20 @@ const DoWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccoun
                     <div className="font-semibold">
                         WITHDRAW OR DEPOSIT FOR {savingsAccount.user.lname}, {savingsAccount.user.fname} ACCOUNT
                     </div> 
+
+                    <div>
+                        <span className="mr-2 font-semibold">
+                            ACCOUNT NO:
+                        </span>
+                         {savingsAccount.account_no}
+                    </div>
+
+                    <div>
+                        <span className="mr-2 font-semibold">
+                            AVAILABLE BALANCE:
+                        </span>
+                        &#8369; {savingsAccount.balance.toLocaleString()}
+                    </div>
 
                     <div className="my-6">
 
