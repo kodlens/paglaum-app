@@ -14,4 +14,9 @@ class SavingTransaction extends Model
         'transaction_type',
         'amount'
     ];
+
+    public function saving_account(){
+        return $this->belongsTo(SavingAccount::class);
+    }
+    
 }

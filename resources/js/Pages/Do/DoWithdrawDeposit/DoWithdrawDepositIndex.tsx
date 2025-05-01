@@ -28,9 +28,8 @@ const DoWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccoun
     const handleSubmit = (e:any) => {
         e.preventDefault();
 
-        console.log(data);
         axios.post('/do/member-withdrawal-deposit/' + savingsAccount.id, data).then(res=>{
-            if(res.data.status === 'paid'){
+            if(res.data.status === 'saved'){
                 notification.success({
                     message: 'Deposit Recorded!',
                     description: 'Deposit successfully recorded.',

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\SavingAccount;
-
+use App\Models\SavingTransaction;
 
 class MemberWithdrawalDepositController extends Controller
 {
@@ -26,7 +26,7 @@ class MemberWithdrawalDepositController extends Controller
 
     public function store(Request $req, $id){
 
-        return $req;
+        //return $req;
 
         if($id == null || $id < 1){
             return response()->json([
@@ -42,7 +42,14 @@ class MemberWithdrawalDepositController extends Controller
             'amount' => ['gt:0', 'required']
         ]);
 
+        SavingTransaction::create([
+            'saving_account_id' => $id,
+            'transaction_type' => $req->transaction_type,
+            'amount' => $req->amount
+        ]);
 
-        return $req;
+        return response()->json([
+            'status' => 'saved'
+        ], 200);
     }
 }
