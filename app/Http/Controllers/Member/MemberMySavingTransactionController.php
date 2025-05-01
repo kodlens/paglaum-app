@@ -21,6 +21,12 @@ class MemberMySavingTransactionController extends Controller
         ]);
     }
 
+    public function getSavingsTransaction(Request $req){
+        return SavingTransaction::where('saving_account_id', $req->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+    }
+
 
 
 }
