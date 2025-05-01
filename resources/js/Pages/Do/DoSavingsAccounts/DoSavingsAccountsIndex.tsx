@@ -297,7 +297,7 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                                                     },
 
                                                     {
-                                                        key: '3',
+                                                        key: '4',
                                                         label: 'Deposit/Withdrawal',
                                                         icon: <BookUp size={16} />,
                                                         onClick: () => router.visit('/do/member-withdrawal-deposit/' + data.id)

@@ -2,7 +2,11 @@ import DoAuthLayout from "@/Layouts/DoAuthLayout";
 import { PageProps } from "@/types";
 import { SavingsAccount } from "@/types/savingsAccount";
 import { Head, useForm } from "@inertiajs/react";
-import { Button, Form, InputNumber, Select } from "antd";
+import { App, Button, Form, InputNumber, message, notification, Select } from "antd";
+import { valueType } from "antd/es/statistic/utils";
+import axios from "axios";
+import { Save } from "lucide-react";
+import { useState } from "react";
 
 
 //inherit other type
@@ -17,12 +21,35 @@ const DoWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccoun
         transaction_type: '',
         amount: 0
     });
+    const [errors, setErrors] = useState<any>({})
+    const {notification} = App.useApp();
+    const [loading, setLoading] = useState<boolean>();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:any) => {
         e.preventDefault();
 
         console.log(data);
-        
+        axios.post('/do/member-withdrawal-deposit/' + savingsAccount.id, data).then(res=>{
+            if(res.data.status === 'paid'){
+                notification.success({
+                    message: 'Deposit Recorded!',
+                    description: 'Deposit successfully recorded.',
+                    placement: 'bottomRight'
+                });
+            }
+        }).catch(err=>{
+            if(err.response.status === 422){
+                setErrors(err.response.data.errors)
+
+                if(errors.id){
+                    notification.error({
+                        message: 'Invalid Input!',
+                        description: 'Loan Identification is required.',
+                        placement: 'bottomRight'
+                    })
+                }
+            }
+        })
     }
 
     return (
@@ -34,17 +61,20 @@ const DoWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccoun
             <div className='flex mt-10 justify-center items-center'>
                 {/* card */}
                 <div className='p-6 w-full md:mx-2 bg-white shadow-sm rounded-md
-					md:w-[1120px] overflow-auto'>
+					md:w-[640px] overflow-auto'>
 
                     <div className="font-semibold">
                         WITHDRAW OR DEPOSIT FOR {savingsAccount.user.lname}, {savingsAccount.user.fname} ACCOUNT
                     </div> 
 
                     <div className="my-6">
+
                         <form onSubmit={handleSubmit}>
+
                             <Form.Item label="Transaction Type"
                                 layout="vertical"
-                            >   
+                                validateStatus={errors.transaction_type ? 'error' : ''}
+                                help={errors.transaction_type ? errors.transaction_type[0] : ''}>
                                 <Select
                                     onChange={(value:string) => setData('transaction_type', value)}
                                     options={
@@ -53,7 +83,6 @@ const DoWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccoun
                                             { value: 'WITHDRAW', label: 'WITHDRAW' }
                                         ]
                                     }>
-                                    
                                 </Select>
                             </Form.Item>
 
@@ -61,15 +90,24 @@ const DoWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccoun
                                 label="Input Amount"
                                 layout="vertical"
                                 className="w-full"
+                                validateStatus={errors.amount ? 'error' : ''}
+                                help={errors.amount ? errors.amount[0] : ''}
                             >
                                 <InputNumber 
                                     className="w-full"
                                     placeholder="1000"
-                                    onChange={(value) => setData('amount', value)}
+                                    onChange={(value:any) => setData('amount', value)}
                                 />
                             </Form.Item>
                           
-                          <Button type="primary" htmlType="submit">SAVE TRANSACTION</Button>
+                            <Button type="primary" 
+                                icon={<Save size={16}/>}
+                                loading={loading}
+                                className="font-bold"
+                                htmlType="submit">
+                                    SAVE TRANSACTION
+                            </Button>
+
                         </form>
                     </div>
 

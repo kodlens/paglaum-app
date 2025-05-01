@@ -39,6 +39,9 @@ Route::middleware(['auth', 'do'])->group(function () {
 
     /* ================WITHDRAWAL/DEPOSIT========================= */
     Route::get('/do/member-withdrawal-deposit/{id}', [App\Http\Controllers\Do\MemberWithdrawalDepositController::class, 'index']);
+    Route::post('/do/member-withdrawal-deposit/{id}', [App\Http\Controllers\Do\MemberWithdrawalDepositController::class, 'store']);
 
+
+    
 
 });

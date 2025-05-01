@@ -22,4 +22,27 @@ class MemberWithdrawalDepositController extends Controller
             'savingsAccount' => $savingsAccount
         ]);
     }
+
+
+    public function store(Request $req, $id){
+
+        return $req;
+
+        if($id == null || $id < 1){
+            return response()->json([
+                'errors' => [
+                    'id' => ['Loan Identification is required.']
+                ],
+                'message' => ['Loan Identification is required.']
+            ], 422);
+        }
+
+        $req->validate([
+            'transaction_type' => ['required'],
+            'amount' => ['gt:0', 'required']
+        ]);
+
+
+        return $req;
+    }
 }
