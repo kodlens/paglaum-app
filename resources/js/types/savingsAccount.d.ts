@@ -7,6 +7,16 @@ export interface SavingsAccount {
     mname: string;
     sex: string;
   };
+  saving_transactions: [{
+    id:number;
+    saving_account_id: number;
+    transaction_type:number;
+    remarks: string;
+    amount:number;
+    updated_at: Date;
+    created_at: Date;
+  
+  }]
   account_no?: string;
   account_name: string;
   account_type: string;

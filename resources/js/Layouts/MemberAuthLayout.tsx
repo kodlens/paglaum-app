@@ -38,6 +38,9 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                               </div>
 
                             </div>
+
+                            
+
                             <div className="ms-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>

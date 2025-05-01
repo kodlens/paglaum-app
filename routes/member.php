@@ -22,6 +22,8 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::resource('/member/my-loans', App\Http\Controllers\Member\MemberMyLoanController::class)->names('member.my-loans');
     Route::get('/member/get-my-loans', [App\Http\Controllers\Member\MemberMyLoanController::class, 'getMyLoans']);
 
+    Route::get('/member/loan-transactions', [App\Http\Controllers\Member\MemberLoanTransactionController::class, 'index'])->name('member.loan-transactions.index');
+
 
     Route::get('/member/my-loans-details/{id}', [App\Http\Controllers\Member\MemeberMyLoanDetailController::class, 'index']);
 
@@ -32,6 +34,9 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::resource('/member/my-savings', App\Http\Controllers\Member\MemberMySavingsController::class)->names('member.my-savings');
     Route::get('/member/get-my-savings', [App\Http\Controllers\Member\MemberMySavingsController::class, 'getData']);
 
+    Route::get('/member/my-savings-transactions/{id}', [App\Http\Controllers\Member\MemberMySavingTransactionController::class, 'index'])->name('member.my-saving-transactions.index');
+
+    
 
 });
 
