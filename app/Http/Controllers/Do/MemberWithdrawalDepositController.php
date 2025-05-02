@@ -16,7 +16,7 @@ class MemberWithdrawalDepositController extends Controller
         $savingsAccount = SavingAccount::with(['user'])
             ->where('id',$id)
             ->first();
-            
+
         return Inertia::render('Do/DoWithdrawDeposit/DoWithdrawDepositIndex',
         [
             'savingsAccount' => $savingsAccount
@@ -43,6 +43,7 @@ class MemberWithdrawalDepositController extends Controller
         ]);
 
         $data = SavingAccount::find($id);
+        $balance = $data->balance;
 
         //check if account is approved and active
         if(!$data->is_active){
@@ -62,17 +63,11 @@ class MemberWithdrawalDepositController extends Controller
             ], 422);
         }
 
-
-        SavingTransaction::create([
-            'saving_account_id' => $id,
-            'transaction_type' => $req->transaction_type,
-            'amount' => $req->amount
-        ]);
-
-        
         if($req->transaction_type === 'DEPOSIT'){
             $data->increment('balance', $req->amount);
             $data->save();
+
+            $balance = $balance + $req->amount;
         }
         if($req->transaction_type === 'WITHDRAW'){
 
@@ -97,8 +92,16 @@ class MemberWithdrawalDepositController extends Controller
             }
             $data->decrement('balance', $req->amount);
             $data->save();
+            $balance = $balance - $req->amount;
         }
 
+        //save the transaction
+        SavingTransaction::create([
+            'saving_account_id' => $id,
+            'transaction_type' => $req->transaction_type,
+            'amount' => $req->amount,
+            'balance' => $balance
+        ]);
 
 
         return response()->json([

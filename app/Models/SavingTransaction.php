@@ -12,11 +12,12 @@ class SavingTransaction extends Model
     protected $fillable = [
         'saving_account_id',
         'transaction_type',
-        'amount'
+        'amount',
+        'balance'
     ];
 
     public function saving_account(){
         return $this->belongsTo(SavingAccount::class);
     }
-    
+
 }

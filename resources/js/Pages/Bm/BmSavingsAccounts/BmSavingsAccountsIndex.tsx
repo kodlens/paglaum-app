@@ -26,7 +26,7 @@ interface Fields {
     name: string;
     sa: string;
 }
-const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
+const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
 
     const [form] = Form.useForm();
     //const { form } = useForm();
@@ -63,7 +63,7 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
         ].join('&');
 
         try {
-            const res = await axios.get<PaginateResponse>(`/do/get-member-savings-accounts?${params}`);
+            const res = await axios.get<PaginateResponse>(`/bm/get-savings-accounts?${params}`);
             setData(res.data.data)
             setTotal(res.data.total)
             setLoading(false)
@@ -250,9 +250,9 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                     <div className='z-0'>
 
                         <Table dataSource={data}
-                            loading={loading}
-                            rowKey={(data) => data.id ?? 0}
-                            pagination={false}>
+                               loading={loading}
+                               rowKey={(data) => data.id ?? 0}
+                               pagination={false}>
 
                             <Column title="Id" dataIndex="id" key="id" />
 
@@ -290,63 +290,64 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                                 )
                             )} />
                             <Column title="Action" key="action"
-                                render={(_, data: SavingsAccount) => (
-                                    <div className='flex gap-2'>
+                                    render={(_, data: SavingsAccount) => (
+                                        <div className='flex gap-2'>
 
-                                        <Dropdown.Button type="primary"
-                                            placement="bottomRight"
-                                            menu={{
-                                                items: [
-                                                    {
-                                                        key: '2',
-                                                        label: data.is_approved ? 'Disapprove' : 'Approve',
-                                                        icon: <ThumbsUp size={16} />,
-                                                        onClick: () => {
-                                                            handleClickApprove(data)
-                                                        }
-                                                    },
-                                                    {
-                                                        key: '1',
-                                                        label: data.is_active ? 'Deactivate' : 'Activate',
-                                                        icon: <ShieldCheck size={16} />,
-                                                        onClick: () => {
-                                                            handleActivate(data)
-                                                        }
-                                                    },
+                                            <Dropdown.Button
+                                                type="primary"
+                                                placement="bottomRight"
+                                                menu={{
+                                                    items: [
+                                                        {
+                                                            key: '2',
+                                                            label: data.is_approved ? 'Disapprove' : 'Approve',
+                                                            icon: <ThumbsUp size={16} />,
+                                                            onClick: () => {
+                                                                handleClickApprove(data)
+                                                            }
+                                                        },
+                                                        {
+                                                            key: '1',
+                                                            label: data.is_active ? 'Deactivate' : 'Activate',
+                                                            icon: <ShieldCheck size={16} />,
+                                                            onClick: () => {
+                                                                handleActivate(data)
+                                                            }
+                                                        },
 
-                                                    // {
-                                                    //     key: '3',
-                                                    //     label: 'Details',
-                                                    //     icon: <MessageSquareMore size={16} />,
-                                                    //     onClick: () => {
-                                                    //         showLoanInformation(data)
-                                                    //     }
-                                                    // },
+                                                        // {
+                                                        //     key: '3',
+                                                        //     label: 'Details',
+                                                        //     icon: <MessageSquareMore size={16} />,
+                                                        //     onClick: () => {
+                                                        //         showLoanInformation(data)
+                                                        //     }
+                                                        // },
 
-                                                    {
-                                                        key: '4',
-                                                        label: 'Deposit/Withdrawal',
-                                                        icon: <BookUp size={16} />,
-                                                        onClick: () => router.visit('/do/member-withdrawal-deposit/' + data.id)
-                                                    },
+                                                        {
+                                                            key: '4',
+                                                            label: 'Deposit/Withdrawal',
+                                                            icon: <BookUp size={16} />,
+                                                            onClick: () => router.visit('/do/member-withdrawal-deposit/' + data.id)
+                                                        },
 
-                                                ],
-                                            }}
-                                            trigger={['click']}
-                                        >
-                                            <Captions size={16} />
-                                        </Dropdown.Button>
-                                    </div>
-                                )}
+                                                    ],
+                                                }}
+                                                trigger={['click']}
+                                            >
+                                                <Captions size={16} />
+                                            </Dropdown.Button>
+                                        </div>
+                                    )}
                             />
                         </Table>
 
                         <div className='my-2'>No of Row(s): {total}</div>
 
                         <Pagination className='mt-4'
-                            onChange={onPageChange}
-                            defaultCurrent={1}
-                            total={total} />
+                                    onChange={onPageChange}
+                                    defaultCurrent={1}
+                                    total={total} />
 
                         {/* <div className='flex flex-end mt-2'>
 							<Button className='ml-auto'
@@ -364,4 +365,4 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
     )
 }
 
-export default DoSavingsAccountsIndex;
+export default BmSavingsAccountsIndex;

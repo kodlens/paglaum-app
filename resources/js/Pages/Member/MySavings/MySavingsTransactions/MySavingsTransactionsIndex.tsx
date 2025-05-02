@@ -78,9 +78,16 @@ export default function MySavingsTransactionsIndex( { auth, savingsAccount } : P
                                     </div>
 
                                     <div>
+                                        <div className='font-semibold text-gray-500'>BALANCE</div>
+                                        &#8369; {item.balance.toLocaleString()}
+                                    </div>
+
+                                    <div>
                                         <div className='font-semibold text-gray-500'>TRANS DATE & TIME</div>
                                         { formatDate(item.created_at, 'MMM DD, YYYY hh:m A') }
                                     </div>
+
+
                                 </div>
 
                             </div>

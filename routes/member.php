@@ -38,7 +38,6 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/member/get-my-savings-transactions/{id}', [App\Http\Controllers\Member\MemberMySavingTransactionController::class, 'getSavingsTransaction']);
 
 
-
 });
 
 

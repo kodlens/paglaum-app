@@ -5,7 +5,8 @@ export interface SavingTransaction {
     transaction_type: string;
     remarks: string;
     amount: number;
+    balance: number;
     updated_at: Date;
     created_at: Date;
   }
-  
+

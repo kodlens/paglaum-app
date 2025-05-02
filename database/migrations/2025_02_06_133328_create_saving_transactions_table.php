@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('saving_transactions', function (Blueprint $table) {
             $table->id();
 
-            
+
             $table->bigInteger('saving_account_id')->unsigned();
 
             $table->foreign('saving_account_id')->references('id')
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('transaction_type', 100)->nullable();
             $table->text('remarks')->nullable();
             $table->double('amount')->default(0);
-            
+            $table->double('balance')->default(0);
             $table->timestamps();
         });
     }

@@ -15,10 +15,13 @@ class DoMemberSavingsAccountController extends Controller
         return Inertia::render('Do/DoSavingsAccounts/DoSavingsAccountsIndex', []);
     }
 
-
     public function getData(Request $req){
 
         $data = SavingAccount::with(['user'])
+            ->whereHas('user', function($q) use($req){
+                $q->where('lname', 'like', $req->input('name').'%');
+            })
+            ->where('account_no', 'like', $req->input('sa').'%')
             ->paginate($req->perPage);
 
         return $data;

@@ -24,7 +24,7 @@ const siderStyle: React.CSSProperties = {
 };
 
 export default function BmLAuthLayout(
-    
+
     { user, children }: PropsWithChildren<{ user:User }>) {
 
     const { post } = useForm();
@@ -55,7 +55,13 @@ export default function BmLAuthLayout(
             key: 'bm.loans.index',
             icon: <BarsOutlined />,
             label: 'Loans'
-        },{
+        },
+        {
+            key: 'bm.savings-accounts.index',
+            icon: <BarsOutlined />,
+            label: 'Savings Account'
+        },
+        {
             key: 'bm.members.index',
             icon: <UserOutlined />,
             label: 'Members/Borrower'
@@ -74,7 +80,7 @@ export default function BmLAuthLayout(
 
         <>
             <Layout>
-                <Sider className='z-10' 
+                <Sider className='z-10'
                     trigger={null}
                     collapsible
                     breakpoint='md'
@@ -113,7 +119,7 @@ export default function BmLAuthLayout(
                                 <Link href=''>
                                     {user.lname}, {user.fname ? user.fname[0] : ''}
                                 </Link>
-                                <Button className='' 
+                                <Button className=''
                                     danger
                                     onClick={handleLogout}>
                                     <LogOut size={16} />
