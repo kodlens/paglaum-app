@@ -27,5 +27,47 @@ class BmSavingsAccountController extends Controller
         return $data;
     }
 
+
+    public function approve($id){
+        $data = SavingAccount::find($id);
+        $data->is_approved = 1;
+        $data->save();
+
+        return response()->json([
+            'status' => 'approved',
+        ], 200);
+    }
+
+    public function disapprove($id){
+        $data = SavingAccount::find($id);
+        $data->is_approved = 0;
+        $data->save();
+
+        return response()->json([
+            'status' => 'disapproved',
+        ], 200);
+    }
+
+
+    public function activate($id){
+        $data = SavingAccount::find($id);
+        $data->is_active = 1;
+        $data->save();
+
+        return response()->json([
+            'status' => 'activated',
+        ], 200);
+    }
+
+    public function deactivate($id){
+        $data = SavingAccount::find($id);
+        $data->is_active = 0;
+        $data->save();
+
+        return response()->json([
+            'status' => 'deactivated',
+        ], 200);
+    }
+
 }
 

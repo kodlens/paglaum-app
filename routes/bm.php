@@ -17,6 +17,13 @@ Route::middleware(['auth', 'bm'])->group(function () {
 
     Route::resource('/bm/savings-accounts', App\Http\Controllers\Bm\BmSavingsAccountController::class)->names('bm.savings-accounts');
     Route::get('/bm/get-savings-accounts', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'getData']);
+    
+    Route::post('/bm/approve-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'approve']); //approve
+    Route::post('/bm/disapprove-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'disapprove']); //disapprove
+
+    Route::post('/bm/activate-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'activate']); //approve
+    Route::post('/bm/deactivate-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'deactivate']); //disapprove
+
 
     // Route::resource('/admin/areas', App\Http\Controllers\Administrator\AdminAreaContoller::class)->names('admin.areas');
     // Route::get('/admin/get-areas', [App\Http\Controllers\Administrator\AdminAreaContoller::class, 'getData']);

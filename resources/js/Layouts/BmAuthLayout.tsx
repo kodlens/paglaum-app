@@ -1,13 +1,11 @@
 import { useState, PropsWithChildren } from 'react';
-import { Link, router, useForm, usePage } from '@inertiajs/react';
+import { Link, router, useForm } from '@inertiajs/react';
 
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    FilePptOutlined,
-    UserOutlined,ProfileOutlined,
-    FormOutlined,
-    BarsOutlined, FileJpgOutlined
+    UserOutlined,
+    BarsOutlined,
   } from '@ant-design/icons';
 
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';

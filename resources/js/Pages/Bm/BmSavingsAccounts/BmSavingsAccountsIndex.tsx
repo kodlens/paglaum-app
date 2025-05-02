@@ -3,22 +3,20 @@ import { Head, router } from '@inertiajs/react'
 
 import {
     Space, Table,
-    Pagination, Button, Modal,
-    Form, Input, Select, Checkbox,
+    Pagination, Button, Form, Input,
     App,
-    Popconfirm,
     Dropdown,
-    InputNumber
 } from 'antd';
 
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { BookUp, Captions, FileLock2, MessageSquareMore, Pencil, RefreshCcwIcon, ShieldCheck, ShieldOff, ThumbsUp, Trash2, Wallet } from 'lucide-react';
+import { BookUp, Captions, RefreshCcwIcon, ShieldCheck, ThumbsUp } from 'lucide-react';
 import { Loan } from '@/types/loan';
-import DoAuthLayout from '@/Layouts/DoAuthLayout';
+
 import { LoanType } from '@/types/loanType';
 import { SavingsAccount } from "@/types/savingsAccount";
+import BmAuthLayout from '@/Layouts/BmAuthLayout';
 
 const { Column } = Table;
 
@@ -53,7 +51,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
     }
 
     const loadDataAsync = async () => {
-        console.log(fields)
+
         setLoading(true)
         const params = [
             `sa=${fields.sa}`,
@@ -89,7 +87,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
             title: savingsAccount.is_approved ? 'Disapprove?' : 'Approve?', content: `Are you sure you want to ${savingsAccount.is_approved ? 'disapprove' : 'approve'} this SA?`,
             onOk: () => {
                 if (!!savingsAccount.is_approved) {
-                    axios.post('/do/disapprove-savings-account/' + savingsAccount.id).then(res => {
+                    axios.post('/bm/disapprove-savings-account/' + savingsAccount.id).then(res => {
                         if (res.data.status === 'disapproved') {
                             notification.success({ placement: 'bottomRight', message: 'Disapproved!', description: 'SA Disapproved successfully.' })
                             loadDataAsync()
@@ -115,7 +113,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
                         }
                     })
                 } else {
-                    axios.post('/do/approve-savings-account/' + savingsAccount.id).then(res => {
+                    axios.post('/bm/approve-savings-account/' + savingsAccount.id).then(res => {
                         if (res.data.status === 'approved') {
                             notification.success({ placement: 'bottomRight', message: 'Approved!', description: 'SA approved successfully.' })
                             loadDataAsync()
@@ -150,7 +148,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
             title: savingsAccount.is_active ? 'Deactivate?' : 'Activate?', content: `Are you sure you want to ${savingsAccount.is_active ? 'deactivate' : 'activate'} this SA?`,
             onOk: () => {
                 if (!!savingsAccount.is_active) {
-                    axios.post('/do/deactivate-savings-account/' + savingsAccount.id).then(res => {
+                    axios.post('/bm/deactivate-savings-account/' + savingsAccount.id).then(res => {
                         if (res.data.status === 'deactivated') {
                             notification.success({ placement: 'bottomRight', message: 'Deactivated!', description: 'SA deactivated successfully.' })
                             loadDataAsync()
@@ -176,7 +174,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
                         }
                     })
                 } else {
-                    axios.post('/do/activate-savings-account/' + savingsAccount.id).then(res => {
+                    axios.post('/bm/activate-savings-account/' + savingsAccount.id).then(res => {
                         if (res.data.status === 'activated') {
                             notification.success({ placement: 'bottomRight', message: 'Activated!', description: 'SA activate successfully.' })
                             loadDataAsync()
@@ -205,12 +203,8 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
         })
     }
 
-    const showLoanInformation = (loan: Loan) => {
-        router.visit(`/do/do-member-loan-details/${loan.id}`)
-    }
-
     return (
-        <DoAuthLayout user={auth.user}>
+        <BmAuthLayout user={auth.user}>
             <Head title="Loan Management"></Head>
 
             <div className='flex mt-10 justify-center items-center'>
@@ -361,7 +355,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
                 {/* card */}
             </div>
 
-        </DoAuthLayout>
+        </BmAuthLayout>
     )
 }
 
