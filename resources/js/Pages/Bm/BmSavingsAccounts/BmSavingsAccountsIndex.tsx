@@ -2,7 +2,7 @@ import { PageProps, User } from '@/types'
 import { Head, router } from '@inertiajs/react'
 
 import {
-    Space, Table,
+    Table,
     Pagination, Button, Form, Input,
     App,
     Dropdown,
@@ -11,10 +11,7 @@ import {
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { BookUp, Captions, RefreshCcwIcon, ShieldCheck, ThumbsUp } from 'lucide-react';
-import { Loan } from '@/types/loan';
-
-import { LoanType } from '@/types/loanType';
+import { BookUp, Captions, ClipboardList, RefreshCcwIcon, ShieldCheck, ThumbsUp } from 'lucide-react';
 import { SavingsAccount } from "@/types/savingsAccount";
 import BmAuthLayout from '@/Layouts/BmAuthLayout';
 
@@ -42,9 +39,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
     const [perPage, setPerPage] = useState(10);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
-    const [errors, setErrors] = useState<any>({});
-    const [id, setId] = useState(0);
-
+    
     interface PaginateResponse {
         data: any[],
         total: number;
@@ -322,8 +317,15 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
                                                             key: '4',
                                                             label: 'Deposit/Withdrawal',
                                                             icon: <BookUp size={16} />,
-                                                            onClick: () => router.visit('/do/member-withdrawal-deposit/' + data.id)
+                                                            onClick: () => router.visit('/bm/withdraw-deposit/' + data.id)
                                                         },
+                                                        {
+                                                            key: '5',
+                                                            label: 'Details',
+                                                            icon: <ClipboardList size={16} />,
+                                                            onClick: () => router.visit('/bm/savings-account-details/' + data.id)
+                                                        },
+
 
                                                     ],
                                                 }}

@@ -34,6 +34,7 @@ class MakeAPaymentController extends Controller
 
         $detail = LoanDetail::find($id);
         $detail->amount_paid = $amountPaid;
+        $detail->datetime_paid = \Carbon\Carbon::now();
         $detail->is_paid = 1;
         $detail->payment_method = 'COUNTER';
         $detail->payment_transaction = 'COUNTER';

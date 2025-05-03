@@ -105,7 +105,7 @@ class PaymongoController extends Controller
         $loanDetail->payment_method = 'ONLINE';
         $loanDetail->payment_transaction = 'ONLINE';
         $loanDetail->payment_session = $paymentSession;
-
+        $loanDetail->datetime_paid = \Carbon\Carbon::now();
         $loanDetail->save();
 
         //return $paymongoDetails;

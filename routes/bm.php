@@ -24,6 +24,13 @@ Route::middleware(['auth', 'bm'])->group(function () {
     Route::post('/bm/activate-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'activate']); //approve
     Route::post('/bm/deactivate-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'deactivate']); //disapprove
 
+      /* ================WITHDRAWAL/DEPOSIT========================= */
+      Route::get('/bm/withdraw-deposit/{id}', [App\Http\Controllers\Bm\BmWithdrawDepositController::class, 'index']);
+      Route::post('/bm/withdraw-deposit/{id}', [App\Http\Controllers\Bm\BmWithdrawDepositController::class, 'store']);
+  
+      Route::get('/bm/savings-account-details/{id}', [App\Http\Controllers\Bm\BmSavingsAccountDetailController::class, 'index']);
+      Route::get('/bm/get-savings-account-details', [App\Http\Controllers\Bm\BmSavingsAccountDetailController::class, 'getData']);
+
 
     // Route::resource('/admin/areas', App\Http\Controllers\Administrator\AdminAreaContoller::class)->names('admin.areas');
     // Route::get('/admin/get-areas', [App\Http\Controllers\Administrator\AdminAreaContoller::class, 'getData']);

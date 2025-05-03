@@ -35,7 +35,7 @@ return new class extends Migration
             //     ->onUpdate('cascade');
 
             $table->date('due_date')->nullable();
-            $table->date('date_paid')->nullable();
+            $table->dateTime('datetime_paid')->nullable();
             $table->double('amount')->default(0);
             $table->double('amount_paid')->default(0);
 
