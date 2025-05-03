@@ -17,10 +17,13 @@ import axios from 'axios';
 import ChangePassword from './partials/ChangePassword';
 import AdminAuthLayout from '@/Layouts/AdminAuthLayout';
 import { PaginateResponse } from '@/types/apiResponse';
-import { Captions, FileLock2, MonitorCheck, Pencil, ShieldOff, Trash2 } from 'lucide-react';
+import { Captions, FileLock2, MonitorCheck, Pencil, RefreshCw, ShieldOff, Trash2 } from 'lucide-react';
 
 const { Column } = Table;
 
+interface SearchFields {
+    lname:string;
+}
 
 const AdminUserIndex = ({ auth }: PageProps)=> {
 
@@ -37,7 +40,10 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
 
 	const [perPage, setPerPage] = useState(10);
     const [page, setPage] = useState(1);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState<SearchFields>({
+        lname: ''
+    });
+
     const [errors, setErrors] = useState<any>({
         lname:'',
         fname:'',
@@ -50,12 +56,16 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
 
     const [id, setId] = useState(0);
 
-
+    const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target
+        setSearch({...search, [name]:value})
+    }
 
 	const loadDataAsync = async () => {
 
         setLoading(true)
         const params = [
+            `lname=${search.lname}`,
             `perpage=${perPage}`,
             `page=${page}`
         ].join('&');
@@ -72,7 +82,7 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
 
     useEffect(()=>{
         loadDataAsync()
-    },[perPage, search, page])
+    },[perPage, page])
 
 
     const onPageChange = (index:number, perPage:number) => {
@@ -158,6 +168,17 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
 					{/* card header */}
 					<div className="font-bold mb-4 text-lg">LIST OF USER</div>
 					{/* card body */}
+
+                    <div className='my-4'>
+                        <div className='flex flex-col gap-2'>
+                            <label htmlFor="search-lname">Last Name</label>
+                            <Input id='search-lname' name='lname' onChange={handleChange} placeholder="Search Last Name"/>
+                        </div>
+                        
+                        <Button type='primary' className='mt-4'
+                            onClick={loadDataAsync}
+                            icon={<RefreshCw size={16}/>}>Search</Button>
+                    </div>
 					<div className='z-0'>
                         <Table dataSource={data}
                         loading={loading}

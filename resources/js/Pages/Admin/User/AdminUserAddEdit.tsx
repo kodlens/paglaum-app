@@ -30,7 +30,6 @@ export default function AdminUserAddEdit({
     useEffect(() => {
         form.setFields([
             { name: 'username', value: user.username },
-            { name: 'title', value: user.title },
             { name: 'lname', value: user.lname },
             { name: 'fname', value: user.fname },
             { name: 'mname', value: user.mname },
@@ -97,7 +96,6 @@ export default function AdminUserAddEdit({
                         form={form}
                         onFinish={onFinish}
                         initialValues={{
-                            title: '',
                             username: '',
                             password: '',
                             password_confirmation: '',
@@ -124,21 +122,6 @@ export default function AdminUserAddEdit({
 
 
                         <Divider />
-                        <Form.Item
-                            name="title"
-                            label="Title (Mr. / Ms. / Mrs.)"
-                            className="w-full"
-                            validateStatus={errors.title ? "error" : ""}
-                            help={errors.title ? errors.title[0] : ""}
-                        >
-                            <Select
-                                options={[
-                                    { value: "MR", label: "MR." },
-                                    { value: "MS", label: "MS." },
-                                    { value: "MRS", label: "MRS." },
-                                ]}
-                            />
-                        </Form.Item>
 
                         <div className='flex flex-col gap-x-4 sm:flex-row'>
 

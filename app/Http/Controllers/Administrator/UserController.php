@@ -88,6 +88,7 @@ class UserController extends Controller
             'fname' => 'required',
             'lname' => 'required',
             'sex' => 'required',
+            'contact_no' => 'required|regex:/^9\d{9}$/',
             'email' => 'required|email|unique:users,email,' . $id . ',id',
             'role' => 'required'
         ],[
@@ -100,12 +101,12 @@ class UserController extends Controller
         ]);
 
         $user = User::find($id);
-        $user->title = $req->title;
         $user->lname = strtoupper($req->lname);
         $user->fname = strtoupper($req->fname);
         $user->mname = strtoupper($req->mname);
         $user->suffix = strtoupper($req->suffix);
         $user->sex = $req->sex;
+        $user->contact_no = $req->contact_no;
         $user->education_level = $req->education_level;
         $user->email = $req->email;
         $user->role = $req->role;

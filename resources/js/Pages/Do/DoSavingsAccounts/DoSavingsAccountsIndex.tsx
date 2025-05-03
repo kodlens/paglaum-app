@@ -298,6 +298,12 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                                             menu={{
                                                 items: [
                                                     {
+                                                        key: '1',
+                                                        label: 'Deposit/Withdrawal',
+                                                        icon: <BookUp size={16} />,
+                                                        onClick: () => router.visit('/do/member-withdrawal-deposit/' + data.id)
+                                                    },
+                                                    {
                                                         key: '2',
                                                         label: data.is_approved ? 'Disapprove' : 'Approve',
                                                         icon: <ThumbsUp size={16} />,
@@ -306,30 +312,13 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                                                         }
                                                     },
                                                     {
-                                                        key: '1',
+                                                        key: '3',
                                                         label: data.is_active ? 'Deactivate' : 'Activate',
                                                         icon: <ShieldCheck size={16} />,
                                                         onClick: () => {
                                                             handleActivate(data)
                                                         }
                                                     },
-
-                                                    // {
-                                                    //     key: '3',
-                                                    //     label: 'Details',
-                                                    //     icon: <MessageSquareMore size={16} />,
-                                                    //     onClick: () => {
-                                                    //         showLoanInformation(data)
-                                                    //     }
-                                                    // },
-
-                                                    {
-                                                        key: '4',
-                                                        label: 'Deposit/Withdrawal',
-                                                        icon: <BookUp size={16} />,
-                                                        onClick: () => router.visit('/do/member-withdrawal-deposit/' + data.id)
-                                                    },
-
                                                 ],
                                             }}
                                             trigger={['click']}

@@ -149,7 +149,11 @@ export default function AdminAuthLayout(
                         setCollapsed(broken);
                     }}
                     collapsed={collapsed} width={300}>
-                    <PanelSideBarLogo />
+
+                    <div className='md:h-[220px] h-[60px]'>
+                        <PanelSideBarLogo />
+                    </div>
+                
                     <Menu
                         onClick={onClick}
                         mode="inline"
