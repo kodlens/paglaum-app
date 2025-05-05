@@ -29,6 +29,9 @@ Route::middleware(['auth', 'active'])->group(function () {
 
     /* ================SAVINGS ACCOUNT========================= */
     Route::post('/member/apply-savings-account', [App\Http\Controllers\Member\MemberApplySavingsAccountController::class, 'applySavingsAccount']);
+    Route::post('/member/temp-upload', [App\Http\Controllers\Member\MemberApplySavingsAccountController::class, 'tempUpload']);
+    Route::post('/member/temp-remove/{filename}', [App\Http\Controllers\Member\MemberApplySavingsAccountController::class, 'removeUpload']);
+    Route::post('/member/image-remove/{id}/{filename}', [App\Http\Controllers\Member\MemberApplySavingsAccountController::class, 'imageRemove']);
 
 
     Route::resource('/member/my-savings', App\Http\Controllers\Member\MemberMySavingsController::class)->names('member.my-savings');

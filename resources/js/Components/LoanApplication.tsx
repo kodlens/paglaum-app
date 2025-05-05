@@ -105,8 +105,8 @@ const LoanApplication = () => {
 
   
     const uploadProps: UploadProps = {
-        name: "featured_image",
-        action: "/panel/temp-upload",
+        name: "kyc_id",
+        action: "/member/temp-upload",
         headers: {
             "X-CSRF-Token": csrfToken,
         },
@@ -156,6 +156,14 @@ const LoanApplication = () => {
             //             }
             //         });
             // }
+
+            axios
+                .post("/member/temp-remove/" + info.response)
+                .then((res) => {
+                    if (res.data.status === "temp_deleted") {
+                        message.success("File removed.");
+                    }
+                });
         },
     };
 
