@@ -69,6 +69,8 @@ class Kernel extends HttpKernel
         'member' => \App\Http\Middleware\MemberMiddleware::class,
         'bm' => \App\Http\Middleware\BmMiddleware::class,
         'do' => \App\Http\Middleware\DoMiddleware::class,
+        'ybs' => \App\Http\Middleware\YouthBeeSaverMiddleware::class,
+        'ipp' => \App\Http\Middleware\InsurancePointPersonMiddleware::class,
         'active' => \App\Http\Middleware\ActiveMiddleware::class,
     ];
 }

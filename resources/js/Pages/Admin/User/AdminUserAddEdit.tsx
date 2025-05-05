@@ -230,6 +230,8 @@ export default function AdminUserAddEdit({
                                     { value: "MEMBER", label: "MEMBER" },
                                     { value: "BM", label: "BRANCH MANAGER" },
                                     { value: "ADMIN", label: "ADMINISTRATOR" },
+                                    { value: "YBS", label: "YOUT BEE SAVER" },
+                                    { value: "IPP", label: "INSURANCE POINT PERSON" },
                                 ]}
                             />
                         </Form.Item>
