@@ -3,10 +3,10 @@ import { Link } from "@inertiajs/react";
 
 const NavBar = () => {
     const [state, setState] = useState(false);
-    const navigation = [
-        { title: "Benefits", path: "" },
-        { title: "Loans", path: "" },
-    ];
+    // const navigation = [
+    //     { title: "Benefits", path: "" },
+    //     { title: "Loans", path: "" },
+    // ];
 
     useEffect(() => {
         document.onclick = (e) => {
@@ -75,7 +75,7 @@ const NavBar = () => {
                         state ? "block" : "hidden"
                     } `}
                 >
-                    <ul className="justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
+                    {/* <ul className="justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
                         {navigation.map((item, idx) => {
                             return (
                                 <li
@@ -88,7 +88,7 @@ const NavBar = () => {
                                 </li>
                             );
                         })}
-                    </ul>
+                    </ul> */}
                     <div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         <Link
                             href=""

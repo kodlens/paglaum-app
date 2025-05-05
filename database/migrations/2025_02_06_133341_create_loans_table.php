@@ -51,6 +51,8 @@ return new class extends Migration
             $table->double('terms_month')->default(0);
             $table->double('previous_balance')->default(0);
             
+            $table->string('kyc_id')->nullable();
+
             $table->tinyInteger('is_approve')->default(0);
             $table->tinyInteger('is_paid')->default(0);
 

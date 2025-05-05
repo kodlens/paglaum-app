@@ -21,6 +21,7 @@ class Loan extends Model
         'interest',
         'guarantor',
         'purpose',
+        'kyc_id',
         'is_approve',
         'is_do_approve',
         'is_bm_approve',

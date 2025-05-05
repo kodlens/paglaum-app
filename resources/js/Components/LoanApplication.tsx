@@ -1,18 +1,30 @@
-import { App, Button, Form, Input, InputNumber, Select } from 'antd'
+import { PageProps } from '@/types';
+import { usePage } from '@inertiajs/react';
+import { App, Button, Form, Input, InputNumber, Select, Upload, UploadProps } from 'antd'
 import TextArea from 'antd/es/input/TextArea';
 import axios from 'axios';
 import { error } from 'console';
 import React, { useEffect } from 'react'
+import {
+    UploadOutlined
+  } from '@ant-design/icons';
+
 
 const LoanApplication = () => {
+
+   
+    
+    const  { props } = usePage<PageProps>();
+    const csrfToken = props.csrf_token ?? ""; // Ensure csrfToken is a string
 
     const [form] = Form.useForm();
     const [errors, setErrors] = React.useState<any>({});
     const [loanTypes, setLoanTypes] = React.useState<any>([]);
     const [loanSubtypes, setLoanSubtypes] = React.useState<any>([]);
     const [loading, setLoading] = React.useState<boolean>(false);
-    const { notification } = App.useApp();
+    const { notification, message} = App.useApp();
     
+
     const loadLoanTypes = () => {
         axios.get('/load-loan-types').then(res=>{
             setLoanTypes(res.data);
@@ -91,6 +103,62 @@ const LoanApplication = () => {
         
     }
 
+  
+    const uploadProps: UploadProps = {
+        name: "featured_image",
+        action: "/panel/temp-upload",
+        headers: {
+            "X-CSRF-Token": csrfToken,
+        },
+        beforeUpload: (file) => {
+            const isPNG = file.type === "image/png";
+            const isJPG = file.type === "image/jpeg";
+
+            if (!isPNG && !isJPG) {
+                message.error(`${file.name} is not a png/jpg file`);
+            }
+            return isPNG || isJPG || Upload.LIST_IGNORE;
+        },
+
+        onChange(info) {
+            // if (id > 0) {
+            //     //console.log(info);
+            //     //form.setFieldValue('featured_image', info.file.name)
+            // } else {
+               
+            // }
+            if (info.file.status === "done") {
+                message.success(
+                    `${info.file.name} file uploaded successfully`
+                );
+                form.setFieldValue("featured_image", info.file.response);
+            } else if (info.file.status === "error") {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+        onRemove(info) {
+            // if (id > 0) {
+            //     //remove image if mode is update (temp,uploadedfiles)
+            //     axios
+            //         .post(`/panel/image-remove/${id}/${info.name}`)
+            //         .then((res) => {
+            //             if (res.data.status === "temp_deleted") {
+            //                 message.success("File removed.");
+            //             }
+            //         });
+            // } else {
+            //     //remove image in temp folder if mode is create
+            //     axios
+            //         .post("/panel/temp-remove/" + info.response)
+            //         .then((res) => {
+            //             if (res.data.status === "temp_deleted") {
+            //                 message.success("File removed.");
+            //             }
+            //         });
+            // }
+        },
+    };
+
  
     
   return (
@@ -106,6 +174,7 @@ const LoanApplication = () => {
                 guarantor: '',
                 mode_payment: '',
                 purpose: '',
+                upload: [],
             }}
             onFinish={onFinish}
             layout='vertical'
@@ -220,15 +289,40 @@ const LoanApplication = () => {
                         ]}
                     />
                 </Form.Item>
-
-                <Form.Item
-                    hidden
-                    name="interest">
-                    <Input />
-                </Form.Item>
-
-
             </div>
+
+            <Form.Item
+                name="upload"
+                valuePropName="fileList"
+                className="w-full"
+                label="Select Valid Id"
+                getValueFromEvent={(e) => {
+                    // Normalize the value to fit what the Upload component expects
+                    if (Array.isArray(e)) {
+                        return e;
+                    }
+                    return e?.fileList;
+                }}
+                validateStatus={errors.upload ? "error" : ""}
+                help={errors.upload ? errors.upload[0] : ""}
+            >
+                <Upload
+                    maxCount={1}
+                    // fileList={fileList}
+                    listType="picture"
+                    {...uploadProps}
+                >
+                    <Button icon={<UploadOutlined />}>
+                        Click to Upload
+                    </Button>
+                </Upload>
+            </Form.Item>
+
+            <Form.Item
+                hidden
+                name="interest">
+                <Input />
+            </Form.Item>
             
 
 
