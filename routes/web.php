@@ -101,3 +101,14 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+
+/* ============ DASHBOARDS REPORT, COMPUTATION, CONSOLIDATION, COUNTS ====================== */
+
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/loan-request-count', [App\Http\Controllers\OpenDashboardController::class, 'loanRequestCount']);
+
+});
+
+

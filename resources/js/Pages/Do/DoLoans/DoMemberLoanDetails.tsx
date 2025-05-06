@@ -9,7 +9,12 @@ import TextArea from 'antd/es/input/TextArea'
 import axios from 'axios'
 import { ArrowLeft } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import dayjs from 'dayjs'
 
+
+const dateFormat = (ndate:Date, format:string) =>{
+    return dayjs(ndate).format(format)
+}
 const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
 
     const [fields, setFields] = useState<Loan>();
@@ -37,6 +42,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
 
     useEffect(() => {
         loadLoanTypes();
+        
     }, []);
 
     const handleChangeLoanType = (value: string | number | null | undefined) => {
@@ -86,20 +92,14 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
 
     useEffect(()=>{
         const selectedLoanType = loanTypes.find((item: LoanType) => item.id === Number(loan?.loan_type_id));
-        console.log(selectedLoanType);
-        
+
         if (selectedLoanType) {
             setLoanSubtypes(selectedLoanType.loan_subtypes || [])// Fallback to an empty array if no subtypes exist
-            console.log('subtype loaded');
         } else {
             setLoanSubtypes([]); // Reset subtypes if no loan type is selected
         }
     },[loanTypes])
-
-    const handleApproveLoan = (): void => {
-        console.log(fields)
-    }
-
+    
     return (
         <DoAuthLayout user={auth.user}>
             <Head title="Loan Detail " />
@@ -267,6 +267,44 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                             </Form.Item>
                         </div>
                         {/* <Button type={"primary"} onClick={handleApproveLoan}>Approve Loan</Button> */}
+
+                        <hr />
+
+                        <div className='font-bold my-4'>
+                            LOAN ADDTIONAL DETAILS
+                        </div>
+                        <div>
+                            { loan?.loan_details?.map(item => (
+                                <div key={item.id} className='px-2'>
+
+                                    <div className='px-4 py-3 my-2 border rounded-md'>
+                                        <div className='mb-2'>
+
+                                            {item.is_paid === 1 ? (
+                                                <span className='font-bold text-[10px] text-white bg-green-500 px-2 py-1 rounded-md'>PAID</span>
+                                            ) : (
+                                                <span className='font-bold text-[10px] text-white bg-red-500 px-2 py-1 rounded-md'>UNPAID</span>
+                                            ) }
+                                        </div>
+
+                                        <div className=' flex flex-col md:flex-row gap-6
+                                            justify-between'>
+                                            <div>
+                                                <div className='font-semibold'>Due Date</div>
+                                                <div>{dateFormat(item.due_date, 'MMM DD, YYYY')}</div>
+                                                
+                                            </div>
+                                            <div>
+                                                <div className='font-semibold'>Amount Paid</div>
+                                                <div>&#8369; {item.amount_paid.toLocaleString()}</div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            ))}
+                        </div>
 
                     </div>
 

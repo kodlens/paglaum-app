@@ -1,4 +1,5 @@
 import { LoanSubtype } from "./loanSubtype";
+import { LoanDetail } from "./loanDetail";
 
 export interface Loan {
     id?: number;
@@ -11,6 +12,7 @@ export interface Loan {
     loan_type?: string;
     loan_subtype?: string;
     user?: User;
+    loan_details?: LoanDetail[];
     // loan_subtypes: LoanSubtype[]
     // loan_subtypes: LoanSubtype[]
     interest?: number;
