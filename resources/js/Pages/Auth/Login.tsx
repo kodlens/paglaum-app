@@ -91,7 +91,7 @@ export default function Login() {
                         </Form>
                         
                         <div className='mt-2 text-center'>
-                            <Link href="/forogt-password">Forgot Password</Link>
+                            <Link href={`${route('password.request')}`}>Forgot Password</Link>
                         </div>
 
                     </div>

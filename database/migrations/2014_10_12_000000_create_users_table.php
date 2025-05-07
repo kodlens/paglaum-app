@@ -83,6 +83,11 @@ return new class extends Migration
                 ->default(0); 
             $table->rememberToken();
             $table->dateTime('last_login')->nullable();
+
+            $table->tinyInteger('is_2fa')->nullable()
+                ->default(0); 
+            
+
             $table->timestamps();
         });
     }
