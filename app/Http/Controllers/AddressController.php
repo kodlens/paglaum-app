@@ -11,6 +11,7 @@ class AddressController extends Controller
 {
     public function loadProvinces(){
         return Province::orderBy('provDesc', 'asc')
+            ->where('active', 1)
             ->get();
     }
 
@@ -20,6 +21,7 @@ class AddressController extends Controller
 
         return City::where('provCode', $provCode)
             ->orderBy('citymunDesc', 'asc')
+            ->where('active', 1)
             ->get();
     }
 
@@ -28,6 +30,7 @@ class AddressController extends Controller
 
         return Barangay::where('citymunCode', $citymunCode)
             ->orderBy('brgyDesc', 'asc')
+            ->where('active', 1)
             ->get();
     }
 }

@@ -89,6 +89,11 @@ export default function Login() {
                                 Login
                             </Button>
                         </Form>
+                        
+                        <div className='mt-2 text-center'>
+                            <Link href="/forogt-password">Forgot Password</Link>
+                        </div>
+
                     </div>
 
                 </div>

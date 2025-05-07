@@ -37,6 +37,7 @@ Route::get('load-cities', [App\Http\Controllers\AddressController::class , 'load
 Route::get('load-barangays', [App\Http\Controllers\AddressController::class , 'loadBarangays']);
 
 
+
 require __DIR__.'/admin.php';
 require __DIR__.'/member.php';
 require __DIR__.'/bm.php';
@@ -96,6 +97,8 @@ Route::middleware(['auth'])->group(function () {
 
 
 });
+
+
 
 /* ============ PAYMONGO ====================== */
 

@@ -35,6 +35,9 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
         $request->session()->regenerate();
 
+        if(!$user->hasVerifiedEmail()){
+            return redirect('/verify-email');
+        }
         
         $role = $user->role;
         
@@ -48,8 +51,9 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(RouteServiceProvider::BM);   
         
         if(strtolower($role) == 'member')
-            return redirect()->intended(RouteServiceProvider::MEMBER);    
-        //return redirect()->intended(RouteServiceProvider::HOME);
+            return redirect()->intended(RouteServiceProvider::MEMBER);  
+
+       // return redirect('/login');
     }
 
     /**

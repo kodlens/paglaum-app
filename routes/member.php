@@ -10,7 +10,7 @@ use App\Http\Controllers\ProfileController;
 Route::get('/inactive', [App\Http\Controllers\InActiveController::class, 'index'])->name('inactive.index')
     ->middleware(['auth']);
 
-Route::middleware(['auth', 'active'])->group(function () {
+Route::middleware(['auth', 'active', 'verified'])->group(function () {
 
     Route::resource('/member/dashboard', App\Http\Controllers\Member\MemberDashboardController::class)->names('member.dashboard');
 
