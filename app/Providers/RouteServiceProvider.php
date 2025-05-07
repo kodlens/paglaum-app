@@ -25,6 +25,7 @@ class RouteServiceProvider extends ServiceProvider
     public const YBS = '/ybs/dashboard';
     public const IPP = '/ipp/dashboard';
 
+
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */

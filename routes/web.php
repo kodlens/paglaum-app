@@ -4,6 +4,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,7 @@ Route::get('load-barangays', [App\Http\Controllers\AddressController::class , 'l
 
 require __DIR__.'/admin.php';
 require __DIR__.'/member.php';
+require __DIR__.'/ybs.php';
 require __DIR__.'/bm.php';
 require __DIR__.'/do.php';
 
@@ -98,15 +100,14 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-
-
 /* ============ PAYMONGO ====================== */
 
 
 
 
-/* ============ DASHBOARDS REPORT, COMPUTATION, CONSOLIDATION, COUNTS ====================== */
 
+
+/* ============ DASHBOARDS REPORT, COMPUTATION, CONSOLIDATION, COUNTS ====================== */
 
 Route::middleware(['auth'])->group(function () {
 
@@ -114,4 +115,17 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+/* ============ DASHBOARDS REPORT, COMPUTATION, CONSOLIDATION, COUNTS ====================== */
 
+
+
+
+//for debugging
+Route::get('/applogout', function (Request $req) {
+    Auth::guard('web')->logout();
+    $req->session()->invalidate();
+
+    $req->session()->regenerateToken();
+
+    return redirect('/login');
+});

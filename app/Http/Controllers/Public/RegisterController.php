@@ -54,6 +54,7 @@ class RegisterController extends Controller
             'business_address' => 'required|string|max:255',
             'contact_person' => 'required|string|max:255',
             'contact_person_no' => 'required|string|max:255',
+            'role' => 'required|string|max:50',
         ],[
             'business_name.required' => 'Office/Business name is required.',
             'business_address.required' => 'Office/Business address is required.'
@@ -103,7 +104,7 @@ class RegisterController extends Controller
             'barangay' => $request->barangay,
             'street' => $request->street,
             'zip' => $request->zip,
-            'role' => 'MEMBER',
+            'role' => $request->role,
             'active' => 0,
             'password' => Hash::make($request->password),
         ]);

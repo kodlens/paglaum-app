@@ -31,29 +31,36 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
-        $user = Auth::user();
         $request->session()->regenerate();
 
-        if(!$user->hasVerifiedEmail()){
-            return redirect('/verify-email');
+        $user = Auth::user();
+        $role = $user->role;
+
+        if($user->hasVerifiedEmail()){
+            if(strtolower($role) == 'admin')
+                return redirect()->intended(RouteServiceProvider::ADMIN);
+        
+            if(strtolower($role) == 'do')
+                return redirect()->intended(RouteServiceProvider::DO);    
+
+            if(strtolower($role) == 'bm')
+                return redirect()->intended(RouteServiceProvider::BM);   
+            
+            if(strtolower($role) == 'member')
+                return redirect()->intended(RouteServiceProvider::MEMBER);  
+
+            if(strtolower($role) == 'ybs')
+                return redirect()->intended(RouteServiceProvider::YBS);
+        }else{
+            return redirect()->route('verification.notice');
         }
         
-        $role = $user->role;
         
-        if(strtolower($role) == 'admin')
-            return redirect()->intended(RouteServiceProvider::ADMIN);
-        
-        if(strtolower($role) == 'do')
-            return redirect()->intended(RouteServiceProvider::DO);    
 
-        if(strtolower($role) == 'bm')
-            return redirect()->intended(RouteServiceProvider::BM);   
-        
-        if(strtolower($role) == 'member')
-            return redirect()->intended(RouteServiceProvider::MEMBER);  
+        //$request->session()->regenerate();
+        //return redirect()->intended(RouteServiceProvider::YBS);
 
-       // return redirect('/login');
+       // 
     }
 
     /**

@@ -68,6 +68,8 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
         city: null,
         barangay: null,
         street: '',
+
+        role: '',
     });
 
     const loadIdTypes = () => {
@@ -620,6 +622,46 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     }
 
 
+    const accountType = () => {
+        return (
+            <>
+                <div className="inline-flex items-center justify-center w-full">
+                    <hr className="w-full h-px my-8 bg-gray-200 border-0" />
+                    <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">
+                        ACCOUNT TYPE
+                    </span>
+                </div>
+                            
+                <Form.Item
+                    label="Account Type"
+                    className="w-full"
+                    validateStatus={errors.role ? "error" : ""}
+                    help={errors.role ? errors.role[0] : ""}
+                >
+                    <Select
+                        className="w-full h-10"
+                        onChange={(value)=>setData('role', value)} 
+                        value={data.role}
+                        options={[
+                            {
+                                value: "YBS",
+                                label: 'YOUTH BEE SAVER'
+                            },
+                            {
+                                value: "MEMBER",
+                                label: 'STANDARD MEMBER'
+                            },
+
+                        ]}
+                    />
+                </Form.Item>
+
+
+            </>
+        )
+    }
+
+
     const steps = [
         {
           title: 'Account',
@@ -632,6 +674,10 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
         {
           title: 'Address',
           content: addressInformation(),
+        },
+        {
+            title: 'Account Type',
+            content: accountType(),
         },
     ];
 
