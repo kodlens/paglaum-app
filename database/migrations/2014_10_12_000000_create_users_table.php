@@ -88,6 +88,7 @@ return new class extends Migration
                 ->default(0); 
 
             $table->varchar ('code_2fa', 10)->nullable();
+            $table->dateTime ('expiration_code_2fa')->nullable();
             
             $table->timestamps();
         });

@@ -39,11 +39,20 @@ export default function AccountSetting ( {auth}: PageProps) {
 
     const handleClick = () => {
         axios.post('/member/save-two-fa-setting', fields).then(res=>{
-            if(res.data.status === 'success'){
+            if(res.data.status === 'updated'){
                 notification.success({
-                    message: 'Settings',
-                    description: 'This is description'
+                    message: 'Updated!',
+                    description: `2FA ${res.data.is_2fa ? 'enabled.' : 'disabled.'}.`
                 })
+            }
+        }).catch(err => {
+            if(err.response.status === 422){
+                if(err.response.data.errors.code_2fa){
+                    notification.error({
+                        message: 'Error!',
+                        description: err.response.data.message
+                    })
+                }
             }
         })
     }
@@ -52,10 +61,13 @@ export default function AccountSetting ( {auth}: PageProps) {
         setRequestCodeLoading(true)
         axios.post('/member/request-code', fields).then(res=>{
             setRequestCodeLoading(false)
-            console.log(res.data);
             
-            if(res.data.status === 'success'){
+            if(res.data.status == 'success'){
                 setFields({...fields, code_2fa: res.data.otp })
+                notification.success({
+                    message: 'OTP SENT!',
+                    description: res.data.message
+                })
             }
         }).catch(err => {
             setRequestCodeLoading(false)
@@ -90,7 +102,7 @@ export default function AccountSetting ( {auth}: PageProps) {
                         <div className="p-6 text-gray-900">
                             
                             <div className="flex flex-col gap-2">
-                                <label htmlFor="enable_2fa">ENBALE 2FA</label>
+                                <label htmlFor="enable_2fa">ENABLE 2FA</label>
                                 <Switch id="enable_2fa" 
                                     value={fields.is_2fa}
                                     defaultChecked onChange={onChange} 
@@ -125,6 +137,7 @@ export default function AccountSetting ( {auth}: PageProps) {
                                 <Input.OTP id="code"
                                     onChange={(value)=>{
                                         console.log(value);
+                                        setFields({...fields, code_2fa:value})
                                     }}
                                     formatter={(str) => str.toUpperCase()}  
                                     length={6} />
