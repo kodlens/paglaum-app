@@ -40,6 +40,12 @@ Route::middleware(['auth', 'verified','active'])->group(function () {
     Route::get('/member/my-savings-transactions/{id}', [App\Http\Controllers\Member\MemberMySavingTransactionController::class, 'index'])->name('member.my-saving-transactions.index');
     Route::get('/member/get-my-savings-transactions/{id}', [App\Http\Controllers\Member\MemberMySavingTransactionController::class, 'getSavingsTransaction']);
 
+    Route::resource('/member/account-settings', App\Http\Controllers\Member\AccountSettingController::class)->names('member.account-setting');
+    Route::get('/member/get-account-settings', [App\Http\Controllers\Member\AccountSettingController::class, 'getData']);
+    Route::post('/member/request-code', [App\Http\Controllers\Member\AccountSettingController::class, 'requestCode']);
+    Route::post('/member/save-two-fa-setting', [App\Http\Controllers\Member\AccountSettingController::class, 'saveSetting']);
+
+    
 
 });
 

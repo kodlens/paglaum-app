@@ -86,8 +86,9 @@ return new class extends Migration
 
             $table->tinyInteger('is_2fa')->nullable()
                 ->default(0); 
-            
 
+            $table->varchar ('code_2fa', 10)->nullable();
+            
             $table->timestamps();
         });
     }

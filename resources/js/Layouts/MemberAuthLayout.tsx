@@ -9,6 +9,21 @@ import { User } from '@/types';
 export default function Authenticated({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
+    const links = [
+        {
+            label: 'Dashboard',
+            to: '/member/dashboard'
+        },
+        {
+            label: 'My Loans',
+            to: '/member/my-loans'
+        },
+        {
+            label: 'My Loans',
+            to: '/member/my-savings'
+        },
+    ]
+
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="bg-white border-b border-gray-100">
@@ -34,6 +49,11 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                               <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink href={route('member.my-savings.index')} active={route().current('member.my-savings.index')}>
                                   My Savings
+                                </NavLink>
+                              </div>
+                              <div className="hidd/ space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink href={route('member.account-setting.index')} active={route().current('member.account-setting.index')}>
+                                  Account Settings
                                 </NavLink>
                               </div>
 
@@ -122,6 +142,7 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                             <ResponsiveNavLink href={route('member.profile.edit')}>Profile</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('member.my-loans.index')}>My Loan</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('member.my-savings.index')}>My Savings</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('member.account-setting.index')}>Account Settings</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Log Out
                             </ResponsiveNavLink>
