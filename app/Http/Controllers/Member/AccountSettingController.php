@@ -47,7 +47,14 @@ class AccountSettingController extends Controller
         // if($exists){
         //     $otp = $this->generateOTP();
         // }
-        Mail::to($user->email)->send(new OtpMail($otp));
+
+        if($req->send_to === 'email'){
+            Mail::to($user->email)->send(new OtpMail($otp));
+        }
+
+        if($req->send_to === 'mobile'){
+            
+        }
 
         return response()->json([
             'status' => 'success',
