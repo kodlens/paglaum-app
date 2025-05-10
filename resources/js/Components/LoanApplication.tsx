@@ -136,7 +136,6 @@ const LoanApplication = () => {
                 message.success(
                     `${info.file.name} file uploaded successfully`
                 );
-                form.setFieldValue("featured_image", info.file.response);
             } else if (info.file.status === "error") {
                 message.error(`${info.file.name} file upload failed.`);
             }
@@ -172,6 +171,53 @@ const LoanApplication = () => {
         },
     };
 
+
+
+    const uploadCoMakerProps: UploadProps = {
+        name: "co_maker_identification",
+        action: "/member/co-maker-temp-upload",
+        headers: {
+            "X-CSRF-Token": csrfToken,
+        },
+        beforeUpload: (file) => {
+            const isPNG = file.type === "image/png";
+            const isJPG = file.type === "image/jpeg";
+
+            if (!isPNG && !isJPG) {
+                message.error(`${file.name} is not a png/jpg file`);
+            }
+            return isPNG || isJPG || Upload.LIST_IGNORE;
+        },
+
+        onChange(info) {
+            // if (id > 0) {
+            //     //console.log(info);
+            //     //form.setFieldValue('featured_image', info.file.name)
+            // } else {
+               
+            // }
+            info.file.url = '/storage/temp/' + info.file.response
+            console.log(info.file);
+            
+            if (info.file.status === "done") {
+                message.success(
+                    `${info.file.name} file uploaded successfully`
+                );
+            } else if (info.file.status === "error") {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+        onRemove(info) {
+            axios
+                .post("/member/temp-remove/" + info.response)
+                .then((res) => {
+                    if (res.data.status === "temp_deleted") {
+                        message.success("File removed.");
+                    }
+                });
+        },
+    };
+
  
     
   return (
@@ -188,6 +234,7 @@ const LoanApplication = () => {
                 purpose: '',
                 upload: [],
                 co_maker: '',
+                co_maker_identification: [],
                 co_maker_signature: '',
                 signature: '',
             }}
@@ -332,7 +379,7 @@ const LoanApplication = () => {
             <hr />
             
             <Form.Item
-                label="Co-Maker"
+                label="Co-Maker Name"
                 name="co_maker"
                 className='mt-4 w-full'
                 validateStatus={errors.co_maker ? 'error' : ''}
@@ -340,6 +387,32 @@ const LoanApplication = () => {
                     <Input type='text'
                         placeholder="Co-Maker" 
                         className='p-2 w-full' />
+            </Form.Item>
+            
+            <Form.Item
+                name="co_maker_identification"
+                className="w-full"
+                label="Co-Maker Valid Id"
+                getValueFromEvent={(e) => {
+                    // Normalize the value to fit what the Upload component expects
+                    if (Array.isArray(e)) {
+                        return e;
+                    }
+                    return e?.fileList;
+                }}
+                validateStatus={errors.co_maker_identification ? "error" : ""}
+                help={errors.co_maker_identification ? errors.co_maker_identification[0] : ""}
+            >
+                <Upload
+                    maxCount={1}
+                    // fileList={fileList}
+                    listType="picture"
+                    {...uploadCoMakerProps}
+                >
+                    <Button icon={<UploadOutlined />}>
+                        Click to Upload
+                    </Button>
+                </Upload>
             </Form.Item>
 
             <div className='border px-4 pt-4'>

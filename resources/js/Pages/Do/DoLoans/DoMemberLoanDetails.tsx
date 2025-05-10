@@ -79,7 +79,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
         setFields(prev => ({
             ...prev,
             purpose: loan?.purpose,
-            guarantor: loan?.guarantor,
+            co_maker: loan?.co_maker,
             loan_type_id: loan?.loan_type_id,
             loan_subtype_id: loan?.loan_subtype_id,
             principal: loan?.principal,
@@ -87,6 +87,10 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
             mode_payment: loan?.mode_payment,
             interest: loan?.interest,
             user: loan?.user,
+            kyc_id: loan.kyc_id,
+            co_maker_identification: loan.co_maker_identification,
+            co_maker_signature: loan?.co_maker_signature,
+            signature: loan?.signature
         }));
     }, [])
 
@@ -153,16 +157,6 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                             <TextArea value={fields?.purpose}
                                 onChange={handleChange}
                                 placeholder="Purpose..." rows={4} />
-                        </Form.Item>
-
-                        <Form.Item
-                            layout='vertical'
-                            label='Guarantor'
-                            validateStatus={errors.guarantor ? 'error' : ''}
-                            help={errors.guarantor ? errors.guarantor[0] : ''}>
-                            <Input value={fields?.guarantor}
-                                onChange={handleChange}
-                                placeholder="Purpose..." />
                         </Form.Item>
 
                         <div className='flex gap-4'>
@@ -267,12 +261,28 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                             </Form.Item>
                         </div>
                         {/* <Button type={"primary"} onClick={handleApproveLoan}>Approve Loan</Button> */}
+                     
+
+                        <div className='bg-gray-100 p-4 mt-4'>
+                            <label htmlFor="co_maker">Co-Maker</label>
+                            <div className='mb-2'>Name: {fields?.co_maker}</div>
+                            <img id='co_maker' src={`/storage/identifications/${fields?.co_maker_identification}`} alt="Co-Maker Identification"></img>
+                            <img id='co_maker' src={fields?.co_maker_signature} alt="Signature"></img>
+                        </div>
+
+                        <div className='bg-gray-100 p-4 mt-4'>
+                            <label htmlFor="signature">Loan Applicant</label>
+                            <div className='mb-2'>{fields?.user.lname}, {fields?.user.fname} {fields?.user.mname}</div>
+                            <img id='co_maker' src={`/storage/identifications/${fields?.kyc_id}`} alt="Identification"></img>
+                            <img id='signature' src={fields?.signature} alt="Signature"></img>
+                        </div>
 
                         <hr />
 
                         <div className='font-bold my-4'>
                             LOAN ADDTIONAL DETAILS
                         </div>
+
                         <div>
                             { loan?.loan_details?.map(item => (
                                 <div key={item.id} className='px-2'>

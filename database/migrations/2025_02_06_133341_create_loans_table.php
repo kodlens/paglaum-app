@@ -61,6 +61,7 @@ return new class extends Migration
             $table->double('total_payment')->default(0);
 
             $table->string('co_maker')->nullable();
+            $table->binary('co_maker_identification')->nullable();
             $table->binary('co_maker_signature')->nullable();
             $table->binary('signature')->nullable();
             

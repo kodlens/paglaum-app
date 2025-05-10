@@ -21,7 +21,8 @@ Route::middleware(['auth', 'verified','active', 'member'])->group(function () {
 
     Route::resource('/member/my-loans', App\Http\Controllers\Member\MemberMyLoanController::class)->names('member.my-loans');
     Route::get('/member/get-my-loans', [App\Http\Controllers\Member\MemberMyLoanController::class, 'getMyLoans']);
-
+    Route::post('/member/co-maker-temp-upload', [App\Http\Controllers\Member\MemberMyLoanController::class, 'coMakerTempUpload']);
+ 
     Route::get('/member/loan-transactions', [App\Http\Controllers\Member\MemberLoanTransactionController::class, 'index'])->name('member.loan-transactions.index');
 
 

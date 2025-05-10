@@ -11,6 +11,7 @@ use App\Models\LoanDetail;
 use Auth;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\Storage;
 
 class MemberMyLoanController extends Controller
 {
@@ -30,7 +31,7 @@ class MemberMyLoanController extends Controller
 
 
     public function store(Request $req){
-        
+       
         $principal = (double)$req->principal;
         $user = Auth::user();
 
@@ -59,6 +60,7 @@ class MemberMyLoanController extends Controller
             'interest' => ['required', 'gt:0'],
             'upload' => ['required'],
             'co_maker' => ['required'],
+            'co_maker_identification' => ['required'],
             'co_maker_signature' => ['required'],
             'signature' => ['required'],
         ],[
@@ -71,11 +73,9 @@ class MemberMyLoanController extends Controller
             'terms_month.required' => 'Please select loan sub type',
             'terms_month.gt' => 'Please select loan sub type',
             'upload.max' => 'The upload image must not be greater than 1MB in size',
-            'upload.required' => 'Please upload an image of a valid Id'
+            'upload.required' => 'Please upload an image of a valid Id',
+            'co_maker_identification.required' => 'Please upload an image of a valid Id'
         ]);
-        
-
-
         // check if the user have loan history
         $exists = Loan::where('user_id', $user->id)->existS();
         if($exists){
@@ -98,6 +98,7 @@ class MemberMyLoanController extends Controller
             \DB::transaction(function () use ($req, $user) {
 
                 $imgpath = $req->upload[0]['response'];
+                $imgPathCoMakerIdentification = $req->co_maker_identification[0]['response'];
 
                 $principal = $req->principal;
                 $terms = $req->terms_month / 12;
@@ -118,11 +119,26 @@ class MemberMyLoanController extends Controller
                     'total_payment' => $totalPayment,
                     'kyc_id' => $imgpath,
                     'co_maker' => $req->co_maker,
+                    'co_maker_identification' => $imgPathCoMakerIdentification,
                     'co_maker_signature' => $req->co_maker_signature,
                     'signature' => $req->signature,
                 ]);
+
+                if (Storage::exists('public/temp/' . $imgpath)) {
+                    // Move the file
+                    Storage::move('public/temp/' . $imgpath, 'public/identifications/' . $imgpath); 
+                    Storage::delete('public/temp/' . $imgpath);
+                }
+    
+                //for CO Maker
+                if (Storage::exists('public/temp/' . $imgPathCoMakerIdentification)) {
+                    // Move the file
+                    Storage::move('public/temp/' . $imgPathCoMakerIdentification, 'public/identifications/' . $imgPathCoMakerIdentification); 
+                    Storage::delete('public/temp/' . $imgPathCoMakerIdentification);
+                }
                 
             });
+
             return response()->json([
                 'status' => 'saved'
             ], 200);
@@ -183,5 +199,21 @@ class MemberMyLoanController extends Controller
         ], 200);
     }
 
+
+    public function coMakerTempUpload(Request $req){
+          //return $req;
+          $req->validate([
+            'co_maker_identification' => ['required', 'mimes:jpg,jpeg,png', 'max:5120']
+        ],[
+            'co_maker_identification.max' => 'The upload image must not be greater than 1MB in size'
+        ]);
+
+        $file = $req->co_maker_identification;
+        $fileGenerated = md5($file->getClientOriginalName() . time());
+        $imageName = $fileGenerated . '.' . $file->getClientOriginalExtension();
+        $imagePath = $file->storeAs('public/temp', $imageName);
+        $n = explode('/', $imagePath);
+        return $n[2];
+    }
 
 }

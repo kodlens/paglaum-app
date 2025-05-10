@@ -27,6 +27,7 @@ class Loan extends Model
         'is_bm_approve',
         'total_payment',
         'co_maker',
+        'co_maker_identification',
         'co_maker_signature',
         'signature'
     ];
