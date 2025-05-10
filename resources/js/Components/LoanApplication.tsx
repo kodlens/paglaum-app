@@ -8,6 +8,8 @@ import React, { useEffect } from 'react'
 import {
     UploadOutlined
   } from '@ant-design/icons';
+import SignaturePadComponent from './SignaturePad';
+import { Save } from 'lucide-react';
 
 
 const LoanApplication = () => {
@@ -66,8 +68,8 @@ const LoanApplication = () => {
         setLoading(true)
 
         axios.post('/member/my-loans', values).then(res=>{
+            setLoading(false)
             if(res.data.status === 'saved'){
-                setLoading(false)
                 notification.success({
                     placement: 'topRight',
                     message : 'Saved!',
@@ -127,6 +129,9 @@ const LoanApplication = () => {
             // } else {
                
             // }
+            info.file.url = '/storage/temp/' + info.file.response
+            console.log(info.file);
+            
             if (info.file.status === "done") {
                 message.success(
                     `${info.file.name} file uploaded successfully`
@@ -179,10 +184,12 @@ const LoanApplication = () => {
                 terms_month: 0,
                 loan_type_id: null,
                 loan_subtype_id: null,
-                guarantor: '',
                 mode_payment: '',
                 purpose: '',
                 upload: [],
+                co_maker: '',
+                co_maker_signature: '',
+                signature: '',
             }}
             onFinish={onFinish}
             layout='vertical'
@@ -199,16 +206,6 @@ const LoanApplication = () => {
                     <InputNumber type='number' 
                         placeholder="Principal" 
                         className='p-1 w-full' />
-            </Form.Item>
-
-            
-            <Form.Item
-                label="Guarantor"
-                name="guarantor"
-                validateStatus={errors.guarantor ? 'error' : ''}
-                help={errors.guarantor ? errors.guarantor[0] : ''}>
-                    <Input placeholder="Guarantor..." 
-                        className='p-2' />
             </Form.Item>
 
              
@@ -331,12 +328,55 @@ const LoanApplication = () => {
                 name="interest">
                 <Input />
             </Form.Item>
+
+            <hr />
             
+            <Form.Item
+                label="Co-Maker"
+                name="co_maker"
+                className='mt-4 w-full'
+                validateStatus={errors.co_maker ? 'error' : ''}
+                help={errors.co_maker ? errors.co_maker[0] : ''}>
+                    <Input type='text'
+                        placeholder="Co-Maker" 
+                        className='p-2 w-full' />
+            </Form.Item>
+
+            <div className='border px-4 pt-4'>
+                <Form.Item name="co_maker_signature" 
+                    label="Co-Maker Signature"
+                    validateStatus={errors.co_maker_signature ? 'error' : ''}
+                    help={errors.co_maker_signature ? errors.co_maker_signature[0] : ''}>
+                    <SignaturePadComponent  onSave={(v)=>{
+                        form.setFieldsValue({...form, co_maker_signature:v})
+                        notification.success({
+                            message: 'Signature uploaded!',
+                        })
+                    }} />
+                </Form.Item>
+            </div>
+           
+
+            <div className='border px-4 pt-4 mt-4'>
+                <Form.Item name="signature" 
+                    label="My Signature"
+                    validateStatus={errors.signature ? 'error' : ''}
+                    help={errors.signature ? errors.signature[0] : ''}>
+                    <SignaturePadComponent  onSave={(v)=>{
+                        form.setFieldsValue({...form, signature:v})
+                        notification.success({
+                            message: 'Signature uploaded!',
+                        })
+                    }} />
+                </Form.Item>
+            </div>
 
 
-            <div>
+            <div className='mt-4'>
                 <Button type="primary" 
-                    htmlType="submit">
+                    htmlType="submit"
+                    loading={loading}
+                    icon={<Save size={16}/>}>
                     Submit 
                 </Button>
             </div>

@@ -30,7 +30,7 @@ class MemberMyLoanController extends Controller
 
 
     public function store(Request $req){
-      
+        
         $principal = (double)$req->principal;
         $user = Auth::user();
 
@@ -56,7 +56,11 @@ class MemberMyLoanController extends Controller
             'loan_type_id' => ['required', 'gt:0'],
             'loan_subtype_id' => ['required','gt:0'],
             'terms_month' => ['required', 'gt:0'],
-            'interest' => ['required', 'gt:0']
+            'interest' => ['required', 'gt:0'],
+            'upload' => ['required'],
+            'co_maker' => ['required'],
+            'co_maker_signature' => ['required'],
+            'signature' => ['required'],
         ],[
             'loan_type_id.required' => 'Please select loan type',
             'loan_type_id.gt' => 'Please select loan type',
@@ -66,8 +70,11 @@ class MemberMyLoanController extends Controller
             'interest.gt' => 'Please select loan and loan subtype.',
             'terms_month.required' => 'Please select loan sub type',
             'terms_month.gt' => 'Please select loan sub type',
-
+            'upload.max' => 'The upload image must not be greater than 1MB in size',
+            'upload.required' => 'Please upload an image of a valid Id'
         ]);
+        
+
 
         // check if the user have loan history
         $exists = Loan::where('user_id', $user->id)->existS();
@@ -90,6 +97,8 @@ class MemberMyLoanController extends Controller
 
             \DB::transaction(function () use ($req, $user) {
 
+                $imgpath = $req->upload[0]['response'];
+
                 $principal = $req->principal;
                 $terms = $req->terms_month / 12;
                 $interest = $req->interest / 100;
@@ -99,7 +108,6 @@ class MemberMyLoanController extends Controller
                
                 $loan = Loan::create([
                     'user_id' => $user->id,
-                    'guarantor' => $req->guarantor,
                     'purpose' => $req->purpose,
                     'loan_type_id' => $req->loan_type_id,
                     'loan_subtype_id' => $req->loan_subtype_id,
@@ -107,11 +115,14 @@ class MemberMyLoanController extends Controller
                     'interest' => $req->interest,
                     'mode_payment' => $req->mode_payment,
                     'terms_month' => $req->terms_month,
-                    'total_payment' => $totalPayment
+                    'total_payment' => $totalPayment,
+                    'kyc_id' => $imgpath,
+                    'co_maker' => $req->co_maker,
+                    'co_maker_signature' => $req->co_maker_signature,
+                    'signature' => $req->signature,
                 ]);
                 
             });
-            
             return response()->json([
                 'status' => 'saved'
             ], 200);
@@ -126,6 +137,51 @@ class MemberMyLoanController extends Controller
         return Inertia::render('Member/MyLoan/CreateEdit');
     }
 
+
+    /** IMAGE HANDLING */
+    /* ================= */
+    public function tempUpload(Request $req){
+        //return $req;
+        $req->validate([
+            'upload' => ['required', 'mimes:jpg,jpeg,png', 'max:5120']
+        ],[
+            'upload.max' => 'The upload image must not be greater than 1MB in size'
+        ]);
+
+        $file = $req->kyc_id;
+        $fileGenerated = md5($file->getClientOriginalName() . time());
+        $imageName = $fileGenerated . '.' . $file->getClientOriginalExtension();
+        $imagePath = $file->storeAs('public/temp', $imageName);
+        $n = explode('/', $imagePath);
+        return $n[2];
+    }
+
+    public function removeUpload($fileName){
+       
+        if(Storage::exists('public/temp/' .$fileName)) {
+            Storage::delete('public/temp/' . $fileName);
+            return response()->json([
+                'status' => 'temp_deleted'
+            ], 200);
+        }
+
+        //this will remove the image from featured_image
+        // if(Storage::exists('public/signatures/' . $fileName)) {
+        //     Storage::delete('public/signatures/' . $fileName);
+
+        //     Loan::where('featured_image', $fileName)
+        //         ->update([
+        //             'featured_image' => null
+        //         ]);
+        //     return response()->json([
+        //         'status' => 'removed'
+        //     ], 200);
+        // }
+
+        return response()->json([
+            'status' => 'temp_error'
+        ], 200);
+    }
 
 
 }

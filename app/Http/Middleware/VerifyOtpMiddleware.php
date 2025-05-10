@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Auth;
 
-class MemberMiddleware
+class VerifyOtpMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,13 +16,13 @@ class MemberMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
-        //return redirect(RouteServiceProvider::HOME);
-        if(strtolower($user->role) == 'member'){
-            return $next($request);
-        }
-        return abort(403);
-  
 
+        $user = Auth::user();
+        if($user->is_2fa > 0){
+            return redirect()->route('member.otp-form');
+        }
+        return $next($request);
+
+        
     }
 }

@@ -83,6 +83,7 @@ class AccountSettingController extends Controller
 
         $user = Auth::user();
         $otp = $req->code_2fa;
+        $otp_sender = $req->send_to;
         $now = Carbon::now();
 
         //check is otp is exist on the current auth user
