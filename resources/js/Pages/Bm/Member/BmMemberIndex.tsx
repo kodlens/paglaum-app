@@ -96,7 +96,7 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
 
 		if(id > 0){
 			try{
-				const res = await axios.put('/admin/users/' + id, values)
+				const res = await axios.put('/bm/users/' + id, values)
 				if(res.data.status === 'updated'){
 					notification.info({ placement: 'bottomRight', message: 'Updated!', description: 'User successfully updated.'})
 					setOpen(false)
@@ -109,7 +109,7 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
 			}
 		}else{
 			try{
-				const res = await axios.post('/admin/users', values)
+				const res = await axios.post('/bm/users', values)
 				if(res.data.status === 'saved'){
 					notification.info({ placement: 'bottomRight', message: 'Saved!', description: 'User successfully saved.'})
 					setOpen(false)
@@ -124,15 +124,17 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
 	}
 
     const handleClickActive = (id:any) => {
-        axios.post('/admin/users-set-active/' + id).then(res=>{
+        axios.post('/bm/user-set-active/' + id).then(res=>{
             notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
         })
+        loadDataAsync()
     }
 
     const handleClickInactive = (id:any) => {
-        axios.post('/admin/users-set-inactive/' + id).then(res=>{
+        axios.post('/bm/user-set-inactive/' + id).then(res=>{
             notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
         })
+        loadDataAsync()
     }
 
     const handleClickAllowDisallow = (user:any) => {

@@ -19,6 +19,7 @@ class BmMemberController extends Controller
 
         $data = User::where('lname', 'like', $req->lname . '%')
             ->where('role', 'MEMBER')
+            ->orWhere('role', 'YBS')
             ->paginate($req->perPage);
 
         return $data;

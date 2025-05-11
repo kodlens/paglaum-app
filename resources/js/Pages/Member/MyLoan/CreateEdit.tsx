@@ -15,6 +15,7 @@ function CreateEdit({auth} : PageProps) {
                 <div className='bg-white my-4 p-6 font-bold text-lg'>APPLICATION FOR LOAN</div>
 
                 <LoanApplication />
+                
             </div>
 
     </MemberAuthLayout>

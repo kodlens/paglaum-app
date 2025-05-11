@@ -1,4 +1,4 @@
-import DoAuthLayout from '@/Layouts/DoAuthLayout'
+import BmAuthLayout from '@/Layouts/BmAuthLayout'
 import { PageProps } from '@/types'
 import { Loan } from '@/types/loan'
 import { LoanSubtype } from '@/types/loanSubtype'
@@ -15,7 +15,7 @@ import dayjs from 'dayjs'
 const dateFormat = (ndate:Date, format:string) =>{
     return dayjs(ndate).format(format)
 }
-const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
+const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
 
     const [fields, setFields] = useState<Loan>();
     const [errors, setErrors] = useState<any>({})
@@ -118,7 +118,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
     const handleApprove = () => {
         modal.confirm({title: "Approved?", content: `Are you sure you want to approve this member?`, 
             onOk: ()=>{
-                axios.post('/do/approve-loan', loan).then(res=>{
+                axios.post('/bm/approve-loan', loan).then(res=>{
                     if(res.data.status === 'approved'){
                         notification.success({ placement: 'bottomRight', message: 'Approved!', description: 'Member loan approved successfully.'})
                     }
@@ -135,13 +135,13 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
     }
     
     return (
-        <DoAuthLayout user={auth.user}>
+        <BmAuthLayout user={auth.user}>
             <Head title="Loan Detail " />
 
             <div className='flex mt-10 justify-center items-center'>
                 {/* card */}
                 <div className='p-6 w-full md:mx-2 bg-white shadow-sm rounded-md
-					md:w-[720px] overflow-auto'>
+                    md:w-[720px] overflow-auto'>
 
                     <div>
                         <Button className='mb-4'
@@ -361,9 +361,8 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
 
             </div>
 
-        </DoAuthLayout>
-
+        </BmAuthLayout>
     )
 }
 
-export default DoMemberLoanDetails
+export default BmMemberLoanDetails

@@ -40,7 +40,7 @@ const LoanApplication = () => {
     const handleChangeLoanType = (value:any) => { 
         const selectedLoanType = loanTypes.find((item:any) => item.id === Number(value));
         form.setFields([{ name: 'loan_subtype_id', value: null }]);
-        console.log(selectedLoanType.loan_subtypes);
+        //console.log(selectedLoanType.loan_subtypes);
         
         if (selectedLoanType) {
             setLoanSubtypes(selectedLoanType.loan_subtypes || []); // Fallback to an empty array if no subtypes exist
@@ -51,7 +51,7 @@ const LoanApplication = () => {
 
     const handleChangeLoanSubtype = (value: any) => {
         const selectedLoanSubtypes = loanSubtypes.find((item:any) => item.id === Number(value));
-        console.log('handle change loan subtype', selectedLoanSubtypes);
+        //console.log('handle change loan subtype', selectedLoanSubtypes);
 
         form.setFields([
             { name: 'terms_month', value: selectedLoanSubtypes.terms_month },
@@ -130,7 +130,7 @@ const LoanApplication = () => {
                
             // }
             info.file.url = '/storage/temp/' + info.file.response
-            console.log(info.file);
+            //console.log(info.file);
             
             if (info.file.status === "done") {
                 message.success(
@@ -197,7 +197,7 @@ const LoanApplication = () => {
                
             // }
             info.file.url = '/storage/temp/' + info.file.response
-            console.log(info.file);
+            //console.log(info.file);
             
             if (info.file.status === "done") {
                 message.success(

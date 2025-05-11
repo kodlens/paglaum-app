@@ -185,7 +185,7 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 
 	return (
 		<BmLAuthLayout user={auth.user}>
-			<Head title="Area Management"></Head>
+			<Head title="Branch Manager"></Head>
 
 			<div className='flex mt-10 justify-center items-center'>
 				{/* card */}
@@ -247,16 +247,8 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
                                             placement="bottomRight"
                                             menu={{
                                                 items: [
-                                                    // {
-                                                    //     key: '1',
-                                                    //     label: 'Edit',
-                                                    //     icon: <Pencil size={16} />,
-                                                    //     onClick: ()=>{
-                                                    //         handleEditClick(data.id)
-                                                    //     }
-                                                    // },
                                                     {
-                                                        key: '2',
+                                                        key: '1',
                                                         label: 'Approve',
                                                         icon: <ThumbsUp  size={16} />,
                                                         onClick: ()=>{
@@ -264,11 +256,11 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
                                                         }
                                                     },
                                                     {
-                                                        key: '3',
+                                                        key: '2',
                                                         label: 'Details',
                                                         icon: <MessageSquareMore size={16} />,
                                                         onClick: ()=>{
-                                                            
+                                                            router.visit('/bm/member-loan-details/' + data.id)
                                                         }
                                                     },
                                                 ],
@@ -300,75 +292,6 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 				</div>
 				{/* card */}
 			</div>
-
-
-			{/* Modal */}
-            <Modal
-                open={open}
-                title="EDUCATION LEVEL INFORMATION"
-                okText="Save"
-                cancelText="Cancel"
-                okButtonProps={{
-                    autoFocus: true,
-                    htmlType: "submit",
-                }}
-                onCancel={() => {setOpen(false); setErrors({});}}
-                destroyOnClose
-                modalRender={(dom) => (
-                    <Form
-                        layout="vertical"
-                        form={form}
-                        name="form_in_modal"
-                        autoComplete="off"
-                        initialValues={{
-                            education_level: "",
-                            description: "",
-                            order_no: 0,
-                            active: true,
-                        }}
-                        clearOnDestroy
-                        onFinish={(values) => onFinish(values)}
-                    >
-                        {dom}
-                    </Form>
-                )}
-            >
-
-                <Form.Item
-                    name="education_level"
-                    label="Education Level"
-                    validateStatus={errors.education_level ? "error" : ""}
-                    help={errors.education_level ? errors.education_level[0] : ""}
-                >
-                    <Input placeholder="Area" />
-                </Form.Item>
-
-                <Form.Item
-                    name="description"
-                    label="Description"
-                    validateStatus={errors.description ? "error" : ""}
-                    help={errors.description ? errors.description[0] : ""}
-                >
-                    <Input placeholder="Description" />
-                </Form.Item>
-
-                <Form.Item
-                    className='w-full'
-                    name="order_no"
-                    label="Order No"
-                    validateStatus={errors.order_no ? "error" : ""}
-                    help={errors.order_no ? errors.order_no[0] : ""}
-                >
-                    <InputNumber type='number' className='w-full' placeholder="Order No." />
-                </Form.Item>
-
-                <Form.Item
-                    valuePropName='checked'
-                    name="active">
-                    <Checkbox>Active</Checkbox>
-                </Form.Item>
-
-            </Modal>
 
 
 		</BmLAuthLayout>

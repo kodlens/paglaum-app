@@ -14,6 +14,10 @@ Route::middleware(['auth', 'bm'])->group(function () {
     Route::get('/bm/get-members', [App\Http\Controllers\Bm\BmMemberController::class, 'getData']);
     Route::post('/bm/member-disallow-loan/{id}', [App\Http\Controllers\Bm\BmMemberController::class, 'userDisallowLoan']);
     Route::post('/bm/member-allow-loan/{id}', [App\Http\Controllers\Bm\BmMemberController::class, 'userAllowLoan']);
+    Route::post('/bm/user-set-active/{id}', [App\Http\Controllers\Bm\BmMemberController::class, 'userSetActive']);
+    Route::post('/bm/user-set-inactive/{id}', [App\Http\Controllers\Bm\BmMemberController::class, 'userSetInactive']);
+
+    Route::get('/bm/member-loan-details/{id}',[App\Http\Controllers\Bm\BmMemberLoanDetailController::class, 'index']);
 
     Route::resource('/bm/savings-accounts', App\Http\Controllers\Bm\BmSavingsAccountController::class)->names('bm.savings-accounts');
     Route::get('/bm/get-savings-accounts', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'getData']);
