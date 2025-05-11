@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { SavingsAccount } from "@/types/savingsAccount";
 import { Button } from "antd";
-import { List } from "lucide-react";
+import { BookUp, List } from "lucide-react";
 
 const MySavings = ({ auth }: PageProps) => {
 
@@ -39,7 +39,9 @@ const MySavings = ({ auth }: PageProps) => {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                         <div className="p-6 text-gray-900 ">
-                            <div>
+
+                           
+                            <div className="font-bold">
                                 ACCOUNTS
                             </div>
                             {data.map((item: SavingsAccount) => (
@@ -60,14 +62,19 @@ const MySavings = ({ auth }: PageProps) => {
                                         <div className='ml-2 md:text-right font-bold'>&#8369; {(item.balance).toFixed(2)}</div>
                                     </div>
 
-                                    <div className='w-[200px] my-4 flex'>
+                                    <div className='w-[200px] my-4 flex flex-col md:flex-row gap-4'>
                                         <Button className='font-semibold text-gray-500 text-right md:ml-auto'
                                             onClick={()=> router.visit(`/member/my-savings-transactions/${item.id}`)}
                                             icon={<List size={16}/>}>
                                             View Transactions
                                         </Button>
-                                    </div>
 
+                                         <Button type="primary"
+                                            onClick={()=> router.visit(`/member/deposit-online/${item.id}`)}
+                                            icon={<BookUp size={16}/>}>
+                                            Make a deposit (ONLINE)
+                                        </Button>
+                                    </div>
                                 </div>
                             ))}
                         </div>

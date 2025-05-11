@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('remarks')->nullable();
             $table->double('amount')->default(0);
             $table->double('balance')->default(0);
+            $table->double('fee')->default(0);
             $table->timestamps();
         });
     }

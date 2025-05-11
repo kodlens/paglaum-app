@@ -25,7 +25,6 @@ Route::middleware(['auth', 'verified','active', 'member'])->group(function () {
  
     Route::get('/member/loan-transactions', [App\Http\Controllers\Member\MemberLoanTransactionController::class, 'index'])->name('member.loan-transactions.index');
 
-
     Route::get('/member/my-loans-details/{id}', [App\Http\Controllers\Member\MemeberMyLoanDetailController::class, 'index']);
 
     /* ================SAVINGS ACCOUNT========================= */
@@ -38,6 +37,9 @@ Route::middleware(['auth', 'verified','active', 'member'])->group(function () {
     Route::resource('/member/my-savings', App\Http\Controllers\Member\MemberMySavingsController::class)->names('member.my-savings');
     Route::get('/member/get-my-savings', [App\Http\Controllers\Member\MemberMySavingsController::class, 'getData']);
 
+    Route::get('/member/deposit-online/{id}', [App\Http\Controllers\Member\MemberDepositOnlineController::class, 'index']);
+
+
     Route::get('/member/my-savings-transactions/{id}', [App\Http\Controllers\Member\MemberMySavingTransactionController::class, 'index'])->name('member.my-saving-transactions.index');
     Route::get('/member/get-my-savings-transactions/{id}', [App\Http\Controllers\Member\MemberMySavingTransactionController::class, 'getSavingsTransaction']);
 
@@ -45,7 +47,6 @@ Route::middleware(['auth', 'verified','active', 'member'])->group(function () {
     Route::get('/member/get-account-settings', [App\Http\Controllers\Member\AccountSettingController::class, 'getData']);
     Route::post('/member/request-code', [App\Http\Controllers\Member\AccountSettingController::class, 'requestCode']);
     Route::post('/member/save-two-fa-setting', [App\Http\Controllers\Member\AccountSettingController::class, 'saveSetting']);
-
 
 });
 
