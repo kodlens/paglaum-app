@@ -14,7 +14,7 @@ class SavingTransaction extends Model
         'transaction_type',
         'payment_method',
         'payment_session',
-        'ref',
+        'refno',
         'remarks',
         'amount',
         'balance',

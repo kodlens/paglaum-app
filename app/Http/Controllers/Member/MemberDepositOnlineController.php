@@ -97,19 +97,37 @@ class MemberDepositOnlineController extends Controller
         $paymongoDetails = $req->session()->get('paymongo_deposit');
 
         $paymentinfo = $paymongoDetails['data']['attributes']['metadata'];
+        
         $paymentSession = $paymongoDetails['data']['id'];
         $userId = $paymentinfo['user_id'];
         $savingsId = $paymentinfo['savings_account_id'];
-        $ref = $paymentinfo['ref'];
+        $refno = $paymentinfo['ref'];
         $paymentMethod = $paymentinfo['payment_method'];
-        $savingAccountId = $paymentinfo['savings_account_id'];
 
-        $data = SavingTransaction::find($savingAccountId);
-        $data->ref = $ref;
-        $data->payment_method = 'ONLINE';
-        $data->transaction_type = 'ONLINE';
-        $data->payment_session = $paymentSession;
-        $data->datetime_deposit = \Carbon\Carbon::now();
+        $data = SavingAccount::find($savingsId);
+        // $data->refno = $refno;
+        // $data->payment_method = 'ONLINE';
+        // $data->transaction_type = 'ONLINE';
+        // $data->payment_session = $paymentSession;
+        // $data->datetime_deposit = \Carbon\Carbon::now();
+        // $data->save();
+        
+        SavingTransaction::create([
+            'saving_account_id' => $savingsId,
+            'transaction_type' => 'ONLINE',
+            'payment_method' => $paymentMethod,
+            'payment_session' => $paymentSession,
+            'refno' => $refno,
+            'remarks' => 'Deposit',
+            'amount' => $paymentinfo['amount_paid'],
+            'balance' => $data->balance + $paymentinfo['amount_paid'],
+            'fee' => 0,
+            'datetime_deposit' => \Carbon\Carbon::now(),
+        ]);
+
+        $data->balance = $data->balance + $paymentinfo['amount_paid'];
+
+        //return $data;
         $data->save();
 
         //return $paymongoDetails;

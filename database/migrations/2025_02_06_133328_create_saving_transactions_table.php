@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('transaction_type', 100)->nullable();
             $table->string('payment_method', 50)->nullable();
             $table->string('payment_session', 255)->nullable();
-            $table->string('ref', 30)->nullable();
+            $table->string('refno', 30)->nullable();
             $table->text('remarks')->nullable();
             $table->double('amount')->default(0);
             $table->double('balance')->default(0);

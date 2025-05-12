@@ -33,7 +33,7 @@ export default function DepositOnlineIndex( { savingsAccount }: PageProps<{ savi
         axios.post('/member/deposit-online/' + savingsAccount.id, newFields).then(res => {
             setLoading(false)
             //console.log('axios responded');
-            //console.log('response: ', res.data.data.attributes.checkout_url);
+            //console.log('response: ', res.data.datWa.attributes.checkout_url);
             window.location = res.data.data.attributes.checkout_url
     
         }).catch(err => {
