@@ -1,7 +1,9 @@
 export interface SavingsAccount {
   id?: number;
   data?: any[],
+  user_id?: number;
   user: {
+    id: number;
     lname: string;
     fname: string;
     mname: string;

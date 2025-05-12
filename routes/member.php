@@ -38,6 +38,9 @@ Route::middleware(['auth', 'verified','active', 'member'])->group(function () {
     Route::get('/member/get-my-savings', [App\Http\Controllers\Member\MemberMySavingsController::class, 'getData']);
 
     Route::get('/member/deposit-online/{id}', [App\Http\Controllers\Member\MemberDepositOnlineController::class, 'index']);
+    Route::post('/member/deposit-online/{id}', [App\Http\Controllers\Member\MemberDepositOnlineController::class, 'depositOnline']);
+    Route::get('/member/deposit-online-cancel', [App\Http\Controllers\Member\MemberDepositOnlineController::class , 'cancel'])->name('paymongo.deposit-cancel');
+    Route::get('/member/deposit-online-success', [App\Http\Controllers\Member\MemberDepositOnlineController::class , 'success'])->name('paymongo.deposit-success');
 
 
     Route::get('/member/my-savings-transactions/{id}', [App\Http\Controllers\Member\MemberMySavingTransactionController::class, 'index'])->name('member.my-saving-transactions.index');

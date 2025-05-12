@@ -12,8 +12,14 @@ class SavingTransaction extends Model
     protected $fillable = [
         'saving_account_id',
         'transaction_type',
+        'payment_method',
+        'payment_session',
+        'ref',
+        'remarks',
         'amount',
-        'balance'
+        'balance',
+        'fee',
+        'datetime_deposit'
     ];
 
     public function saving_account(){

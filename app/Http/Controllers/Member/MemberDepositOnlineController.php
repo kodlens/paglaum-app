@@ -8,6 +8,8 @@ use Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\SavingAccount;
+use App\Models\SavingTransaction;
+
 
 class MemberDepositOnlineController extends Controller
 {
@@ -15,77 +17,108 @@ class MemberDepositOnlineController extends Controller
     public function index($id){
         $savings = SavingAccount::with(['user'])
             ->find($id);
-        return Inertia::render('Member/MySavings/DepositOnlineIndex',[
-            'savings' => $savings,
+
+        return Inertia::render('Member/MySavings/DepositOnlineIndex', [
+            'savingsAccount' => $savings,
             'id' => $id,
         ]);
     }
 
-    // public function depositOnline($id){
-    //     $user = Auth::user();
+    public function depositOnline(Request $req){
+        $user = Auth::user();
 
-    //     $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client();
 
-    //     $amount = $req->amount;
-    //     $name = $user->lname . ', ' . $user->fname;
-    //     $refNo = $req->refno;
+        $amount = $req->deposit_amount;
+        $name = $user->lname . ', ' . $user->fname;
+        $refNo = $req->refno;
 
-    //     $paymentMethod = $req->paymentmethod;
+        $paymentMethod = $req->paymentmethod;
 
-    //     $data = [
-    //         'data' => [
-    //             'attributes' => [
-    //                 'send_email_receipt' => false,
-    //                 'show_description' => true,
-    //                 'show_line_items' => true,
-    //                 'description' => 'Loan',
-    //                 'cancel_url' => env('PAYMONGO_REDIRECT_MERCHANT') . '/paymongo/cancel',
-    //                 'line_items' => [
-    //                     [
-    //                         'currency' => 'PHP',
-    //                         'amount' => $amount * 100,
-    //                         'description' => 'Loan Payment',
-    //                         'name' => $name,
-    //                         'quantity' => 1,
-    //                     ]
-    //                 ],
-    //                 'billing' => [
-    //                     'email' => $user->email,
-    //                     'name' => $name,
-    //                     'phone' => $user->contact_no
-    //                 ],
-    //                 'payment_method_types' => ['gcash','billease','card', 'grab_pay', 'paymaya'],
-    //                 'reference_number' => $refNo,
-    //                 'success_url' => env('PAYMONGO_REDIRECT_MERCHANT') . '/paymongo/success',
-    //                 'metadata' => [
-    //                     'name' => $name,
-    //                     'payment_method' => $paymentMethod,
-    //                     'email' => $user->email,
-    //                     'contact' => $user->contact_no,
-    //                     'ref' => $refNo,
-    //                     'amount_paid' => $amount,
-    //                     'loan_id' => $req->loanid,
-    //                     'loan_detail_id' => $req->loandetailid,
-    //                     'user_id' => $user->id
-    //                 ]
-    //             ],
+        $data = [
+            'data' => [
+                'attributes' => [
+                    'send_email_receipt' => false,
+                    'show_description' => true,
+                    'show_line_items' => true,
+                    'description' => 'Savings Deposit',
+                    'cancel_url' => env('PAYMONGO_REDIRECT_MERCHANT') . '/member/deposit-online-cancel',
+                    'line_items' => [
+                        [
+                            'currency' => 'PHP',
+                            'amount' => $amount * 100,
+                            'description' => 'Savings Deposit',
+                            'name' => $name,
+                            'quantity' => 1,
+                        ]
+                    ],
+                    'billing' => [
+                        'email' => $user->email,
+                        'name' => $name,
+                        'phone' => $user->contact_no
+                    ],
+                    'payment_method_types' => ['gcash','billease','card', 'grab_pay', 'paymaya'],
+                    'reference_number' => $refNo,
+                    'success_url' => env('PAYMONGO_REDIRECT_MERCHANT') . '/member/deposit-online-success',
+                    'metadata' => [
+                        'name' => $name,
+                        'payment_method' => $paymentMethod,
+                        'email' => $user->email,
+                        'contact' => $user->contact_no,
+                        'ref' => $refNo,
+                        'amount_paid' => $amount,
+                        'savings_account_id' => $req->savingsAccountId,
+                        'user_id' => $user->id
+                    ]
+                ],
                 
-    //         ]
-    //     ];
+            ]
+        ];
 
-    //     $response = $client->request('POST', 'https://api.paymongo.com/v1/checkout_sessions', [
-    //         'body' => json_encode($data),
-    //         'headers' => [
-    //             'Content-Type' => 'application/json',
-    //             'accept' => 'application/json',
-    //             'authorization' => 'Basic '. env('PAYMONGO_SECRET_KEY'),
-    //         ],
-    //     ]);
+        $response = $client->request('POST', 'https://api.paymongo.com/v1/checkout_sessions', [
+            'body' => json_encode($data),
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'accept' => 'application/json',
+                'authorization' => 'Basic '. env('PAYMONGO_SECRET_KEY'),
+            ],
+        ]);
 
-    //     $data = json_decode($response->getBody()->getContents(), true);
-    //     //$paymongoTransactionId = $data['data']['id'];
-    //     $req->session()->put('paymongo', $data);
+        $data = json_decode($response->getBody()->getContents(), true);
+        //$paymongoTransactionId = $data['data']['id'];
+        $req->session()->put('paymongo_deposit', $data);
         
-    //     return $data;
-    // }
+        return $data;
+    }
+
+
+    public function success(Request $req){
+
+        $paymongoDetails = $req->session()->get('paymongo_deposit');
+
+        $paymentinfo = $paymongoDetails['data']['attributes']['metadata'];
+        $paymentSession = $paymongoDetails['data']['id'];
+        $userId = $paymentinfo['user_id'];
+        $savingsId = $paymentinfo['savings_account_id'];
+        $ref = $paymentinfo['ref'];
+        $paymentMethod = $paymentinfo['payment_method'];
+        $savingAccountId = $paymentinfo['savings_account_id'];
+
+        $data = SavingTransaction::find($savingAccountId);
+        $data->ref = $ref;
+        $data->payment_method = 'ONLINE';
+        $data->transaction_type = 'ONLINE';
+        $data->payment_session = $paymentSession;
+        $data->datetime_deposit = \Carbon\Carbon::now();
+        $data->save();
+
+        //return $paymongoDetails;
+
+        return Inertia::render('Member/MySavings/Paymongo/PaymongoSavingsPaymentSuccess');
+    }
+
+    public function cancel(Request $req){
+        return Inertia::render('Member/MySavings/Paymongo/PaymongoDepositCancel');
+    }
+
 }

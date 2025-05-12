@@ -93,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/paymongo/payment-method/{id}', [App\Http\Controllers\PaymongoController::class , 'paymentMethod'])->name('paymongo.payment-method');
 
 
-    Route::post('/paymongo/deposit', [App\Http\Controllers\PaymongoDepositController::class , 'deposit'])->name('paymongo.deposit');
+    // Route::post('/paymongo/deposit', [App\Http\Controllers\PaymongoDepositController::class , 'deposit'])->name('paymongo.deposit');
 
     
 

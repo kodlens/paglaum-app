@@ -16,30 +16,31 @@ export default function DepositOnlineIndex( { savingsAccount }: PageProps<{ savi
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleOnlinePay = () => {
-
+       
+        
         const newFields = {
             deposit_amount: fields?.deposit_amount,
-            name: savingsAccount.user.lname + ', ' + savingsAccount.user.fname,
             paymentmethod: 'gcash',
             refno: 'REF' + savingsAccount.id,
-            savingsaccountid: savingsAccount.id
+            savingsAccountId: savingsAccount.id,
+            userId: savingsAccount.user.id
         }
+
+        console.log(newFields);
 
         setLoading(true)
 
-        axios.post('/paymongo/deposit', newFields).then(res=>{
-        setLoading(false)
-        //console.log('axios responded');
-        
-        //console.log('response: ', res.data.data.attributes.checkout_url);
-        window.location = res.data.data.attributes.checkout_url
+        axios.post('/member/deposit-online/' + savingsAccount.id, newFields).then(res => {
+            setLoading(false)
+            //console.log('axios responded');
+            //console.log('response: ', res.data.data.attributes.checkout_url);
+            window.location = res.data.data.attributes.checkout_url
     
         }).catch(err => {
-        setLoading(false)
+            setLoading(false)
         })
     }
 
-    
     return (
         <>
             <Head title="Savings Online Payment" />
@@ -58,6 +59,7 @@ export default function DepositOnlineIndex( { savingsAccount }: PageProps<{ savi
                     <div>
                         <Button type="primary"
                             onClick={handleOnlinePay}
+                            loading={loading}
                             icon={<WalletCards size={16}/>}>
                             Pay
                         </Button>
