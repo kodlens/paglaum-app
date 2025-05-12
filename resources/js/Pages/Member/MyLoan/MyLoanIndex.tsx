@@ -47,10 +47,6 @@ export default function MyLoanIndex({ auth }: PageProps) {
 
             </div>
 
-
-
-
-
         </MemberAuthLayout>
 
     )

@@ -27,9 +27,9 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
 
     axios.post('/paymongo/pay', fields).then(res=>{
       setLoading(false)
-      console.log('axios responded');
+      //console.log('axios responded');
       
-      console.log('response: ', res.data.data.attributes.checkout_url);
+      //console.log('response: ', res.data.data.attributes.checkout_url);
       window.location = res.data.data.attributes.checkout_url
  
     }).catch(err => {

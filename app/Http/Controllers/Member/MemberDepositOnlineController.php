@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 use Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\SavingAccount;
 
 class MemberDepositOnlineController extends Controller
 {
 
     public function index($id){
-        return Inertia::render('Member/MySavings/DepositOnlineIndex');
+        $savings = SavingAccount::with(['user'])
+            ->find($id);
+        return Inertia::render('Member/MySavings/DepositOnlineIndex',[
+            'savings' => $savings,
+            'id' => $id,
+        ]);
     }
 
     // public function depositOnline($id){

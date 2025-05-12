@@ -93,6 +93,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/paymongo/payment-method/{id}', [App\Http\Controllers\PaymongoController::class , 'paymentMethod'])->name('paymongo.payment-method');
 
 
+    Route::post('/paymongo/deposit', [App\Http\Controllers\PaymongoDepositController::class , 'deposit'])->name('paymongo.deposit');
+
+    
 
     Route::get('/get-member-loans/{id}', [App\Http\Controllers\MakeAPaymentController::class, 'getMemberLoans']);
     Route::post('/make-a-payment/{id}', [App\Http\Controllers\MakeAPaymentController::class, 'makePayment']); //this route for making a payment

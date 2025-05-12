@@ -1,11 +1,42 @@
-import { Head } from "@inertiajs/react";
+import { PageProps } from "@/types";
+import { SavingsAccount } from "@/types/savingsAccount";
+import { Head, router } from "@inertiajs/react";
 import { Button, Form, Input, InputNumber } from "antd";
+import axios from "axios";
 import { WalletCards } from "lucide-react";
+import { useState } from "react";
 
-export default function DepositOnlineIndex() {
+
+interface Fields { 
+    deposit_amount: number|null;
+}
+export default function DepositOnlineIndex( { savingsAccount }: PageProps<{ savingsAccount: SavingsAccount }>) {
+
+    const [fields, setFields] = useState<Fields>();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleOnlinePay = () => {
 
+        const newFields = {
+            deposit_amount: fields?.deposit_amount,
+            name: savingsAccount.user.lname + ', ' + savingsAccount.user.fname,
+            paymentmethod: 'gcash',
+            refno: 'REF' + savingsAccount.id,
+            savingsaccountid: savingsAccount.id
+        }
+
+        setLoading(true)
+
+        axios.post('/paymongo/deposit', newFields).then(res=>{
+        setLoading(false)
+        //console.log('axios responded');
+        
+        //console.log('response: ', res.data.data.attributes.checkout_url);
+        window.location = res.data.data.attributes.checkout_url
+    
+        }).catch(err => {
+        setLoading(false)
+        })
     }
 
     
@@ -18,7 +49,10 @@ export default function DepositOnlineIndex() {
                     <div className="font-bold mb-4">How much would you like to deposit?</div>
                     <div>
                         <Form.Item>
-                            <InputNumber type="number" className="w-full" />
+                            <InputNumber type="number"
+                                onChange={ (value) => {
+                                    setFields({...fields, deposit_amount: value as number | null})
+                                }} className="w-full" />
                         </Form.Item>
                     </div>
                     <div>
