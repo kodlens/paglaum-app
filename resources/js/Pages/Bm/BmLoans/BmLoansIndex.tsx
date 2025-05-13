@@ -149,7 +149,7 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
             onOk: ()=>{
                 axios.post('/bm/approve-loan', loan).then(res=>{
                     if(res.data.status === 'approved'){
-                        notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item approved successfully.'})
+                        notification.success({ placement: 'bottomRight', message: 'Loan Approved!', description: 'Loan approved successfully.'})
                         loadDataAsync()
                     }
                 }).catch(err=>{

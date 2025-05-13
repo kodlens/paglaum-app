@@ -26,6 +26,9 @@ export interface Loan {
     kyc_id?: string | undefined;
     co_maker_identification?: string | undefined;
     signature?: string | undefined;
+    insurance_type_id?: number;
+    insurance_type_agebrakcet_id?: number;
+    insurance_payment?: number;
     updated_at?: Date|unknown;
     created_at?: Date|unknown;
 }

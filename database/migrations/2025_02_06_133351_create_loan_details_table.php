@@ -45,6 +45,10 @@ return new class extends Migration
             $table->string('payment_method', 30)->nullable();
             $table->string('payment_transaction', 30)->nullable();
             $table->string('payment_session')->nullable();
+            $table->double('insurance_payment')->default(0);
+            $table->double('total_amount')->default(0);
+
+            
 
             $table->timestamps();
         });

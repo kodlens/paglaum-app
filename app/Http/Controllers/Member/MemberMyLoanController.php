@@ -31,6 +31,8 @@ class MemberMyLoanController extends Controller
 
 
     public function store(Request $req){
+
+       
        
         $principal = (double)$req->principal;
         $user = Auth::user();
@@ -56,6 +58,8 @@ class MemberMyLoanController extends Controller
         $req->validate([
             'loan_type_id' => ['required', 'gt:0'],
             'loan_subtype_id' => ['required','gt:0'],
+            'insurance_type_id' => ['required', 'gt:0'],
+            'insurance_type_agebracket_id' => ['required', 'gt:0'],
             'terms_month' => ['required', 'gt:0'],
             'interest' => ['required', 'gt:0'],
             'upload' => ['required'],
@@ -66,6 +70,13 @@ class MemberMyLoanController extends Controller
         ],[
             'loan_type_id.required' => 'Please select loan type',
             'loan_type_id.gt' => 'Please select loan type',
+
+            'insurance_type_id.required' => 'Please select insurance type',
+            'insurance_type_id.gt' => 'Please select insurance type',
+
+            'insurance_type_agebracket_id.required' => 'Please select insurance sub type',
+            'insurance_type_agebracket_id.gt' => 'Please select insurance sub type',
+
             'loan_subtype_id.required' => 'Please select loan sub type',
             'loan_subtype_id.gt' => 'Please select loan sub type',
             'interest.required' => 'Please select loan and loan subtype.',
@@ -76,6 +87,7 @@ class MemberMyLoanController extends Controller
             'upload.required' => 'Please upload an image of a valid Id',
             'co_maker_identification.required' => 'Please upload an image of a valid Id'
         ]);
+
         // check if the user have loan history
         $exists = Loan::where('user_id', $user->id)->existS();
         if($exists){
@@ -117,6 +129,11 @@ class MemberMyLoanController extends Controller
                     'mode_payment' => $req->mode_payment,
                     'terms_month' => $req->terms_month,
                     'total_payment' => $totalPayment,
+
+                    'insurance_type_id' => $req->insurance_type_id,
+                    'insurance_type_agebracket_id' => $req->insurance_type_agebracket_id,
+                    'insurance_payment' => $req->insurance_payment,
+                    
                     'kyc_id' => $imgpath,
                     'co_maker' => $req->co_maker,
                     'co_maker_identification' => $imgPathCoMakerIdentification,
@@ -136,7 +153,6 @@ class MemberMyLoanController extends Controller
                     Storage::move('public/temp/' . $imgPathCoMakerIdentification, 'public/identifications/' . $imgPathCoMakerIdentification); 
                     Storage::delete('public/temp/' . $imgPathCoMakerIdentification);
                 }
-                
             });
 
             return response()->json([

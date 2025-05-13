@@ -107,7 +107,7 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
 
                       <div>
                         <div className='font-bold text-gray-500'>Amount Due</div>
-                        <div>{item.amount.toLocaleString()}</div>
+                        <div>&#8369; {item.total_amount.toLocaleString()}</div>
 
                           { !item.is_paid ? (
                             <div>

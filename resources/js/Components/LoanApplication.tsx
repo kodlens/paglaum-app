@@ -73,7 +73,7 @@ const LoanApplication = () => {
         form.setFields([{ name: 'insurance_type_agebracket_id', value: null }]);
 
         if (selectedInsuranceType) {
-            setInsuranceTypeAgeBracket(selectedInsuranceType.insuranceTypeAgeBracket || []); // Fallback to an empty array if no subtypes exist
+            setInsuranceTypeAgeBracket(selectedInsuranceType.insurance_types_agebrackets || []); // Fallback to an empty array if no subtypes exist
         } else {
             setInsuranceTypeAgeBracket([]); // Reset subtypes
         }
@@ -83,7 +83,7 @@ const LoanApplication = () => {
         //console.log('handle change loan subtype', selectedLoanSubtypes);
 
         form.setFields([
-            { name: 'amount', value: selectedInsuranceAgeBracket?.amount },
+            { name: 'insurance_payment', value: selectedInsuranceAgeBracket?.amount },
             { name: 'benefits', value: selectedInsuranceAgeBracket?.benefits }
         ]);
     } 
@@ -249,6 +249,7 @@ const LoanApplication = () => {
                 insurance_type_id: null,
                 insurance_type: '',
                 insurance_type_agebracket_id: null,
+                benefits: '',
                 insurance_payment: 0
             }}
             onFinish={onFinish}
@@ -356,7 +357,7 @@ const LoanApplication = () => {
                 </Form.Item>
             </div>
 
-            <div className='flex flex-col md:flex-row md:gap-4'>
+            <div className='flex flex-col md:flex-row md:gap-x-4'>
                 <Form.Item label="Insurance Type"
                     name="insurance_type_id"
                     className='w-full'
@@ -376,7 +377,7 @@ const LoanApplication = () => {
                         />
                 </Form.Item>
 
-                <Form.Item label="Insurance Type"
+                <Form.Item label="Insurance Sub Type"
                     name="insurance_type_agebracket_id"
                     className='w-full'
                     validateStatus={errors.insurance_type_agebracket_id ? 'error' : ''}
@@ -395,10 +396,38 @@ const LoanApplication = () => {
                 </Form.Item>
             </div>
 
+            <div>
+                <Form.Item label="Insurance Benefits"
+                    name="benefits"
+                    className='w-full'
+                    validateStatus={errors.benefits ? 'error' : ''}
+                    help={errors.benefits ? errors.benefits[0] : ''}>
+                        <Input type='text'
+                            placeholder="Benefits" 
+                            className='p-2 w-full' />
+                </Form.Item>
+            </div>
+
+            <div>
+                <Form.Item label="Insurance Payment"
+                    name="insurance_payment"
+                    className='w-full'
+                    validateStatus={errors.insurance_payment ? 'error' : ''}
+                    help={errors.insurance_payment ? errors.insurance_payment[0] : ''}>
+                        <Input type='text'
+                            readOnly
+                            placeholder="Insurance Amount" 
+                            className='p-2 w-full' />
+                </Form.Item>
+
+            </div>
+
+            <hr />
+
             <Form.Item
                 name="upload"
                 valuePropName="fileList"
-                className="w-full"
+                className="w-full mt-4"
                 label="Select Valid Id"
                 getValueFromEvent={(e) => {
                     // Normalize the value to fit what the Upload component expects

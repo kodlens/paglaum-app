@@ -49,11 +49,14 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
 
         const selectedLoanType = loanTypes.find((item: LoanType) => item.id === Number(value));
         //form.setFieldsValue({ name: 'loan_subtype_id', value: null });
-        setFields(prev => ({
-            ...prev,
+        setFields({
+            ...fields,
             loan_subtype_id: null,
-            loan_type_id: value
-        }));
+            loan_type_id: value,
+            interest: 0,
+            terms_month: 0
+
+        });
 
         //console.log(selectedLoanType.loan_subtypes);
 
@@ -67,17 +70,21 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
     const handleChangeLoanSubtype = (value: string | number | null | undefined) => {
         const selectedLoanSubtypes: LoanSubtype = loanSubtypes.find((item: any) => item.id === Number(value));
         //console.log('handle change loan subtype', selectedLoanSubtypes);
-
-        setFields(prev => ({
-            ...prev,
-            loan_subtype_id: selectedLoanSubtypes.id
-        }));
+        console.log(selectedLoanSubtypes.terms_month);
+        
+        setFields({
+            ...fields,
+            loan_subtype_id: selectedLoanSubtypes.id,
+            terms_month: selectedLoanSubtypes.terms_month,
+            interest: selectedLoanSubtypes.percent
+        });
     }
 
     useEffect(() => {
        //handleChangeLoanType(loan?.loan_type_id)
         setFields(prev => ({
             ...prev,
+            id: loan?.id,
             purpose: loan?.purpose,
             co_maker: loan?.co_maker,
             loan_type_id: loan?.loan_type_id,
@@ -87,10 +94,12 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
             mode_payment: loan?.mode_payment,
             interest: loan?.interest,
             user: loan?.user,
+            user_id: loan.user_id,
             kyc_id: loan.kyc_id,
             co_maker_identification: loan.co_maker_identification,
             co_maker_signature: loan?.co_maker_signature,
-            signature: loan?.signature
+            signature: loan?.signature,
+            insurance_payment: loan.insurance_payment
         }));
     }, [])
 
@@ -118,7 +127,7 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
     const handleApprove = () => {
         modal.confirm({title: "Approved?", content: `Are you sure you want to approve this member?`, 
             onOk: ()=>{
-                axios.post('/bm/approve-loan', loan).then(res=>{
+                axios.post('/bm/approve-loan', fields).then(res=>{
                     if(res.data.status === 'approved'){
                         notification.success({ placement: 'bottomRight', message: 'Approved!', description: 'Member loan approved successfully.'})
                     }
@@ -128,6 +137,14 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                             placement: 'bottomRight',
                             description: 'Error: ' + err.response.data.message,
                             message: 'Approved Already!'
+                        });
+                    }
+
+                    if(err.response.data.errors){
+                        notification.error({
+                            placement: 'bottomRight',
+                            description: 'Error: ' + err.response.data.message,
+                            message: 'Error!'
                         });
                     }
                 })
@@ -230,7 +247,6 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                     value={fields?.terms_month}
                                     readOnly
                                     className='w-full'
-                                    onChange={(value) => setFields(prev => ({ ...prev, terms_month: value ?? 0 }))}
                                     placeholder="Terms in Month" />
                             </Form.Item>
 
@@ -307,6 +323,14 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                             <img id='signature' src={fields?.signature} alt="Signature"></img>
                         </div>
 
+                        <div className='my-4'>
+                            <Button icon={<ThumbsUp size={16}/>}
+                                onClick={handleApprove}
+                                type='primary'>
+                                Approve Loan
+                            </Button>
+                        </div>
+
                         <hr />
 
                         <div className='font-bold my-4'>
@@ -346,15 +370,6 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                             ))}
                             {checkListDetails()}
                         </div>
-
-                        <div className='mt-4'>
-                            <Button icon={<ThumbsUp size={16}/>}
-                                onClick={handleApprove}
-                                type='primary'>
-                                Approve Loan
-                            </Button>
-                        </div>
-
                     </div>
 
                 </div>

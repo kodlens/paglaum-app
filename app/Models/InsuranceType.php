@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\InsuranceTypeAgebracket;
 
 class InsuranceType extends Model
 {
@@ -17,6 +18,10 @@ class InsuranceType extends Model
         'is_active',
     ];
 
+
+    public function insurance_types_agebrackets(){
+        return $this->hasMany(InsuranceTypeAgebracket::class);
+    }
 
    
 }

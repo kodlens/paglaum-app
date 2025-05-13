@@ -27,7 +27,8 @@ class OpenController extends Controller
 
 
     public function loadInsuranceTypes(){
-        return InsuranceType::orderBy('id', 'asc')
+        return InsuranceType::with(['insurance_types_agebrackets'])
+            ->orderBy('id', 'asc')
             ->get();
     }
 
