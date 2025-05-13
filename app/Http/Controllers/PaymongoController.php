@@ -88,9 +88,9 @@ class PaymongoController extends Controller
 
 
     public function success(Request $req){
-
+        
         $paymongoDetails = $req->session()->get('paymongo');
-
+        //return $paymongoDetails['data']['attributes']['payment_intent'];
         $paymentinfo = $paymongoDetails['data']['attributes']['metadata'];
         $paymentSession = $paymongoDetails['data']['id'];
         $userId = $paymentinfo['user_id'];
@@ -98,17 +98,19 @@ class PaymongoController extends Controller
         $ref = $paymentinfo['ref'];
         $paymentMethod = $paymentinfo['payment_method'];
         $loanDetailId = $paymentinfo['loan_detail_id'];
+        $amounPaid = $paymentinfo['amount_paid'];
+        $paymentIntent = $paymongoDetails['data']['attributes']['payment_intent'];
 
         $loanDetail = LoanDetail::find($loanDetailId);
         $loanDetail->is_paid = 1;
         $loanDetail->ref = $ref;
+        $loanDetail->amount_paid = $amounPaid;
         $loanDetail->payment_method = 'ONLINE';
         $loanDetail->payment_transaction = 'ONLINE';
         $loanDetail->payment_session = $paymentSession;
+        $loanDetail->payment_intent = $paymentIntent['id'];
         $loanDetail->datetime_paid = \Carbon\Carbon::now();
         $loanDetail->save();
-
-        //return $paymongoDetails;
 
         return Inertia::render('Member/MyLoan/Paymongo/PaymongoLoanPaymentSuccess');
     }

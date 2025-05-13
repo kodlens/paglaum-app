@@ -17,7 +17,7 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
   const handleMakePayment = (loandetail:any) => {
     setLoading(true)
     const fields = {
-      amount: loandetail.amount,
+      amount: loandetail.total_amount,
       name: '',
       paymentmethod: 'gcash',
       refno: 'REF'+loandetail.id,
@@ -28,7 +28,6 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
     axios.post('/paymongo/pay', fields).then(res=>{
       setLoading(false)
       //console.log('axios responded');
-      
       //console.log('response: ', res.data.data.attributes.checkout_url);
       window.location = res.data.data.attributes.checkout_url
  
@@ -42,7 +41,6 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
       <MemberAuthLayout user={auth.user}>
 
         <Head title={"My Loan Details"} />
-
 
         <div className='w-full mx-2 md:max-w-2xl md:mx-auto sm:px-6 pb-10'>
           
@@ -103,6 +101,11 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
                       <div>
                         <div className='font-bold text-gray-500'>Due Date</div>
                         <div>{dateFormat(item.due_date, 'MMMM DD, YYYY')}</div>
+                      </div>
+
+                      <div>
+                        <div className='font-bold text-gray-500'>Insurance</div>
+                        <div>&#8369; {item.insurance_payment}</div>
                       </div>
 
                       <div>

@@ -30,6 +30,8 @@ return new class extends Migration
             $table->double('balance')->default(0);
             $table->double('fee')->default(0);
             $table->dateTime('datetime_deposit')->nullable();
+            $table->string('payment_intent', 255)->nullable();
+            
             $table->timestamps();
         });
     }

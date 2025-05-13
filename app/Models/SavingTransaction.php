@@ -19,7 +19,8 @@ class SavingTransaction extends Model
         'amount',
         'balance',
         'fee',
-        'datetime_deposit'
+        'datetime_deposit',
+        'payment_intent'
     ];
 
     public function saving_account(){

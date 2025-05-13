@@ -30,7 +30,8 @@ class Loan extends Model
         'co_maker_identification',
         'co_maker_signature',
         'signature',
-        'insurance_type_id', 'insurance_type', 'insurance_type_agebrakcet_id', 
+        'insurance_type_id', 'insurance_type', 
+        'insurance_type_agebracket_id', 
         'insurance_payment'
     ];
 

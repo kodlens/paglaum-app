@@ -48,7 +48,6 @@ export default function MyLoanTable() {
                                         <div className='font-bold text-gray-500 text-[.7rem]'>INSURANCE</div>
                                         <div>{item.insurance_type.insurance_type}</div>
                                     </div>
-
                                 </td>
 
 
@@ -65,7 +64,8 @@ export default function MyLoanTable() {
 
                                     <div>
                                         <div className='font-bold text-gray-500 text-[.7rem]'>INSURANCE TITLE</div>
-                                        <div>{item.insurance_type_agebracket}</div>
+                                        <div>{ item.insurance_type_agebracket.title }</div>
+                                        <div>{ item.insurance_type_agebracket.benefits }</div>
                                     </div>
                                 </td>
 

@@ -21,7 +21,10 @@ class LoanDetail extends Model
         'ref',
         'payment_method',
         'payment_transaction',
-        'payment_session'
+        'payment_session',
+        'payment_intent',
+        'insurance_payment',
+        'total_amount'
     ];
 
     public function user(){

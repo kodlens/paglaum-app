@@ -103,6 +103,7 @@ class MemberDepositOnlineController extends Controller
         $savingsId = $paymentinfo['savings_account_id'];
         $refno = $paymentinfo['ref'];
         $paymentMethod = $paymentinfo['payment_method'];
+        $paymentIntent = $paymongoDetails['data']['attributes']['payment_intent'];
 
         $data = SavingAccount::find($savingsId);
         // $data->refno = $refno;
@@ -117,8 +118,9 @@ class MemberDepositOnlineController extends Controller
             'transaction_type' => 'ONLINE',
             'payment_method' => $paymentMethod,
             'payment_session' => $paymentSession,
+            'payment_intent' => $paymentIntent['id'],
             'refno' => $refno,
-            'remarks' => 'Deposit',
+            'remarks' => 'DEPOSIT',
             'amount' => $paymentinfo['amount_paid'],
             'balance' => $data->balance + $paymentinfo['amount_paid'],
             'fee' => 0,
