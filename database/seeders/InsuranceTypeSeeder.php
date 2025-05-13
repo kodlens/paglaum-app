@@ -17,7 +17,7 @@ class InsuranceTypeSeeder extends Seeder
                 'insurance_type' => 'MMAP',
                 'is_active' => 1,
             ],
-             [
+            [
                 'insurance_type' => 'DAKILA',
                 'is_active' => 1,
             ],

@@ -10,6 +10,8 @@ import {
   } from '@ant-design/icons';
 import SignaturePadComponent from './SignaturePad';
 import { Save } from 'lucide-react';
+import { InsuranceType } from '@/types/insuranceType';
+import { InsuranceTypeAgeBracket } from '@/types/insuranceTypeAgeBracket';
 
 
 const LoanApplication = () => {
@@ -23,18 +25,24 @@ const LoanApplication = () => {
     const [errors, setErrors] = React.useState<any>({});
     const [loanTypes, setLoanTypes] = React.useState<any>([]);
     const [loanSubtypes, setLoanSubtypes] = React.useState<any>([]);
+    const [insuranceTypes, setInsuranceTypes] = React.useState<InsuranceType[]>([]);
+    const [insuranceTypeAgeBracket, setInsuranceTypeAgeBracket] = React.useState<InsuranceTypeAgeBracket[]>([]);
+
     const [loading, setLoading] = React.useState<boolean>(false);
     const { notification, message} = App.useApp();
     
 
-    const loadLoanTypes = () => {
+    const initLoad = () => {
         axios.get('/load-loan-types').then(res=>{
             setLoanTypes(res.data);
+        });
+        axios.get('/load-insurance-types').then(res=>{
+            setInsuranceTypes(res.data);
         });
     }
 
     useEffect(() => { 
-        loadLoanTypes();
+        initLoad();
     }, []);
 
     const handleChangeLoanType = (value:any) => { 
@@ -56,6 +64,27 @@ const LoanApplication = () => {
         form.setFields([
             { name: 'terms_month', value: selectedLoanSubtypes.terms_month },
             { name: 'interest', value: selectedLoanSubtypes.percent }
+        ]);
+    } 
+
+
+     const handleChangeInsuranceType = (value:any) => { 
+        const selectedInsuranceType = insuranceTypes.find((item:any) => item.id === Number(value));
+        form.setFields([{ name: 'insurance_type_agebracket_id', value: null }]);
+
+        if (selectedInsuranceType) {
+            setInsuranceTypeAgeBracket(selectedInsuranceType.insuranceTypeAgeBracket || []); // Fallback to an empty array if no subtypes exist
+        } else {
+            setInsuranceTypeAgeBracket([]); // Reset subtypes
+        }
+    }
+     const handleChangeInsuranceTypeAgeBrakcet = (value: any) => {
+        const selectedInsuranceAgeBracket = insuranceTypeAgeBracket.find((item:any) => item.id === Number(value));
+        //console.log('handle change loan subtype', selectedLoanSubtypes);
+
+        form.setFields([
+            { name: 'amount', value: selectedInsuranceAgeBracket?.amount },
+            { name: 'benefits', value: selectedInsuranceAgeBracket?.benefits }
         ]);
     } 
 
@@ -141,26 +170,6 @@ const LoanApplication = () => {
             }
         },
         onRemove(info) {
-            // if (id > 0) {
-            //     //remove image if mode is update (temp,uploadedfiles)
-            //     axios
-            //         .post(`/panel/image-remove/${id}/${info.name}`)
-            //         .then((res) => {
-            //             if (res.data.status === "temp_deleted") {
-            //                 message.success("File removed.");
-            //             }
-            //         });
-            // } else {
-            //     //remove image in temp folder if mode is create
-            //     axios
-            //         .post("/panel/temp-remove/" + info.response)
-            //         .then((res) => {
-            //             if (res.data.status === "temp_deleted") {
-            //                 message.success("File removed.");
-            //             }
-            //         });
-            // }
-
             axios
                 .post("/member/temp-remove/" + info.response)
                 .then((res) => {
@@ -237,6 +246,10 @@ const LoanApplication = () => {
                 co_maker_identification: [],
                 co_maker_signature: '',
                 signature: '',
+                insurance_type_id: null,
+                insurance_type: '',
+                insurance_type_agebracket_id: null,
+                insurance_payment: 0
             }}
             onFinish={onFinish}
             layout='vertical'
@@ -343,6 +356,45 @@ const LoanApplication = () => {
                 </Form.Item>
             </div>
 
+            <div className='flex flex-col md:flex-row md:gap-4'>
+                <Form.Item label="Insurance Type"
+                    name="insurance_type_id"
+                    className='w-full'
+                    validateStatus={errors.insurance_type_id ? 'error' : ''}
+                    help={errors.insurance_type_id ? errors.insurance_type_id[0] : ''}>
+                        <Select 
+                            placeholder="Insurance"
+                            className='w-full h-10'
+                            onChange={handleChangeInsuranceType}
+                            options={ insuranceTypes.map((item:InsuranceType) => (
+                                {
+                                    label: item.insurance_type,
+                                    value: item.id
+                                }
+                               
+                            ))}
+                        />
+                </Form.Item>
+
+                <Form.Item label="Insurance Type"
+                    name="insurance_type_agebracket_id"
+                    className='w-full'
+                    validateStatus={errors.insurance_type_agebracket_id ? 'error' : ''}
+                    help={errors.insurance_type_agebracket_id ? errors.insurance_type_agebracket_id[0] : ''}>
+                        <Select 
+                            placeholder="Insurance by age bracket"
+                            className='w-full h-10'
+                            onChange={handleChangeInsuranceTypeAgeBrakcet}
+                            options={ insuranceTypeAgeBracket.map((item:InsuranceTypeAgeBracket) => (
+                                {
+                                    label: item.title,
+                                    value: item.id
+                                }
+                            ))}
+                        />
+                </Form.Item>
+            </div>
+
             <Form.Item
                 name="upload"
                 valuePropName="fileList"
@@ -391,6 +443,7 @@ const LoanApplication = () => {
             
             <Form.Item
                 name="co_maker_identification"
+                valuePropName="fileList"
                 className="w-full"
                 label="Co-Maker Valid Id"
                 getValueFromEvent={(e) => {

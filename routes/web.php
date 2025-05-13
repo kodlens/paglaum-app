@@ -31,7 +31,8 @@ Route::get('load-education-levels', [App\Http\Controllers\OpenController::class 
 Route::get('load-loan-types', [App\Http\Controllers\OpenController::class , 'loadLoanTypes'])->name('load-loan-types')  ;
 Route::get('load-loan-subtypes', [App\Http\Controllers\OpenController::class , 'loadLoanSubtypes'])->name('load-loan-subtypes')  ;
 Route::get('load-id-types', [App\Http\Controllers\OpenController::class , 'loadIdTypes'])->name('load-id-types')  ;
-
+Route::get('load-insurance-types', [App\Http\Controllers\OpenController::class , 'loadInsuranceTypes']);
+Route::get('load-insurance-type-agebracket/{id}', [App\Http\Controllers\OpenController::class , 'loadInsuranceTypeAgeBracket']);
 
 Route::get('load-provinces', [App\Http\Controllers\AddressController::class , 'loadProvinces']);
 Route::get('load-cities', [App\Http\Controllers\AddressController::class , 'loadCities']);

@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             LoanTypeSeeder::class,
             LoanSubtypeSeeder::class,
             IdTypeSeeder::class,
+            InsuranceTypeSeeder::class,
+            InsuranceTypeAgebracketSeeder::class,
         ]);
 
 

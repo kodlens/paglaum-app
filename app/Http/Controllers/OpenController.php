@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\LoanType;
 use App\Models\EducationLevel;
 use App\Models\IdType;
+use App\Models\InsuranceType;
+use App\Models\InsuranceTypeAgebracket;
 
 class OpenController extends Controller
 {
@@ -23,5 +25,16 @@ class OpenController extends Controller
             ->get();
     }
 
+
+    public function loadInsuranceTypes(){
+        return InsuranceType::orderBy('id', 'asc')
+            ->get();
+    }
+
+    public function loadInsuranceTypeAgeBracket($id){
+        return InsuranceTypeAgebracket::where('insurance_type_id', $id)
+            ->orderBy('id', 'asc')
+            ->get();
+    }
     
 }

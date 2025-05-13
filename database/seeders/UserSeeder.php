@@ -29,6 +29,7 @@ class UserSeeder extends Seeder
                 'city' => '',
                 'barangay' => '',
                 'street' => '',
+                'email_verified_at' => null
             ],
 
             [
@@ -46,6 +47,7 @@ class UserSeeder extends Seeder
                 'city' => '',
                 'barangay' => '',
                 'street' => '',
+                'email_verified_at' => null
             ],
 
             [
@@ -63,6 +65,7 @@ class UserSeeder extends Seeder
                 'city' => '',
                 'barangay' => '',
                 'street' => '',
+                'email_verified_at' => null
             ],
            
             [
@@ -80,6 +83,7 @@ class UserSeeder extends Seeder
                 'city' => '',
                 'barangay' => '',
                 'street' => '',
+                'email_verified_at' => '2025-05-12 10:00:36',
             ],
 
             [
@@ -97,6 +101,7 @@ class UserSeeder extends Seeder
                 'city' => '',
                 'barangay' => '',
                 'street' => '',
+                'email_verified_at' => null
             ],
 
             [
@@ -114,6 +119,7 @@ class UserSeeder extends Seeder
                 'city' => '',
                 'barangay' => '',
                 'street' => '',
+                'email_verified_at' => null
             ],
         ];
 

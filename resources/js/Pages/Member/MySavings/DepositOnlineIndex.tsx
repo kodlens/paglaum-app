@@ -26,7 +26,7 @@ export default function DepositOnlineIndex( { savingsAccount }: PageProps<{ savi
             userId: savingsAccount.user.id
         }
 
-        console.log(newFields);
+        //console.log(newFields);
 
         setLoading(true)
 

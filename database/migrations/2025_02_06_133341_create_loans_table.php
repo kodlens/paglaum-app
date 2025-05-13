@@ -67,9 +67,8 @@ return new class extends Migration
             
             $table->unsignedBigInteger('insurance_type_id')->default(0);
             $table->string('insurance_type')->nullable();
+            $table->unsignedBigInteger('insurance_type_agebracket_id')->default(0);
             $table->double('insurance_payment')->default(0);
-
-
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
            
             $table->unsignedBigInteger('insurance_type_id')->default(0);
-            $table->string('age_bracket', 100)->nullable();
+            $table->string('title', 255)->nullable();
             $table->tinyInteger('is_active')->default(1);
             $table->text('benefits')->nullable();
             $table->double('amount')->default(0);
