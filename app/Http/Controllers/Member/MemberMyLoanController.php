@@ -23,7 +23,11 @@ class MemberMyLoanController extends Controller
     public function getMyLoans(Request $req){
         $user = Auth::user();
         
-        return Loan::with(['loan_type', 'loan_subtype'])
+        return Loan::with(['loan_type', 
+                'loan_subtype', 
+                'insurance_type', 
+                'insurance_type_agebracket'
+            ])
             ->where('user_id', $user->id)
             ->orderBy('id', 'desc')
             ->get();

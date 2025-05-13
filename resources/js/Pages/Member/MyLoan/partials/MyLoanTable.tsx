@@ -45,8 +45,8 @@ export default function MyLoanTable() {
                                     </div>
 
                                     <div className='mt-2'>
-                                        <div className='font-bold text-gray-500 text-[.7rem]'>MODE OF PAYMENT</div>
-                                        <div>{item.mode_payment}</div>
+                                        <div className='font-bold text-gray-500 text-[.7rem]'>INSURANCE</div>
+                                        <div>{item.insurance_type.insurance_type}</div>
                                     </div>
 
                                 </td>
@@ -61,6 +61,11 @@ export default function MyLoanTable() {
                                     <div>
                                         <div className='font-bold text-gray-500 text-[.7rem]'>INTEREST(%)</div>
                                         <div>{item.interest}</div>
+                                    </div>
+
+                                    <div>
+                                        <div className='font-bold text-gray-500 text-[.7rem]'>INSURANCE TITLE</div>
+                                        <div>{item.insurance_type_agebracket}</div>
                                     </div>
                                 </td>
 

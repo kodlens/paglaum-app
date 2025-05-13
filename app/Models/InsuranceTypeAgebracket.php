@@ -10,7 +10,6 @@ class InsuranceTypeAgebracket extends Model
     use HasFactory;
 
     protected $table = 'insurance_type_agebrackets';
-    protected $primaryKey = 'id';
 
     protected $fillable = [
         'insurance_type_id',

@@ -47,6 +47,14 @@ class Loan extends Model
         return $this->belongsTo(LoanSubtype::class);
     }
 
+    public function insurance_type(){
+        return $this->belongsTo(InsuranceType::class);
+    }
+
+    public function insurance_type_agebracket(){
+        return $this->hasOne(InsuranceTypeAgebracket::class, 'id', 'insurance_type_agebracket_id');
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
     }
