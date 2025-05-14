@@ -19,4 +19,10 @@ Route::middleware(['auth', 'verified','active'])->group(function () {
     Route::post('/ybs/apply-savings-account', [App\Http\Controllers\Ybs\ApplySavingsAccountController::class, 'applySavingsAccount']);
 
 
+    Route::get('/ybs/deposit-online/{id}', [App\Http\Controllers\Ybs\DepositOnlineController::class, 'index']);
+    Route::post('/ybs/deposit-online/{id}', [App\Http\Controllers\Ybs\DepositOnlineController::class, 'depositOnline']);
+    Route::get('/ybs/deposit-online-cancel', [App\Http\Controllers\Ybs\DepositOnlineController::class , 'cancel'])->name('paymongo.deposit-cancel');
+    Route::get('/ybs/deposit-online-success', [App\Http\Controllers\Ybs\DepositOnlineController::class , 'success'])->name('paymongo.deposit-success');
+
+
 });

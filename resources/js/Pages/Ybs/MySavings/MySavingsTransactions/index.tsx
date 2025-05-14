@@ -62,8 +62,6 @@ export default function MySavingTransactions( { auth, savingsAccount } : PagePro
                             <div>BALANCE: &#8369; {savingsAccount.balance}</div>
                         </div>
 
-
-
                         { data.map(item =>(
                             <div key={item.id} className='p-4 '>
                                 <div className='flex w-full flex-col md:flex-row gap-10 justify-between md:max-w-2xl border-b py-2 px-4 mt-4'>
