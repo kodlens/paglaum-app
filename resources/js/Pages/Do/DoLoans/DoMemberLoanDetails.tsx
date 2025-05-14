@@ -197,6 +197,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                 validateStatus={errors.loan_type_id ? 'error' : ''}
                                 help={errors.loan_type_id ? errors.loan_type_id[0] : ''}>
                                 <Select placeholder="Loan Type..."
+                                    disabled
                                     value={fields?.loan_type_id ?? undefined}
                                     onChange={handleChangeLoanType}
                                     options={loanTypes.map((loanType: LoanType) => (
@@ -211,6 +212,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                 validateStatus={errors.loan_subtype_id ? 'error' : ''}
                                 help={errors.loan_subtype_id ? errors.loan_subtype_id[0] : ''}>
                                 <Select placeholder="Subtype..."
+                                    disabled
                                     value={fields?.loan_subtype_id}
                                     onChange={handleChangeLoanSubtype}
                                     options={loanSubtypes.map((subtype: LoanSubtype) => (
@@ -257,6 +259,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                 validateStatus={errors.mode_payment ? 'error' : ''}
                                 help={errors.mode_payment ? errors.mode_payment[0] : ''}>
                                 <Select 
+                                    disabled
                                     placeholder="Mode of Payment"
                                     className='w-full h-10'
                                     onChange={ (value) => {
@@ -285,6 +288,7 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                 help={errors.principal ? errors.principal[0] : ''}>
                                 <InputNumber type='number'
                                     value={fields?.principal}
+                                    readOnly
                                     className='w-full'
                                     onChange={(value) => setFields(prev => ({ ...prev, principal: value ?? 0 }))}
                                     placeholder="Loan Amount" />
@@ -305,6 +309,15 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                             <div className='mb-2'>{fields?.user.lname}, {fields?.user.fname} {fields?.user.mname}</div>
                             <img id='co_maker' src={`/storage/identifications/${fields?.kyc_id}`} alt="Identification"></img>
                             <img id='signature' src={fields?.signature} alt="Signature"></img>
+                        </div>
+
+                        
+                        <div className='my-4'>
+                            <Button icon={<ThumbsUp size={16}/>}
+                                onClick={handleApprove}
+                                type='primary'>
+                                Approve Loan
+                            </Button>
                         </div>
 
                         <hr />
@@ -347,13 +360,6 @@ const DoMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                             {checkListDetails()}
                         </div>
 
-                        <div className='mt-4'>
-                            <Button icon={<ThumbsUp size={16}/>}
-                                onClick={handleApprove}
-                                type='primary'>
-                                Approve Loan
-                            </Button>
-                        </div>
 
                     </div>
 

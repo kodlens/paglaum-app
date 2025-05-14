@@ -26,7 +26,7 @@ class CheckAmount implements ValidationRule
         //
         $detail = LoanDetail::find($this->id);
 
-        if($detail->amount !== $value){
+        if($detail->total_amount !== $value){
 
             $fail('The :attribute must be equal to the loan amount.');
         }

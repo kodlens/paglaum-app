@@ -1,8 +1,8 @@
-import MemberAuthLayout from '@/Layouts/MemberAuthLayout';
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { User } from 'lucide-react';
 import YbsAuthLayout from '@/Layouts/YbsAuthLayout';
+import ApplyNow from './partials/ApplyNow';
 
 
 export default function Dashboard({ auth }: PageProps) {
@@ -33,8 +33,8 @@ export default function Dashboard({ auth }: PageProps) {
                     </div>
                 </div>
 
-                <div className="mx-2 max-w-7xl md:mx-auto sm:px-6 lg:px-8 mb-4">
-                    
+                 <div className="mx-2 max-w-7xl md:mx-auto sm:px-6 lg:px-8 mb-4">
+                    <ApplyNow />
                 </div>
                 
 

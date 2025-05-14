@@ -17,6 +17,7 @@ import axios from 'axios';
 import { ArrowLeft, Captions,  RefreshCcwIcon,  Wallet } from 'lucide-react';
 
 import dayjs, { Dayjs } from 'dayjs';
+import { LoanDetail } from '@/types/loanDetail';
 
 const { Column } = Table;
 
@@ -42,7 +43,7 @@ const MakePayment = ({ loanId, loan }: { loanId:number, loan:any })  => {
 
 	const  { notification, modal } = App.useApp();
 
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<LoanDetail[]>([]);
     const [loading, setLoading] = useState(false);
     const [total, setTotal] = useState(0);
 
@@ -90,8 +91,8 @@ const MakePayment = ({ loanId, loan }: { loanId:number, loan:any })  => {
         setFields(prev => ({
             ...prev,
             id: detail.id,
-            amount: detail.amount,
-            amount_paid: detail.amount,
+            amount: detail.total_amount,
+            amount_paid: detail.total_amount,
             date_paid: dayjs(new Date())
         }))
     }
@@ -156,8 +157,12 @@ const MakePayment = ({ loanId, loan }: { loanId:number, loan:any })  => {
                                 <span>{customDateFormat(due_date, 'MMM-DD-YYYY')}</span>
                             )}/>
 
-                            <Column title="(&#8369;) Amount" dataIndex='amount' render={(amount:number)=>(
-                                <span className='font-bold'>&#8369; {amount.toLocaleString()}</span>
+                            <Column title="(&#8369;) Insurance" dataIndex='insurance_payment' render={(insurance_payment:number)=>(
+                                <span className='font-bold'>&#8369; {insurance_payment ? insurance_payment.toLocaleString() : 0}</span>
+                            )}/>
+
+                            <Column title="(&#8369;) Amount" dataIndex='total_amount' render={(total_amount:number)=>(
+                                <span className='font-bold'>&#8369; {total_amount ? total_amount.toLocaleString() : 0}</span>
                             )}/>
 
                             <Column title="Payment Method" dataIndex="payment_method" key="payment_method"/>

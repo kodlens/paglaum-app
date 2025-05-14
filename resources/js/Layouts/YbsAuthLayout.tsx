@@ -22,24 +22,16 @@ export default function YbsAuthLayout({ user, header, children }: PropsWithChild
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                    <NavLink href={route('member.dashboard.index')} active={route().current('member.dashboard.index')}>
+                                    <NavLink href={route('ybs.dashboard.index')} active={route().current('ybs.dashboard.index')}>
                                         Dashboard
                                     </NavLink>
                                 </div>
-                              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('member.my-loans.index')} active={route().current('member.my-loans.index')}>
-                                  My Loans
-                                </NavLink>
-                              </div>
-                              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('member.my-savings.index')} active={route().current('member.my-savings.index')}>
-                                  My Savings
-                                </NavLink>
-                              </div>
-
+                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                    <NavLink href={route('ybs.my-savings.index')} active={route().current('ybs.my-savings.index')}>
+                                    My Savings
+                                    </NavLink>
+                                </div>
                             </div>
-
-                            
 
                             <div className="ms-3 relative">
                                 <Dropdown>
@@ -68,7 +60,7 @@ export default function YbsAuthLayout({ user, header, children }: PropsWithChild
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('member.profile.edit')}>Profile</Dropdown.Link>
+                                        <Dropdown.Link href="#">Profile</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>
@@ -119,9 +111,8 @@ export default function YbsAuthLayout({ user, header, children }: PropsWithChild
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('member.profile.edit')}>Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink href={route('member.my-loans.index')}>My Loan</ResponsiveNavLink>
-                            <ResponsiveNavLink href={route('member.my-savings.index')}>My Savings</ResponsiveNavLink>
+                            <ResponsiveNavLink href="#">Profile</ResponsiveNavLink>
+                            <ResponsiveNavLink href="#">My Savings</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Log Out
                             </ResponsiveNavLink>

@@ -1,4 +1,3 @@
-import MemberAuthLayout from "@/Layouts/MemberAuthLayout";
 import { PageProps } from "@/types";
 import { Head, router } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
@@ -6,12 +5,13 @@ import axios from "axios";
 import { SavingsAccount } from "@/types/savingsAccount";
 import { Button } from "antd";
 import { BookUp, List } from "lucide-react";
+import YbsAuthLayout from "@/Layouts/YbsAuthLayout";
 
-const MySavings = ({ auth }: PageProps) => {
+const MySavingsIndex = ({ auth }: PageProps) => {
 
     const [data, setData] = useState<SavingsAccount[]>([]);
     const loadSavingsAccount = () => {
-        axios.get('/member/get-my-savings').then((res) => {
+        axios.get('/ybs/get-my-savings').then((res) => {
             setData(res.data);
         })
     }
@@ -21,7 +21,8 @@ const MySavings = ({ auth }: PageProps) => {
     }, [])
 
     return (
-        <MemberAuthLayout user={auth.user} >
+        <YbsAuthLayout user={auth.user} >
+
             <Head title={"My Savings"} />
 
             <div className="py-12">
@@ -64,13 +65,13 @@ const MySavings = ({ auth }: PageProps) => {
 
                                     <div className='w-[200px] my-4 flex flex-col md:flex-row gap-4'>
                                         <Button className='font-semibold text-gray-500 text-right md:ml-auto'
-                                            onClick={()=> router.visit(`/member/my-savings-transactions/${item.id}`)}
+                                            onClick={()=> router.visit(`/ybs/my-savings-transactions/${item.id}`)}
                                             icon={<List size={16}/>}>
                                             View Transactions
                                         </Button>
 
                                          <Button type="primary"
-                                            onClick={()=> router.visit(`/member/deposit-online/${item.id}`)}
+                                            onClick={()=> router.visit(`/ybs/deposit-online/${item.id}`)}
                                             icon={<BookUp size={16}/>}>
                                             Make a deposit (ONLINE)
                                         </Button>
@@ -83,8 +84,8 @@ const MySavings = ({ auth }: PageProps) => {
                 </div>
 
             </div>
-        </MemberAuthLayout>
+        </YbsAuthLayout>
     )
 }
 
-export default MySavings;
+export default MySavingsIndex;
