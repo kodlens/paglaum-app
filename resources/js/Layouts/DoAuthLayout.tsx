@@ -118,9 +118,9 @@ export default function DoAuthLayout(
                             />
 
                             <div className='ml-auto mr-4 flex items-center gap-4'>
-                                <Link href=''>
-                                    {user.lname}, {user.fname ? user.fname[0] : ''}
-                                </Link>
+                                <div>
+                                    {user.lname}, {user.fname ? user.fname[0] : ''} <span className='font-bold'>({user.role})</span>
+                                </div>
                                 <Button className=''
                                     danger
                                     onClick={handleLogout}>

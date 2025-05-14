@@ -301,14 +301,14 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
                         name="form_in_modal"
                         autoComplete="off"
                         initialValues={{
-                            username: "",
-                            password: "",
-                            email: "",
-                            lname: "",
-                            fname: "",
-                            mname: "",
+                            username: '',
+                            password: '',
+                            email: '',
+                            lname: '',
+                            fname: '',
+                            mname: '',
                             sex: "MALE",
-                            role: "USER",
+                            role: '',
                             active: true,
                         }}
                         clearOnDestroy

@@ -116,9 +116,12 @@ export default function BmLAuthLayout(
                             />
 
                             <div className='ml-auto mr-4 flex items-center gap-4'>
-                                <Link href=''>
-                                    {user.lname}, {user.fname ? user.fname[0] : ''}
-                                </Link>
+                                <div className='flex flex-col'>
+                                    <div>
+                                       {user.lname}, {user.fname ? user.fname[0] : ''} <span className='font-bold'>({user.role})</span>
+                                    </div>
+                                </div>
+
                                 <Button className=''
                                     danger
                                     onClick={handleLogout}>
