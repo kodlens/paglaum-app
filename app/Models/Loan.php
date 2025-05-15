@@ -32,7 +32,8 @@ class Loan extends Model
         'signature',
         'insurance_type_id', 'insurance_type', 
         'insurance_type_agebracket_id', 
-        'insurance_payment'
+        'insurance_payment',
+        'shared'
     ];
 
 

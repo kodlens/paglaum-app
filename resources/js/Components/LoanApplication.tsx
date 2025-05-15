@@ -131,7 +131,6 @@ const LoanApplication = () => {
                 });
             }
         })
-        
     }
 
   
@@ -234,6 +233,7 @@ const LoanApplication = () => {
         <Form 
             initialValues={{ 
                 principal: 0,
+                shared: 0,
                 interest: 0,
                 terms: 0,
                 terms_month: 0,
@@ -266,6 +266,17 @@ const LoanApplication = () => {
                 help={errors.principal ? errors.principal[0] : ''}>
                     <InputNumber type='number' 
                         placeholder="Principal" 
+                        className='p-1 w-full' />
+            </Form.Item>
+
+             <Form.Item
+                label="Share (Savings)"
+                name="shared"
+                className='w-full'
+                validateStatus={errors.shared ? 'error' : ''}
+                help={errors.shared ? errors.shared[0] : ''}>
+                    <InputNumber type='number' 
+                        placeholder="Share (Savings)" 
                         className='p-1 w-full' />
             </Form.Item>
 

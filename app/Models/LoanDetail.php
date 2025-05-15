@@ -15,6 +15,7 @@ class LoanDetail extends Model
         'user_id',
         'due_date',
         'datetime_paid',
+        'interest_amount',
         'amount',
         'amount_paid',
         'is_paid',

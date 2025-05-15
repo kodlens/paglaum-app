@@ -29,6 +29,8 @@ export interface Loan {
     insurance_type_id?: number;
     insurance_type_agebrakcet_id?: number;
     insurance_payment?: number;
+    total_amount?: number;
+    shared?: number;
     updated_at?: Date|unknown;
     created_at?: Date|unknown;
 }

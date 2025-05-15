@@ -36,6 +36,7 @@ return new class extends Migration
 
             $table->date('due_date')->nullable();
             $table->dateTime('datetime_paid')->nullable();
+            $table->double('interest_amount')->default(0);
             $table->double('amount')->default(0);
             $table->double('amount_paid')->default(0);
 
@@ -48,7 +49,7 @@ return new class extends Migration
             $table->string('payment_intent')->nullable();
             $table->double('insurance_payment')->default(0);
             $table->double('total_amount')->default(0);
-
+            $table->double('shared')->default(0);
             
 
             $table->timestamps();

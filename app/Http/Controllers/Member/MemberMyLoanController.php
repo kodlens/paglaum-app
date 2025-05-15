@@ -11,6 +11,7 @@ use App\Models\LoanDetail;
 use Auth;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class MemberMyLoanController extends Controller
@@ -35,9 +36,8 @@ class MemberMyLoanController extends Controller
 
 
     public function store(Request $req){
+        //return $req;
 
-       
-       
         $principal = (double)$req->principal;
         $user = Auth::user();
 
@@ -61,6 +61,7 @@ class MemberMyLoanController extends Controller
 
         $req->validate([
             'loan_type_id' => ['required', 'gt:0'],
+            'shared' => ['required', 'gt:0'],
             'loan_subtype_id' => ['required','gt:0'],
             'insurance_type_id' => ['required', 'gt:0'],
             'insurance_type_agebracket_id' => ['required', 'gt:0'],
@@ -77,6 +78,9 @@ class MemberMyLoanController extends Controller
 
             'insurance_type_id.required' => 'Please select insurance type',
             'insurance_type_id.gt' => 'Please select insurance type',
+
+            'shared.required' => 'Share/Savings Amount is required',
+            'shared.gt' => 'Share/Savings Amount must not less than 0',
 
             'insurance_type_agebracket_id.required' => 'Please select insurance sub type',
             'insurance_type_agebracket_id.gt' => 'Please select insurance sub type',
@@ -133,6 +137,7 @@ class MemberMyLoanController extends Controller
                     'mode_payment' => $req->mode_payment,
                     'terms_month' => $req->terms_month,
                     'total_payment' => $totalPayment,
+                    'shared' => $req->shared,
 
                     'insurance_type_id' => $req->insurance_type_id,
                     'insurance_type_agebracket_id' => $req->insurance_type_agebracket_id,
@@ -159,8 +164,31 @@ class MemberMyLoanController extends Controller
                 }
             });
 
+            $output = '';
+            if(env('SMS') > 0){
+                $apiKey = env('SMS_API_KEY');
+                $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                    'apikey'     => $apiKey,
+                    'number'     => $user->contact_no,
+                    'message'    => "Your loan application with reference no '.$loan->id.' has been successfully submitted and for pending review.",
+                    'sendername' => 'LARATSYS',
+                ]);
+                
+                // Check if request was successful
+                if ($response->successful()) {
+                    $output = $response->json(); // Optional: handle the JSON response
+                } else {
+                    // Handle the error
+                    \Log::error('SMS sending failed', [
+                        'response' => $response->body(),
+                        'status' => $response->status(),
+                    ]);
+                }
+            }
+
             return response()->json([
-                'status' => 'saved'
+                'status' => 'saved',
+                'output' => $output
             ], 200);
             
         }catch(\Exception  $e){

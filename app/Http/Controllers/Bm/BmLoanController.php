@@ -78,6 +78,7 @@ class BmLoanController extends Controller
         $loan->interest = $req->interest;
         $loan->terms_month = $req->terms_month;
         $loan->mode_payment = $req->mode_payment;
+        $loan->shared = $req->shared;
         $loan->save();
         
         if($loan->is_do_approve < 1){
@@ -130,7 +131,8 @@ class BmLoanController extends Controller
                         'is_approve' => 1,
                     ]);
             });
-
+            
+            $output = '';
             if(env('SMS') > 0){
                 $apiKey = env('SMS_API_KEY');
                 $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
@@ -139,7 +141,7 @@ class BmLoanController extends Controller
                     'message'    => "Your loan application with reference no '.$loan->id.' has been successfully approved.",
                     'sendername' => 'LARATSYS',
                 ]);
-    
+                
                 // Check if request was successful
                 if ($response->successful()) {
                     $output = $response->json(); // Optional: handle the JSON response
@@ -166,19 +168,13 @@ class BmLoanController extends Controller
     /*=========================================*/
     private function monthlyBreakdown($loan){
 
-        $loanAmount = 0;
-        $loanTerm = 0;
-        $interestRate = 0;
-        $compound = 0;
-        $payBack = 0;
-
         $principal = $loan->principal;
-        $terms = $loan->terms_month / 12;
-        $interest = $loan->interest / 100;
+        $terms = $loan->terms_month;
+        $interest = ($loan->interest * $terms) / 100;
+        $monthly = $principal / $terms;
         
-        $monthlyInterest = $principal * $interest * $terms;
-        $totalPayment = $principal + ($monthlyInterest * $loan->terms_month);
-        $monthlyAmortization = $totalPayment / $loan->terms_month;
+        $interestRate = $monthly * $interest;
+        $monthlyAmortization = $monthly + $interestRate;
         
         $insurancePayment = $loan->insurance_payment;
         $insurancePaymentBreakDown = $loan->insurance_payment / $loan->terms_month;
@@ -190,6 +186,7 @@ class BmLoanController extends Controller
                 'loan_id' => $loan->id,
                 'user_id' => $loan->user_id,
                 'month' => $i + 1,
+                'shared' => $loan->shared,
                 'amount' => round($monthlyAmortization, 2),
                 'due_date' => now()->addMonths($i + 1),
                 'insurance_payment' => round($insurancePaymentBreakDown, 2),

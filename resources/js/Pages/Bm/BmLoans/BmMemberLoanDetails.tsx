@@ -90,6 +90,7 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
             loan_type_id: loan?.loan_type_id,
             loan_subtype_id: loan?.loan_subtype_id,
             principal: loan?.principal,
+            shared: loan?.shared,
             terms_month: loan?.terms_month,
             mode_payment: loan?.mode_payment,
             interest: loan?.interest,
@@ -305,6 +306,19 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                     onChange={(value) => setFields(prev => ({ ...prev, principal: value ?? 0 }))}
                                     placeholder="Loan Amount" />
                             </Form.Item>
+
+                            <Form.Item
+                                layout='vertical'
+                                label='Share (Savings)'
+                                className='w-full'
+                                validateStatus={errors.shared ? 'error' : ''}
+                                help={errors.shared ? errors.shared[0] : ''}>
+                                <InputNumber type='number'
+                                    value={fields?.shared}
+                                    className='w-full'
+                                    onChange={(value) => setFields(prev => ({ ...prev, shared: value ?? 0 }))}
+                                    placeholder="Loan Amount" />
+                            </Form.Item>
                         </div>
                         {/* <Button type={"primary"} onClick={handleApproveLoan}>Approve Loan</Button> */}
                      
@@ -360,7 +374,7 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
                                             </div>
                                             <div>
                                                 <div className='font-semibold'>Amount Paid</div>
-                                                <div>&#8369; {item.amount_paid.toLocaleString()}</div>
+                                                <div>&#8369; {item.total_amount?.toLocaleString()}</div>
                                                 
                                             </div>
                                         </div>

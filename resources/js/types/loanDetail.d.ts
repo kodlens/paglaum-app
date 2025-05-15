@@ -14,6 +14,9 @@ export interface LoanDetail {
     payment_transaction: string;
     payment_session: string;
     active: number;
+    insurance_payment?: number;
+    total_amount?: number;
+    shared?: number;
     updated_at: Date|unknown;
     created_at: Date|unknown;
 }

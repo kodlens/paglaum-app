@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { App, Button, DatePicker, Divider, Form, Input, InputNumber, Layout, Modal, Select, Steps } from 'antd'
-import { ArrowLeftOutlined, FileAddOutlined, UserOutlined } from '@ant-design/icons'
-import { User } from '@/types';
-import { Head, router, useForm } from '@inertiajs/react';
+import { App, Button, DatePicker, Divider, Form, Input, InputNumber, Layout, Modal, Select, Steps, Upload, UploadProps } from 'antd'
+import { ArrowLeftOutlined, FileAddOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons'
+import { PageProps, User } from '@/types';
+import { Head, router, useForm, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { EducationLevel } from '@/types/educationLevel';
 import { Captions, Divide } from 'lucide-react';
@@ -81,6 +81,56 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     useEffect(()=>{
         loadIdTypes()
     }, [])
+
+    const  { props } = usePage<PageProps>();
+    const csrfToken = props.csrf_token ?? ""; // Ensure csrfToken is a string
+
+    const uploadProps: UploadProps = {
+        name: "id_image",
+        action: "/temp-upload",
+        headers: {
+            "X-CSRF-Token": csrfToken,
+        },
+        beforeUpload: (file) => {
+            const isPNG = file.type === "image/png";
+            const isJPG = file.type === "image/jpeg";
+
+            if (!isPNG && !isJPG) {
+                message.error(`${file.name} is not a png/jpg file`);
+            }
+            return isPNG || isJPG || Upload.LIST_IGNORE;
+        },
+
+        onChange(info) {
+            // if (id > 0) {
+            //     //console.log(info);
+            //     //form.setFieldValue('featured_image', info.file.name)
+            // } else {
+                
+            // }
+            info.file.url = '/storage/temp/' + info.file.response
+            //console.log(info.file);
+            
+            if (info.file.status === "done") {
+                message.success(
+                    `${info.file.name} file uploaded successfully`
+                );
+            } else if (info.file.status === "error") {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+        onRemove(info) {
+            axios
+                .post("/temp-remove/" + info.response)
+                .then((res) => {
+                    if (res.data.status === "temp_deleted") {
+                        message.success("File removed.");
+                    }
+                });
+        },
+    };
+
+    
     const submit = () => {
         
        // console.log('data', data);
@@ -456,6 +506,35 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                     </Form.Item>
                 </div>
 
+                <div>
+                    <Form.Item
+                        name="id_image"
+                        valuePropName="fileList"
+                        className="w-full mt-4"
+                        label="Select Valid Id"
+                        getValueFromEvent={(e) => {
+                            // Normalize the value to fit what the Upload component expects
+                            if (Array.isArray(e)) {
+                                return e;
+                            }
+                            return e?.fileList;
+                        }}
+                        validateStatus={errors.upload ? "error" : ""}
+                        help={errors.upload ? errors.upload[0] : ""}
+                    >
+                        <Upload
+                            maxCount={1}
+                            // fileList={fileList}
+                            listType="picture"
+                            {...uploadProps}
+                        >
+                            <Button icon={<UploadOutlined />}>
+                                Click to Upload
+                            </Button>
+                        </Upload>
+                    </Form.Item>
+                </div>
+
                 <div className="inline-flex items-center justify-center w-full">
                     <hr className="w-full h-px my-8 bg-gray-200 border-0" />
                     <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">
@@ -655,7 +734,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                         ]}
                     />
                 </Form.Item>
-
 
             </>
         )
