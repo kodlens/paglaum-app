@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\SavingAccount;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Http;
+
 
 class BmSavingsAccountController extends Controller
 {
@@ -32,6 +34,27 @@ class BmSavingsAccountController extends Controller
         $data = SavingAccount::find($id);
         $data->is_approved = 1;
         $data->save();
+
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $user->contact_no,
+                'message'    => "Your savings application with account no. '.$data->account_no.' has been successfully activated.",
+                'sendername' => 'LARATSYS',
+            ]);
+
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
 
         return response()->json([
             'status' => 'approved',

@@ -121,6 +121,21 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+/* ============ REPORTS ====================== */
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/reports/loan-transaction', [App\Http\Controllers\Reports\ReportLoanTransactionController::class, 'index'])->name('reports.loan-transaction.index');
+    Route::get('/reports/get-loan-transaction', [App\Http\Controllers\Reports\ReportLoanTransactionController::class, 'getLoanTransaction']);
+
+    
+
+});
+
+/* ============ REPORTS ====================== */
+
+
+
 //for debugging
 Route::get('/applogout', function (Request $req) {
     Auth::guard('web')->logout();

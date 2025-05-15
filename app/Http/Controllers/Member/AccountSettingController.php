@@ -11,6 +11,8 @@ use Auth;
 use App\Models\User;
 use App\Mail\OtpMail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+
 
 class AccountSettingController extends Controller
 {
@@ -61,10 +63,31 @@ class AccountSettingController extends Controller
         }
 
         if($req->send_to === 'mobile'){
+
+            if(env('SMS') > 0){
+                $apiKey = env('SMS_API_KEY');
+                $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                    'apikey'     => $apiKey,
+                    'number'     => $user->contact_no,
+                    'message'    => "Your OTP is " .$otp .". Please do not share this to anyone.",
+                    'sendername' => 'LARATSYS',
+                ]);
+
+                // Check if request was successful
+                if ($response->successful()) {
+                    $output = $response->json(); // Optional: handle the JSON response
+                } else {
+                    // Handle the error
+                    \Log::error('SMS sending failed', [
+                        'response' => $response->body(),
+                        'status' => $response->status(),
+                    ]);
+                }
+            }
             return response()->json([
                 'status' => 'success',
                 'otp' => $otp,
-                'message' => 'OTP successfully sent to your mobile no.'
+                'message' => 'OTP successfully sent.'
             ], 200);
         }
 

@@ -66,6 +66,26 @@ export default function DoAuthLayout(
             key: 'do.members.index',
             icon: <UserOutlined />,
             label: 'Members/Borrower'
+        },
+        {
+            type: 'divider'
+        },
+        {
+            key: 'do.reports.index',
+            icon: <UserOutlined />,
+            label: 'Report',
+            children: [
+                { 
+                    key: 'reports.loan-transaction.index',
+                    label: 'Loan Transaction'
+                },
+                {
+                    key: 'reports.savings-transaction.index',
+                    label: 'Savings Transaction'
+                
+                }
+               
+            ]
         });
 
 		return items;

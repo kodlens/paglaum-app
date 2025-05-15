@@ -7,6 +7,7 @@ use Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\LoanDetail;
+use Illuminate\Support\Facades\Http;
 
 class PaymongoController extends Controller
 {
@@ -111,6 +112,27 @@ class PaymongoController extends Controller
         $loanDetail->payment_intent = $paymentIntent['id'];
         $loanDetail->datetime_paid = \Carbon\Carbon::now();
         $loanDetail->save();
+
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $paymentinfo['contact'],
+                'message'    => "You have successfully paid the amount of P". $amounPaid .". Thank you.",
+                'sendername' => 'LARATSYS',
+            ]);
+
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
 
         return Inertia::render('Member/MyLoan/Paymongo/PaymongoLoanPaymentSuccess');
     }
