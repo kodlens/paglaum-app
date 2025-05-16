@@ -53,6 +53,7 @@ class DoMemberSavingsAccountController extends Controller
 
     public function activate($id){
         $data = SavingAccount::find($id);
+        $data->opened_at = \Carbon\Carbon::now();
         $data->is_active = 1;
         $data->save();
 

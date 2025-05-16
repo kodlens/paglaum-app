@@ -205,6 +205,26 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
         })
     }
 
+    const handleSetDefaultAccount = (data:SavingsAccount) => {
+        const fields = {
+            accountid:data.id,
+            userid:data.user_id
+        }
+        axios.post('/do/savings-account-set-default', fields).then(res=>{
+            setLoading(true)
+            if(res.data.status === 'saved'){
+                setLoading(false)
+
+                notification.success({
+                    message: 'Set to default successfully.'
+                })
+                loadDataAsync()
+            }
+        }).catch(err => {
+            setLoading(false)
+        })
+    }
+
     const showLoanInformation = (loan: Loan) => {
         router.visit(`/do/do-member-loan-details/${loan.id}`)
     }
@@ -274,8 +294,8 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                                 <span className='font-bold'>&#8369; {balance.toFixed(2).toLocaleString()}</span>
                             )} />
 
-                            <Column title="Approved" dataIndex="is_approved" render={(is_approved: number) => (
-                                is_approved > 0 ? (
+                            <Column title="Default Acc" dataIndex="default_account" render={(default_account: number) => (
+                                default_account > 0 ? (
                                     <span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
                                 ) : (
                                     <span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
@@ -303,20 +323,28 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                                                         icon: <BookUp size={16} />,
                                                         onClick: () => router.visit('/do/member-withdrawal-deposit/' + data.id)
                                                     },
-                                                    {
-                                                        key: '2',
-                                                        label: data.is_approved ? 'Disapprove' : 'Approve',
-                                                        icon: <ThumbsUp size={16} />,
-                                                        onClick: () => {
-                                                            handleClickApprove(data)
-                                                        }
-                                                    },
+                                                    // {
+                                                    //     key: '2',
+                                                    //     label: data.is_approved ? 'Disapprove' : 'Approve',
+                                                    //     icon: <ThumbsUp size={16} />,
+                                                    //     onClick: () => {
+                                                    //         handleClickApprove(data)
+                                                    //     }
+                                                    // },
                                                     {
                                                         key: '3',
                                                         label: data.is_active ? 'Deactivate' : 'Activate',
                                                         icon: <ShieldCheck size={16} />,
                                                         onClick: () => {
                                                             handleActivate(data)
+                                                        }
+                                                    },
+                                                    {
+                                                        key: '3',
+                                                        label: 'Set Default Account',
+                                                        icon: <ShieldCheck size={16} />,
+                                                        onClick: () => {
+                                                            handleSetDefaultAccount(data)
                                                         }
                                                     },
                                                 ],

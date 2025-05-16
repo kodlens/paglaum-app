@@ -30,6 +30,10 @@ Route::middleware(['auth', 'do'])->group(function () {
     Route::resource('/do/member-savings-accounts', App\Http\Controllers\Do\DoMemberSavingsAccountController::class)->names('do.member-savings-accounts');
     Route::get('/do/get-member-savings-accounts', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'getData']); //this route for making a payment
 
+
+    Route::post('/do/savings-account-set-default', [App\Http\Controllers\SavingsAccountController::class, 'setDefaultAccount']);
+
+
     Route::post('/do/approve-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'approve']); //approve
     Route::post('/do/disapprove-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'disapprove']); //disapprove
 
