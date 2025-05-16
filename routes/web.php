@@ -152,3 +152,5 @@ Route::get('/applogout', function (Request $req) {
 
     return redirect('/login');
 });
+
+

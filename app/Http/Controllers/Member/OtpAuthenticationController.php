@@ -11,6 +11,7 @@ use App\Mail\OtpMail;
 use Carbon\Carbon;
 use App\Models\User;
 use Auth;
+use Illuminate\Support\Facades\Http;
 
 
 class OtpAuthenticationController extends Controller
@@ -37,11 +38,31 @@ class OtpAuthenticationController extends Controller
         $data->save();
 
         if($user->otp_sender === 'email'){
-            //Mail::to($user->email)->send(new OtpMail($otp));
+            Mail::to($user->email)->send(new OtpMail($otp));
         }
 
         if($user->otp_sender === 'mobile'){
-
+            $output = '';
+            if(env('SMS') > 0){
+                $apiKey = env('SMS_API_KEY');
+                $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                    'apikey'     => $apiKey,
+                    'number'     => $user->contact_no,
+                    'message'    => 'Hello ' . $user->lname . ', '. $user->fname . ', Your PAGLAUM OTP is '.$otp.'. Thank you.',
+                    'sendername' => 'LARATSYS',
+                ]);
+                
+                // Check if request was successful
+                if ($response->successful()) {
+                    $output = $response->json(); // Optional: handle the JSON response
+                } else {
+                    // Handle the error
+                    \Log::error('SMS sending failed', [
+                        'response' => $response->body(),
+                        'status' => $response->status(),
+                    ]);
+                }
+            }
         }
 
         return Inertia::render('Member/OTP/index',[
@@ -62,6 +83,8 @@ class OtpAuthenticationController extends Controller
         $otp_sender = $req->send_to;
         $now = Carbon::now();
 
+        $request->session()->put('otp', $otp);
+        
         //check is otp is exist on the current auth user
         $exist = User::where('id', $user->id)
             ->where('code_2fa', $otp)
@@ -76,6 +99,11 @@ class OtpAuthenticationController extends Controller
                 'message' => 'Error!'
             ], 422);
         }
+
+        User::where('id', $user->id)
+            ->update([
+                'code_2fa' => null, 
+            ]);
 
         return response()->json([
             'status' => 'approved',

@@ -19,6 +19,11 @@ class MemberMiddleware
         $user = Auth::user();
         //return redirect(RouteServiceProvider::HOME);
         if(strtolower($user->role) == 'member'){
+
+            if($user->is_2fa > 0){
+                return redirect('/member/otp-form');
+            }
+
             return $next($request);
         }
         return abort(403);
