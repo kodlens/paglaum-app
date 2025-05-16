@@ -78,7 +78,7 @@ class BmLoanController extends Controller
         $loan->interest = $req->interest;
         $loan->terms_month = $req->terms_month;
         $loan->mode_payment = $req->mode_payment;
-        $loan->shared = $req->shared;
+        $loan->savings = $req->savings;
         $loan->save();
         
         if($loan->is_do_approve < 1){
@@ -171,11 +171,9 @@ class BmLoanController extends Controller
         $principal = $loan->principal;
         $terms = $loan->terms_month;
         $interest = ($loan->interest * $terms) / 100;
-        $monthly = $principal / $terms;
-        
-        $interestRate = $monthly * $interest;
-        $monthlyAmortization = $monthly + $interestRate;
-        
+        $loanBreakDown = $principal / $terms;
+        $interestRate = $loanBreakDown * $interest;
+  
         $insurancePayment = $loan->insurance_payment;
         $insurancePaymentBreakDown = $loan->insurance_payment / $loan->terms_month;
         
@@ -186,17 +184,23 @@ class BmLoanController extends Controller
                 'loan_id' => $loan->id,
                 'user_id' => $loan->user_id,
                 'month' => $i + 1,
-                'shared' => $loan->shared,
-                'amount' => round($monthlyAmortization, 2),
+                'savings' => $loan->savings,
+                'interest_amount' => $interestRate,
+                'amount' => round($loanBreakDown, 2),
                 'due_date' => now()->addMonths($i + 1),
                 'insurance_payment' => round($insurancePaymentBreakDown, 2),
-                'total_amount' => round($monthlyAmortization, 2) + round($insurancePaymentBreakDown, 2),
+                'total_amount' => round($loanBreakDown, 2) + round($insurancePaymentBreakDown, 2) + round($interestRate, 2)  + $loan->savings,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];   
         }
 
         LoanDetail::insert($loanDetails);
+
+        Loan::where('id', $loan->id)
+            ->update([
+                'no_terms' => $terms
+            ]);
     }
 
 
@@ -215,15 +219,12 @@ class BmLoanController extends Controller
 
 
         $principal = $req->principal;
-        $terms = $req->terms_month / 12;
-        $interest = $req->interest / 100;
-        
-        $monthlyInterest = $principal * $interest * $terms;
-        $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
-        $monthlyAmortization = $totalPayment / $req->terms_month;
-
-        $payment = $totalPayment / count($period);
-
+        $terms = $req->terms_month;
+        $interest = ($req->interest * $terms) / 100;
+        $loanBreakDown = $principal / count($period);
+        $interestRate = $loanBreakDown * $interest;
+        //$amortization = $loanBreakDown + $interestRate;
+       
         $insurancePayment = $req->insurance_payment;
         $insurancePaymentBreakDown = $req->insurance_payment / count($period);
 
@@ -234,16 +235,24 @@ class BmLoanController extends Controller
                 'loan_id' => $req->id,
                 'user_id' => $req->user['id'],
                 'month' => $date->month,
-                'amount' => round($payment, 2),
+                'savings' => $req->savings,
+                'interest_amount' => round($interestRate, 2),
+                'amount' => round($loanBreakDown, 2),
                 'due_date' => $date->format('Y-m-d'),
                 'insurance_payment' => round($insurancePaymentBreakDown, 2),
-                'total_amount' => round($payment, 2) + round($insurancePaymentBreakDown, 2),
+                'total_amount' => round($loanBreakDown, 2) + round($insurancePaymentBreakDown, 2) + round($interestRate, 2)  + $req->savings,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]; 
         }
 
         LoanDetail::insert($loanDetails);
+
+        Loan::where('id', $req->id)
+            ->update([
+                'no_terms' => count($period)
+            ]);
+
     }
 
 
@@ -259,33 +268,36 @@ class BmLoanController extends Controller
         $period = CarbonPeriod::create($startDate, '1 week', $endDate);
 
         $principal = $req->principal;
-        $terms = $req->terms_month / 12;
-        $interest = $req->interest / 100;
-        
-        $monthlyInterest = $principal * $interest * $terms;
-        $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
-        $monthlyAmortization = $totalPayment / $req->terms_month;
-
-        $payment = $totalPayment / count($period);
+        $terms = $req->terms_month;
+        $interest = ($req->interest * $terms) / 100;
+        $loanBreakDown = $principal / count($period);
+        $interestRate = $loanBreakDown * $interest;
+        $amortization = $loanBreakDown + $interestRate;
 
         $insurancePayment = $req->insurance_payment;
         $insurancePaymentBreakDown = $req->insurance_payment / count($period);
 
-        //Loop through each day
         foreach ($period as $i => $date) {
             $loanDetails[] = [
                 'loan_id' => $req->id,
                 'user_id' => $req->user['id'],
                 'month' => $date->month,
-                'amount' => round($payment, 2),
+                'savings' => $req->savings,
+                'interest_amount' => round($interestRate, 2),
+                'amount' => round($loanBreakDown, 2),
                 'due_date' => $date->format('Y-m-d'),
                 'insurance_payment' => round($insurancePaymentBreakDown, 2),
-                'total_amount' => round($payment, 2) + round($insurancePaymentBreakDown, 2),
+                'total_amount' => round($loanBreakDown, 2) + round($insurancePaymentBreakDown, 2) + round($interestRate, 2)  + $req->savings,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]; 
         }
         LoanDetail::insert($loanDetails);
+
+        Loan::where('id', $req->id)
+            ->update([
+                'no_terms' => count($period)
+            ]);
     }
 
     /* ================= QUARTERLY ================== */
@@ -300,34 +312,36 @@ class BmLoanController extends Controller
         $period = CarbonPeriod::create($startDate, '3 months', $endDate);
 
         $principal = $req->principal;
-        $terms = $req->terms_month / 12;
-        $interest = $req->interest / 100;
-        
-        $monthlyInterest = $principal * $interest * $terms;
-        $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
-        $monthlyAmortization = $totalPayment / $req->terms_month;
-
-        $payment = $totalPayment / count($period);
+        $terms = $req->terms_month;
+        $interest = ($req->interest * $terms) / 100;
+        $loanBreakDown = $principal / count($period);
+        $interestRate = $loanBreakDown * $interest;
+        $amortization = $loanBreakDown + $interestRate;
 
         $insurancePayment = $req->insurance_payment;
         $insurancePaymentBreakDown = $req->insurance_payment / count($period);
 
-        //Loop through each day
         foreach ($period as $i => $date) {
             $loanDetails[] = [
                 'loan_id' => $req->id,
                 'user_id' => $req->user['id'],
                 'month' => $date->month,
-                'amount' => round($payment, 2),
+                'savings' => $req->savings,
+                'interest_amount' => round($interestRate, 2),
+                'amount' => round($loanBreakDown, 2),
                 'due_date' => $date->format('Y-m-d'),
                 'insurance_payment' => round($insurancePaymentBreakDown, 2),
-                'total_amount' => round($payment, 2) + round($insurancePaymentBreakDown, 2),
+                'total_amount' => round($loanBreakDown, 2) + round($insurancePaymentBreakDown, 2) + round($interestRate, 2)  + $req->savings,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]; 
         }
-
         LoanDetail::insert($loanDetails);
+
+        Loan::where('id', $req->id)
+            ->update([
+                'no_terms' => count($period)
+            ]);
     }
 
     /* ================= lumpsum ================== */
@@ -339,11 +353,10 @@ class BmLoanController extends Controller
         // $endDate->month;
 
         $principal = $req->principal;
-        $terms = $req->terms_month / 12;
-        $interest = $req->interest / 100;
-        
-        $monthlyInterest = $principal * $interest * $terms;
-        $totalPayment = $principal + ($monthlyInterest * $req->terms_month);
+        $terms = $req->terms_month;
+        $interest = ($req->interest * $terms) / 100;
+        $interestRate = $principal * $interest;
+        $amortization = $principal + $interestRate;
 
         $insurancePayment = $req->insurance_payment;
 
@@ -352,13 +365,20 @@ class BmLoanController extends Controller
             'loan_id' => $req->id,
             'user_id' => $req->user['id'],
             'month' => $endDate->month,
-            'amount' => round($totalPayment, 2),
+            'savings' => $req->savings,
+            'interest_amount' => round($interestRate, 2),
+            'amount' => round($principal, 2),
             'due_date' => $endDate->format('Y-m-d'),
             'insurance_payment' => $insurancePayment,
-            'total_amount' => round($totalPayment, 2) + $insurancePayment,
+            'total_amount' => round($amortization, 2) + $insurancePayment,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        Loan::where('id', $req->id)
+            ->update([
+                'no_terms' => 1
+            ]);
     }
 
 

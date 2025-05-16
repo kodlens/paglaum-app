@@ -6,6 +6,7 @@ export interface LoanDetail {
     user_id: number;
     due_date: Date;
     datetime_paid: DateTime;
+    interest_amount: number;
     amount: number;
     amount_paid: number;
     is_paid: number;
@@ -17,6 +18,7 @@ export interface LoanDetail {
     insurance_payment?: number;
     total_amount?: number;
     shared?: number;
+    savings?: number;
     updated_at: Date|unknown;
     created_at: Date|unknown;
 }

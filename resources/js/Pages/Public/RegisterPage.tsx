@@ -519,8 +519,8 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             }
                             return e?.fileList;
                         }}
-                        validateStatus={errors.upload ? "error" : ""}
-                        help={errors.upload ? errors.upload[0] : ""}
+                        validateStatus={errors.id_image ? "error" : ""}
+                        help={errors.id_image ? errors.id_image[0] : ""}
                     >
                         <Upload
                             maxCount={1}

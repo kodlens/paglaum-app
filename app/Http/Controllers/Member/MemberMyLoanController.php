@@ -61,7 +61,7 @@ class MemberMyLoanController extends Controller
 
         $req->validate([
             'loan_type_id' => ['required', 'gt:0'],
-            'shared' => ['required', 'gt:0'],
+            'savings' => ['required', 'gt:0'],
             'loan_subtype_id' => ['required','gt:0'],
             'insurance_type_id' => ['required', 'gt:0'],
             'insurance_type_agebracket_id' => ['required', 'gt:0'],
@@ -79,8 +79,8 @@ class MemberMyLoanController extends Controller
             'insurance_type_id.required' => 'Please select insurance type',
             'insurance_type_id.gt' => 'Please select insurance type',
 
-            'shared.required' => 'Share/Savings Amount is required',
-            'shared.gt' => 'Share/Savings Amount must not less than 0',
+            'savings.required' => 'Savings Amount is required',
+            'savings.gt' => 'Savings Amount must not less than 0',
 
             'insurance_type_agebracket_id.required' => 'Please select insurance sub type',
             'insurance_type_agebracket_id.gt' => 'Please select insurance sub type',
@@ -137,7 +137,7 @@ class MemberMyLoanController extends Controller
                     'mode_payment' => $req->mode_payment,
                     'terms_month' => $req->terms_month,
                     'total_payment' => $totalPayment,
-                    'shared' => $req->shared,
+                    'savings' => $req->savings,
 
                     'insurance_type_id' => $req->insurance_type_id,
                     'insurance_type_agebracket_id' => $req->insurance_type_agebracket_id,

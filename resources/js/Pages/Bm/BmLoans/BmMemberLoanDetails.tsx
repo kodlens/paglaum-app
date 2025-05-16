@@ -90,7 +90,7 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
             loan_type_id: loan?.loan_type_id,
             loan_subtype_id: loan?.loan_subtype_id,
             principal: loan?.principal,
-            shared: loan?.shared,
+            savings: loan?.savings,
             terms_month: loan?.terms_month,
             mode_payment: loan?.mode_payment,
             interest: loan?.interest,
@@ -309,15 +309,15 @@ const BmMemberLoanDetails = ({ auth, loan }: PageProps<{ loan: Loan }>) => {
 
                             <Form.Item
                                 layout='vertical'
-                                label='Share (Savings)'
+                                label='Savings'
                                 className='w-full'
-                                validateStatus={errors.shared ? 'error' : ''}
-                                help={errors.shared ? errors.shared[0] : ''}>
+                                validateStatus={errors.savings ? 'error' : ''}
+                                help={errors.savings ? errors.savings[0] : ''}>
                                 <InputNumber type='number'
-                                    value={fields?.shared}
+                                    value={fields?.savings}
                                     className='w-full'
-                                    onChange={(value) => setFields(prev => ({ ...prev, shared: value ?? 0 }))}
-                                    placeholder="Loan Amount" />
+                                    onChange={(value) => setFields(prev => ({ ...prev, savings: value ?? 0 }))}
+                                    placeholder="Savings Amount" />
                             </Form.Item>
                         </div>
                         {/* <Button type={"primary"} onClick={handleApproveLoan}>Approve Loan</Button> */}

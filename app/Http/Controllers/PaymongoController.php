@@ -8,12 +8,15 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\LoanDetail;
 use Illuminate\Support\Facades\Http;
+use App\Models\SavingTransaction;
+use App\Models\SavingAccount;
+
 
 class PaymongoController extends Controller
 {
     //
     public function pay(Request $req){
-        
+        //return $req;
         $user = Auth::user();
 
         $client = new \GuzzleHttp\Client();
@@ -21,6 +24,8 @@ class PaymongoController extends Controller
         $amount = $req->amount;
         $name = $user->lname . ', ' . $user->fname;
         $refNo = $req->refno;
+
+        $detail = LoanDetail::find($req->loandetailid);
 
         $paymentMethod = $req->paymentmethod;
 
@@ -50,11 +55,14 @@ class PaymongoController extends Controller
                     'reference_number' => $refNo,
                     'success_url' => env('PAYMONGO_REDIRECT_MERCHANT') . '/paymongo/success',
                     'metadata' => [
+                        'user_id' => $user->id,
                         'name' => $name,
                         'payment_method' => $paymentMethod,
                         'email' => $user->email,
                         'contact' => $user->contact_no,
                         'ref' => $refNo,
+                        'principal' => $detail->amount,
+                        'shared' => $detail->shared,
                         'amount_paid' => $amount,
                         'loan_id' => $req->loanid,
                         'loan_detail_id' => $req->loandetailid,
@@ -112,6 +120,31 @@ class PaymongoController extends Controller
         $loanDetail->payment_intent = $paymentIntent['id'];
         $loanDetail->datetime_paid = \Carbon\Carbon::now();
         $loanDetail->save();
+
+        $userId = $paymentinfo['user_id'];
+        $shared = $paymentinfo['shared'];
+
+        $savingsAcc = SavingAccount::where('user_id', $userId)
+            ->where('default_account', 1)->first();
+
+        SavingTransaction::create([
+            'saving_account_id' => $savingsAcc->id,
+            'transaction_type' => 'ONLINE/LOAN PAYMENT',
+            'payment_method' => 'ONLINE/LOAN PAYMENT',
+            'refno' => 'loanref_'.$ref,
+            'remarks' => 'SAVINGS FROM LOAN',
+            'amount' => $shared,
+            'balance' => $savingsAcc->balance + $shared,
+            'fee' => 0,
+            'datetime_deposit' => \Carbon\Carbon::now(),
+            'payment_intent' => $paymentIntent['id']
+        ]);
+
+        SavingAccount::where('user_id', $userId)
+            ->where('default_account', 1)
+            ->update([
+                'balance' => $savingsAcc->balance + $shared
+            ]);
 
         if(env('SMS') > 0){
             $apiKey = env('SMS_API_KEY');

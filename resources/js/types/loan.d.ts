@@ -1,5 +1,6 @@
 import { LoanSubtype } from "./loanSubtype";
 import { LoanDetail } from "./loanDetail";
+import { LoanType } from "./loanType";
 
 export interface Loan {
     id?: number;
@@ -9,14 +10,15 @@ export interface Loan {
     data?: any[],
     loan_type_id?: number|string|null;
     loan_subtype_id?: number|string|null;
-    loan_type?: string;
-    loan_subtype?: string;
+    loan_type?: LoanType;
+    loan_subtype?: LoanSubtype;
     user?: User;
     loan_details?: LoanDetail[];
     // loan_subtypes: LoanSubtype[]
     // loan_subtypes: LoanSubtype[]
     interest?: number;
     terms_month?: number;
+    no_terms?: number;
     co_maker?: string;
     mode_payment?: string;
     active?: number;
@@ -30,7 +32,7 @@ export interface Loan {
     insurance_type_agebrakcet_id?: number;
     insurance_payment?: number;
     total_amount?: number;
-    shared?: number;
+    savings?: number;
     updated_at?: Date|unknown;
     created_at?: Date|unknown;
 }

@@ -6,12 +6,13 @@ import dayjs from 'dayjs';
 import { Button } from 'antd';
 import axios from 'axios';
 import { LoanDetail } from '@/types/loanDetail';
+import { Loan } from '@/types/loan';
 
 
 const dateFormat =(date:string|Date, customFormat:string) => {
   return dayjs(date).format(customFormat);
 }
-export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any }>) {
+export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan }>) {
 
   const [loading, setLoading] = useState<boolean>(false);
   
@@ -56,24 +57,25 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
 
                 <div className='mb-2'>
                   <div className='font-bold text-gray-500'>Granted</div>
-                  <div>{ loan.principal.toLocaleString() } </div> 
+                  <div>{ loan.principal ? loan.principal.toLocaleString() : 0 } </div> 
                 </div>
 
                 <div className='mb-2'>
                   <div className='font-bold text-gray-500'>Loan Type</div>
-                  <div>{ loan.loan_type.loan_type } </div> 
+                  <div>{ loan.loan_type ? loan.loan_type.loan_type : '' } </div> 
                 </div>
 
                 <div className='mb-2'>
                   <div className='font-bold text-gray-500'>Mode of Payment</div>
                   <div>{ loan.mode_payment } </div> 
                 </div>
+                
               </div>
 
               <div className='flex-1'>
                 <div className='mb-2 min-w-[60px]'>
                   <div className='font-bold text-gray-500'>Loan Sub Type</div>
-                  <div>{ loan.loan_subtype.loan_subtype } Month (s)</div> 
+                  <div>{ loan.loan_subtype ? loan.loan_subtype.loan_subtype: 0 } Month (s)</div> 
                 </div>
                 <div className='mb-2'>
                   <div className='font-bold text-gray-500'>Terms</div>
@@ -82,14 +84,20 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
 
                 <div className='mb-2'>
                   <div className='font-bold text-gray-500'>Rate</div>
-                  <div>{ loan.interest * loan.terms_month }% </div> 
+                  <div>{ loan.interest ? (loan.interest * (loan.terms_month ? loan.terms_month : 0)) : 0 }% </div> 
                 </div>
+
+                <div className='mb-2'>
+                  <div className='font-bold text-gray-500'>No. Terms</div>
+                  <div>{ loan.no_terms ? loan.no_terms : 0 }</div> 
+                </div>
+
               </div>
             </div>
           </div>
 
           <div className=''>
-            {loan.loan_details.length > 0 ? (
+            {loan.loan_details && loan.loan_details.length > 0 ? (
               loan.loan_details.map((item:LoanDetail, index:number) => (
                 <div key={index} className='bg-white shadow-sm mt-2 p-6'>
                   <div className=''>
@@ -110,15 +118,22 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: any 
                         <div>&#8369; {item.amount}</div>
                       </div>
 
+                       <div>
+                        <div className='font-bold text-gray-500'>Interest</div>
+                        <div>&#8369; {item.interest_amount}</div>
+                      </div>
+
                       <div>
-                        <div className='font-bold text-gray-500'>Insurance</div>
-                        <div>&#8369; {item.insurance_payment}</div>
+                        <div className='font-bold text-gray-500'>Savings</div>
+                        <div>&#8369; {item.savings}</div>
                       </div>
 
                       <div>
                         <div className='font-bold text-gray-500'>Share</div>
-                        <div>&#8369; {item.shared}</div>
+                        <div>&#8369; {item.insurance_payment}</div>
                       </div>
+
+                     
 
                       <div>
                         <div className='font-bold text-gray-500'>Total Amount</div>

@@ -49,6 +49,8 @@ return new class extends Migration
             $table->double('principal')->default(0);
             $table->double('interest')->default(0);
             $table->double('terms_month')->default(0);
+            $table->integer('no_terms')->default(0);
+            
             $table->double('previous_balance')->default(0);
             
             $table->string('kyc_id')->nullable();
@@ -69,7 +71,7 @@ return new class extends Migration
             $table->string('insurance_type')->nullable();
             $table->unsignedBigInteger('insurance_type_agebracket_id')->default(0);
             $table->double('insurance_payment')->default(0);
-            $table->double('shared')->default(0);
+            $table->double('savings')->default(0);
             
             $table->timestamps();
         });

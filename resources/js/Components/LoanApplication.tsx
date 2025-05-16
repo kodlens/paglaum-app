@@ -233,7 +233,7 @@ const LoanApplication = () => {
         <Form 
             initialValues={{ 
                 principal: 0,
-                shared: 0,
+                savings: 0,
                 interest: 0,
                 terms: 0,
                 terms_month: 0,
@@ -270,13 +270,13 @@ const LoanApplication = () => {
             </Form.Item>
 
              <Form.Item
-                label="Share (Savings)"
-                name="shared"
+                label="Savings"
+                name="savings"
                 className='w-full'
-                validateStatus={errors.shared ? 'error' : ''}
-                help={errors.shared ? errors.shared[0] : ''}>
+                validateStatus={errors.savings ? 'error' : ''}
+                help={errors.savings ? errors.savings[0] : ''}>
                     <InputNumber type='number' 
-                        placeholder="Share (Savings)" 
+                        placeholder="Savings" 
                         className='p-1 w-full' />
             </Form.Item>
 

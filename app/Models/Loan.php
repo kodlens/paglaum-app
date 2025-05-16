@@ -17,6 +17,7 @@ class Loan extends Model
         'principal',
         'mode_payment',
         'terms_month',
+        'no_terms',
         'previous_balance',
         'interest',
         'guarantor',
@@ -33,7 +34,7 @@ class Loan extends Model
         'insurance_type_id', 'insurance_type', 
         'insurance_type_agebracket_id', 
         'insurance_payment',
-        'shared'
+        'savings'
     ];
 
 

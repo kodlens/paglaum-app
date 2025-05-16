@@ -99,10 +99,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-member-loans/{id}', [App\Http\Controllers\MakeAPaymentController::class, 'getMemberLoans']);
     Route::post('/make-a-payment/{id}', [App\Http\Controllers\MakeAPaymentController::class, 'makePayment']); //this route for making a payment
     
-    //upload repo
-    Route::post('/temp-upload', [App\Http\Controllers\Member\UploadController::class, 'tempUpload']);
-    Route::post('/temp-remove/{filename}', [App\Http\Controllers\Member\UploadController::class, 'removeUpload']);
-    Route::post('/image-remove/{id}/{filename}', [App\Http\Controllers\Member\UploadController::class, 'imageRemove']);
 
 });
 
@@ -110,6 +106,9 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+//upload id
+Route::post('/temp-upload', [App\Http\Controllers\UploadController::class, 'tempUpload']);
+Route::post('/temp-remove/{filename}', [App\Http\Controllers\UploadController::class, 'removeUpload']);
 
 
 

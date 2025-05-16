@@ -31,7 +31,7 @@ return new class extends Migration
             $table->tinyInteger('is_active')->default(1);
             $table->dateTime('opened_at')->nullable();
             $table->dateTime('closed_at')->nullable();
-
+            $table->tinyInteger('default_account')->default(1);
             $table->timestamps();
         });
     }

@@ -19,7 +19,8 @@ class SavingAccount extends Model
         'is_approved',
         'is_active',
         'opened_at',
-        'closed_at'
+        'closed_at',
+        'default_account'
     ];
 
     public function saving_transactions(){
