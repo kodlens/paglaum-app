@@ -5,8 +5,8 @@ import { ArrowLeft } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 interface Fields {
-  loan_type?: string;
-  count_loantype?: number;
+  transaction_type?: string;
+  count_transaction_type?: number;
 }
 export default function ReportSavingsTransaction() {
   const [data, setData] = useState<Fields[]>([])
@@ -55,16 +55,16 @@ export default function ReportSavingsTransaction() {
           <table className='border w-full'>
             <thead className='bg-gray-100 font-bold text-left'>
               <tr>
-                <th className='py-2 px-6'>LOAN TYPE</th>
-                <th className='py-2 px-6'>COUNT OF LOAN TYPE</th>
+                <th className='py-2 px-6'>TRANSACTION TYPE</th>
+                <th className='py-2 px-6'>COUNT</th>
               </tr>
             </thead>
             <tbody>
                {Array.isArray(data) && data.length > 0 ? (
                 data.map((item: Fields, ix: number) => (
                   <tr key={ix} className="border">
-                    <td className="px-6 py-2">{item?.loan_type}</td>
-                    <td className="text-right px-6 py-2">{item?.count_loantype}</td>
+                    <td className="px-6 py-2">{item?.transaction_type}</td>
+                    <td className="text-right px-6 py-2">{item?.count_transaction_type}</td>
                   </tr>
                 ))
               ) : (

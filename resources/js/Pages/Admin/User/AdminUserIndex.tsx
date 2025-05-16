@@ -311,7 +311,7 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
                             fname: "",
                             mname: "",
                             sex: "MALE",
-                            role: "USER",
+                            role: "",
                             active: true,
                         }}
                         clearOnDestroy
@@ -441,7 +441,9 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
                         <Select
                             options={[
                                 { value: "MEMBER", label: "MEMBER" },
+                                { value: "IPP", label: "INSURANCE POINT PERSON" },
                                 { value: "BM", label: "BRANCH MANAGER" },
+                                { value: "DO", label: "DEVELOPMENT" },
                                 { value: "ADMIN", label: "ADMINISTRATOR" },
                             ]}
                         />

@@ -21,15 +21,12 @@ class ReportSavingTransactionController extends Controller
 
         $data = \DB::select(
             'SELECT
-            b.loan_type,
-            COUNT(*) AS count_loantype
-
-            FROM
-            loans as a
-            JOIN loan_types as b ON a.loan_type_id = b.id
+            a.transaction_type,
+            COUNT(*) AS count_transaction_type
+            FROM saving_transactions a
             WHERE a.created_at >= ? AND a.created_at <= ?
-            GROUP BY a.loan_type_id'
-        , [$dateFrom, $dateTo]);
+            GROUP BY a.transaction_type'
+                    , [$dateFrom, $dateTo]);
         
         return $data;
     }

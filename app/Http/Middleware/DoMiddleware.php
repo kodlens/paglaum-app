@@ -18,7 +18,7 @@ class DoMiddleware
     {
         $role = Auth::user()->role;
         //return redirect(RouteServiceProvider::HOME);
-        if(strtolower($role) == 'do')
+        if(strtolower($role) == 'do' || strtolower($role) == 'ipp')
             return $next($request);
         return abort(403);
     }
