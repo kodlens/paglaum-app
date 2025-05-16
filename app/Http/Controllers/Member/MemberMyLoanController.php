@@ -66,6 +66,7 @@ class MemberMyLoanController extends Controller
             'insurance_type_id' => ['required', 'gt:0'],
             'insurance_type_agebracket_id' => ['required', 'gt:0'],
             'terms_month' => ['required', 'gt:0'],
+            'mode_payment' => ['required'],
             'interest' => ['required', 'gt:0'],
             'upload' => ['required'],
             'co_maker' => ['required'],
@@ -101,8 +102,8 @@ class MemberMyLoanController extends Controller
         if($exists){
             /* -------------- add checking if allowed reloan ------------------ */
             /* -------------- prevent the user to reloan ------------------ */
-            require __DIR__.'/partials/check_reloan.php';
-            if($totalMonthsMustPaid > $countMonthsPaid){
+            
+            if($this->isLoanEligible($user->id)){
                 return response()->json([
                     'errors' => [
                         'principal' => ['Reloan is not allowed this time.']
@@ -112,6 +113,8 @@ class MemberMyLoanController extends Controller
             }
             /* -------------- *************END*********** ------------------ */
         }
+
+        //return 'pass';
 
         try{
 
@@ -263,5 +266,41 @@ class MemberMyLoanController extends Controller
         $n = explode('/', $imagePath);
         return $n[2];
     }
+
+
+    public function isLoanEligible($userId)  {
+
+        $prevLoan = Loan::where('is_paid', 0)
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')->first();
+
+        if(!$prevLoan){
+            return true;
+        }
+        //get all total payment and total paid
+        $query = \DB::select('SELECT SUM(amount_paid) AS total_paid,
+            ROUND(SUM(amount + interest_amount),2) * .8
+            AS total_payment FROM loan_details WHERE loan_id = ? and user_id = ?', [$prevLoan->id, $userId]);
+
+        // //get all total payment and total paid
+        // $queryCountMonths = \DB::select('SELECT COUNT(*) AS count_month FROM loan_details
+        //     WHERE loan_id = ? and is_paid = 1 and user_id = ?', [$prevLoan->id, $userId]);
+
+        // $countMonthsPaid = $queryCountMonths[0]->count_month;
+
+        $totalPaid = $query[0]->total_paid;
+        $totalPayment = $query[0]->total_payment;
+
+        // //lets use 80% of total months to pay
+        // $totalMonthsToPay = $prevLoan->terms_month;
+        // $totalMonthsMustPaid = round(($totalMonthsToPay * 0.08) * 10);
+
+        if($totalPaid > $totalPayment){
+            return false;
+            
+        }
+        return true;
+    }
+
 
 }

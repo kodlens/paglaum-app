@@ -10,6 +10,7 @@ use App\Models\LoanDetail;
 use Illuminate\Support\Facades\Http;
 use App\Models\SavingTransaction;
 use App\Models\SavingAccount;
+use App\Models\Loan;
 
 
 class PaymongoController extends Controller
@@ -62,7 +63,7 @@ class PaymongoController extends Controller
                         'contact' => $user->contact_no,
                         'ref' => $refNo,
                         'principal' => $detail->amount,
-                        'shared' => $detail->shared,
+                        'savings' => $detail->savings,
                         'amount_paid' => $amount,
                         'loan_id' => $req->loanid,
                         'loan_detail_id' => $req->loandetailid,
@@ -121,8 +122,21 @@ class PaymongoController extends Controller
         $loanDetail->datetime_paid = \Carbon\Carbon::now();
         $loanDetail->save();
 
+        //check if naa pa bay next loan to pay
+        $exists = LoanDetail::where('loan_id', $paymentinfo['loan_id'])
+            ->where('user_id', $paymentinfo['user_id'])
+            ->where('is_paid', 0)
+            ->exists();
+             
+        if(!$exists){
+             Loan::where('id', $paymentinfo['loan_id'])
+                ->update([
+                    'is_paid' => 1
+                ]);
+        }
+
         $userId = $paymentinfo['user_id'];
-        $shared = $paymentinfo['shared'];
+        $savings = $paymentinfo['savings'];
 
         $savingsAcc = SavingAccount::where('user_id', $userId)
             ->where('default_account', 1)->first();
@@ -133,8 +147,8 @@ class PaymongoController extends Controller
             'payment_method' => 'ONLINE/LOAN PAYMENT',
             'refno' => 'loanref_'.$ref,
             'remarks' => 'SAVINGS FROM LOAN',
-            'amount' => $shared,
-            'balance' => $savingsAcc->balance + $shared,
+            'amount' => $savings,
+            'balance' => $savingsAcc->balance + $savings,
             'fee' => 0,
             'datetime_deposit' => \Carbon\Carbon::now(),
             'payment_intent' => $paymentIntent['id']
@@ -143,7 +157,7 @@ class PaymongoController extends Controller
         SavingAccount::where('user_id', $userId)
             ->where('default_account', 1)
             ->update([
-                'balance' => $savingsAcc->balance + $shared
+                'balance' => $savingsAcc->balance + $savings
             ]);
 
         if(env('SMS') > 0){

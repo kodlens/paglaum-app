@@ -379,6 +379,8 @@ class BmLoanController extends Controller
             ->update([
                 'no_terms' => 1
             ]);
+
+       
     }
 
 

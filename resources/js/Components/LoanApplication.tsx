@@ -119,8 +119,15 @@ const LoanApplication = () => {
                         description: 'Error: ' + err.response.data.message,
                         message: 'Invalid!'
                     });
+                }else{
+                    notification.error({
+                        placement: 'bottomRight',
+                        description: 'Error: ' + err.response.data.message,
+                        message: 'Error!'
+                    });
                 }
             }
+
             if(err.response.status === 500){
                 //console.log(err.response.data);
                 

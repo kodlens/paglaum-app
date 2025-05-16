@@ -59,7 +59,7 @@ const MySavings = ({ auth }: PageProps) => {
 
                                     <div className='w-[200px] my-4'>
                                         <div className='font-semibold text-gray-500 md:text-right'>AVAILABLE BALANCE</div>
-                                        <div className='ml-2 md:text-right font-bold'>&#8369; {(item.balance).toFixed(2)}</div>
+                                        <div className='ml-2 md:text-right font-bold'>&#8369; {item.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                                     </div>
 
                                     <div className='w-[200px] my-4 flex flex-col md:flex-row gap-4'>
