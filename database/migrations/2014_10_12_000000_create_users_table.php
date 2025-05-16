@@ -89,6 +89,7 @@ return new class extends Migration
 
             $table->string ('code_2fa', 10)->nullable();
             $table->dateTime ('expiration_code_2fa')->nullable();
+            $table->text ('id_image')->nullable();
             
             $table->timestamps();
         });

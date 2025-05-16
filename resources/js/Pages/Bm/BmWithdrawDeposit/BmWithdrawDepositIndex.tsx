@@ -30,8 +30,7 @@ const BmWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccoun
         axios.post('/bm/withdraw-deposit/' + savingsAccount.id, data).then(res=>{
             if(res.data.status === 'saved'){
                 notification.success({
-                    message: 'Deposit Recorded!',
-                    description: 'Deposit successfully recorded.',
+                    message: 'Transaction Recorded!',
                     placement: 'bottomRight'
                 });
 

@@ -1,8 +1,8 @@
 import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { User } from 'lucide-react';
-import YbsAuthLayout from '@/Layouts/YbsAuthLayout';
 import ApplyNow from './partials/ApplyNow';
+import YbsAuthLayout from '@/Layouts/YbsAuthLayout';
 
 
 export default function Dashboard({ auth }: PageProps) {

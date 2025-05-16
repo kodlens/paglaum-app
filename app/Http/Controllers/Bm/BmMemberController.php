@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
 use App\Models\EducationLevel;
+use Illuminate\Support\Facades\Http;
 
 class BmMemberController extends Controller
 {
@@ -40,6 +41,29 @@ class BmMemberController extends Controller
         $user->active = 1;
         $user->save();
 
+        $output = '';
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $user->contact_no,
+                'message'    => 'Hello ' . $user->lname . ', '. $user->fname . ', Your PAGLAUM account is now activated. Thank you.',
+                'sendername' => 'LARATSYS',
+            ]);
+            
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
+        
+
         return response()->json([
             'status' => 'active'
         ], 200);
@@ -61,6 +85,28 @@ class BmMemberController extends Controller
         $user = User::find($id);
         $user->is_loan_allowed = 1;
         $user->save();
+
+        $output = '';
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $user->contact_no,
+                'message'    => 'Hello ' . $user->lname . ', '. $user->fname . ', Your PAGLAUM account is now eligible for Loan. Thank you.',
+                'sendername' => 'LARATSYS',
+            ]);
+            
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
 
         return response()->json([
             'status' => 'active'
@@ -98,6 +144,7 @@ class BmMemberController extends Controller
             'fname' => 'required',
             'lname' => 'required',
             'sex' => 'required',
+            'contact_no' => 'required|regex:/^9\d{9}$/',
             'email' => 'required|email|unique:users,email,' . $id . ',id',
             'role' => 'required'
         ],[
@@ -110,7 +157,6 @@ class BmMemberController extends Controller
         ]);
 
         $user = User::find($id);
-        $user->title = $req->title;
         $user->lname = strtoupper($req->lname);
         $user->fname = strtoupper($req->fname);
         $user->mname = strtoupper($req->mname);
@@ -118,6 +164,7 @@ class BmMemberController extends Controller
         $user->sex = $req->sex;
         $user->education_level = $req->education_level;
         $user->email = $req->email;
+        $user->contact_no = $req->contact_no;
         $user->role = $req->role;
         $user->active = $req->active ? 1 : 0;
         $user->province = $req->province;

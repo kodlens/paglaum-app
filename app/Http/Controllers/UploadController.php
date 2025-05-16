@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
@@ -12,9 +13,9 @@ class UploadController extends Controller
 
         //return $req;
         $req->validate([
-            'upload' => ['required', 'mimes:jpg,jpeg,png', 'max:5120']
+            'id_image' => ['required', 'mimes:jpg,jpeg,png', 'max:5120']
         ],[
-            'upload.max' => 'The upload image must not be greater than 1MB in size'
+            'id_image.max' => 'The upload image must not be greater than 1MB in size'
         ]);
 
         $file = $req->id_image;

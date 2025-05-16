@@ -8,6 +8,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\SavingAccount;
 use App\Models\SavingTransaction;
+use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 class MemberWithdrawalDepositController extends Controller
 {
@@ -27,7 +29,7 @@ class MemberWithdrawalDepositController extends Controller
     public function store(Request $req, $id){
 
         //return $req;
-
+        $msg = '';
         if($id == null || $id < 1){
             return response()->json([
                 'errors' => [
@@ -64,12 +66,15 @@ class MemberWithdrawalDepositController extends Controller
         }
 
         if($req->transaction_type === 'DEPOSIT'){
+            $msg = 'An amount of '. $req->amount . ' has been deposited from your account. Thank you.';
+
             $data->increment('balance', $req->amount);
             $data->save();
 
             $balance = $balance + $req->amount;
         }
         if($req->transaction_type === 'WITHDRAW'){
+            $msg = 'An amount of '. $req->amount . ' has been withdrawn from your account. Thank you.';
 
             $nextBalance = $data->balance - $req->amount;
 
@@ -102,6 +107,30 @@ class MemberWithdrawalDepositController extends Controller
             'amount' => $req->amount,
             'balance' => $balance
         ]);
+
+        $user = User::where('id', $data->user_id)->first();
+        $output = '';
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $user->contact_no,
+                'message'    => $msg,
+                'sendername' => 'LARATSYS',
+            ]);
+            
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
+        
 
 
         return response()->json([

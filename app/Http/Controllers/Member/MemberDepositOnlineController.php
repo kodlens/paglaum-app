@@ -8,6 +8,7 @@ use Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\SavingAccount;
+use Illuminate\Support\Facades\Http;
 use App\Models\SavingTransaction;
 
 
@@ -131,6 +132,28 @@ class MemberDepositOnlineController extends Controller
 
         //return $data;
         $data->save();
+
+        $output = '';
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $paymentinfo['contact'],
+                'message'    => 'Hi '. $paymentinfo['name'] . '. You have successfully deposited the amount of ' . $paymentinfo['amount_paid'],
+                'sendername' => 'LARATSYS',
+            ]);
+            
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
 
         //return $paymongoDetails;
 

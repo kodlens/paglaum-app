@@ -165,33 +165,35 @@ class MemberMyLoanController extends Controller
                     Storage::move('public/temp/' . $imgPathCoMakerIdentification, 'public/identifications/' . $imgPathCoMakerIdentification); 
                     Storage::delete('public/temp/' . $imgPathCoMakerIdentification);
                 }
+
+                $output = '';
+                if(env('SMS') > 0){
+                    $apiKey = env('SMS_API_KEY');
+                    $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                        'apikey'     => $apiKey,
+                        'number'     => $user->contact_no,
+                        'message'    => 'Your loan application with reference no '.$loan->id.' has been successfully submitted and for pending review.',
+                        'sendername' => 'LARATSYS',
+                    ]);
+                    
+                    // Check if request was successful
+                    if ($response->successful()) {
+                        $output = $response->json(); // Optional: handle the JSON response
+                    } else {
+                        // Handle the error
+                        \Log::error('SMS sending failed', [
+                            'response' => $response->body(),
+                            'status' => $response->status(),
+                        ]);
+                    }
+                }
+                
             });
 
-            $output = '';
-            if(env('SMS') > 0){
-                $apiKey = env('SMS_API_KEY');
-                $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
-                    'apikey'     => $apiKey,
-                    'number'     => $user->contact_no,
-                    'message'    => "Your loan application with reference no '.$loan->id.' has been successfully submitted and for pending review.",
-                    'sendername' => 'LARATSYS',
-                ]);
-                
-                // Check if request was successful
-                if ($response->successful()) {
-                    $output = $response->json(); // Optional: handle the JSON response
-                } else {
-                    // Handle the error
-                    \Log::error('SMS sending failed', [
-                        'response' => $response->body(),
-                        'status' => $response->status(),
-                    ]);
-                }
-            }
+            
 
             return response()->json([
                 'status' => 'saved',
-                'output' => $output
             ], 200);
             
         }catch(\Exception  $e){

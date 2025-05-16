@@ -11,6 +11,8 @@ use Illuminate\Validation\Rules;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Models\EducationLevel;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class RegisterController extends Controller
 {
@@ -60,6 +62,9 @@ class RegisterController extends Controller
             'business_address.required' => 'Office/Business address is required.'
         ]);
 
+
+        
+
         $user = User::create([
             'username' => $request->username,
             'lname' => $request->lname,
@@ -83,22 +88,28 @@ class RegisterController extends Controller
             'sss' => $request->sss,
             'gsis' => $request->gsis,
             'tin' => $request->tin,
-            // 'driver_license' => $request->driver_license,
-            // 'philhealth' => $request->philhealth,
+            'id_type' => $request->id_type,
+            'id_no' => $request->id_no,
             // 'umid' => $request->umid,
-            // 'household_size' => $request->household_size,
+            'household_size' => $request->household_size,
 
-            'monthly_income' => $request->monthly_income,
+           
             'occupation' => $request->occupation,
+            'monthly_income' => $request->monthly_income,
             'business_name' => $request->business_name,
             'business_address' => $request->business_address,
             //'industry_code' => $request->industry_code,
             //'occupational_code' => $request->occupational_code,
-            'monthly_income' => $request->monthly_income,
+            'contact_person' => $request->contact_person,
+            'contact_person_no' => $request->contact_person_no,
+
+            
+
+            
             //'sector_presented' => $request->sector_presented,
             //'organization_affiliated' => $request->organization_affiliated,
             //'org_aff_address' => $request->org_aff_address,
-            
+            'id_image' => $request->id_image,
             'province' => $request->province,
             'city' => $request->city,
             'barangay' => $request->barangay,
@@ -108,6 +119,37 @@ class RegisterController extends Controller
             'active' => 0,
             'password' => Hash::make($request->password),
         ]);
+
+        $imgpath = $request->id_image;
+        if (Storage::exists('public/temp/' . $imgpath)) {
+            // Move the file
+            Storage::move('public/temp/' . $imgpath, 'public/identifications/' . $imgpath); 
+            Storage::delete('public/temp/' . $imgpath);
+        }
+
+       //return $request;
+
+        $output = '';
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $request->contact_no,
+                'message'    => "You have successfully created an account with PAGLAUM. We will notify you once your account is approved.",
+                'sendername' => 'LARATSYS',
+            ]);
+            
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
 
         return response()->json([
             'status' => 'registered'

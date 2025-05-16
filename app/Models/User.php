@@ -77,7 +77,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_login',
         'is_loan_allowed',
         'expiration_code_2fa',
-        'otp_sender'
+        'otp_sender',
+        'id_image'
     ];
 
     public function province(){

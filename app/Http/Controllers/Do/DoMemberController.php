@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
 use App\Models\EducationLevel;
+use Illuminate\Support\Facades\Http;
 
 class DoMemberController extends Controller
 {
@@ -39,6 +40,29 @@ class DoMemberController extends Controller
         $user->active = 1;
         $user->save();
 
+        $output = '';
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $user->contact_no,
+                'message'    => 'Hello ' . $user->lname . ', '. $user->fname . ', Your PAGLAUM account is now activated. Thank you.',
+                'sendername' => 'LARATSYS',
+            ]);
+            
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
+
+
         return response()->json([
             'status' => 'active'
         ], 200);
@@ -60,6 +84,28 @@ class DoMemberController extends Controller
         $user = User::find($id);
         $user->is_loan_allowed = 1;
         $user->save();
+
+        $output = '';
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $user->contact_no,
+                'message'    => 'Hello ' . $user->lname . ', '. $user->fname . ', Your PAGLAUM account is now eligible for Loan. Thank you.',
+                'sendername' => 'LARATSYS',
+            ]);
+            
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
 
         return response()->json([
             'status' => 'active'
@@ -103,7 +149,7 @@ class DoMemberController extends Controller
             'lname' => 'required',
             'sex' => 'required',
             'education_level' => 'required',
-            'contact_no' => 'required',
+            'contact_no' => 'required|regex:/^9\d{9}$/',
             'email' => 'required|email|unique:users,email,' . $id . ',id',
             'birthdate' => ['required'],
 

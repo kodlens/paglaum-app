@@ -63,6 +63,8 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
         contact_person: '',
         contact_person_no: '',
 
+        id_image: null,
+
 
         province: null,
         city: null,
@@ -108,10 +110,13 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
             // } else {
                 
             // }
-            info.file.url = '/storage/temp/' + info.file.response
+           
             //console.log(info.file);
             
             if (info.file.status === "done") {
+                console.log(info.file.response);
+                info.file.url = '/storage/temp/' + info.file.response
+                setData('id_image', info.file.response)
                 message.success(
                     `${info.file.name} file uploaded successfully`
                 );
@@ -157,7 +162,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                 
                 setErrors(error.response.data.errors);
                 
-
                 notification.error({
                     placement: 'bottomRight',
                     message: 'Invalid Input',

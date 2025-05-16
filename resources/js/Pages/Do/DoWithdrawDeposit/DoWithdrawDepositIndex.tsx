@@ -9,10 +9,10 @@ import { Save } from "lucide-react";
 import { useState } from "react";
 
 
-//inherit other type
-// interface SavingsAccountUser extends SavingsAccount{
+//  inherit other type
+//  interface SavingsAccountUser extends SavingsAccount{
 //     user: User
-// }
+//  }
 
 
 const DoWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccount:SavingsAccount}>) => {
@@ -31,8 +31,8 @@ const DoWithdrawDepositIndex = ({auth, savingsAccount }:PageProps<{savingsAccoun
         axios.post('/do/member-withdrawal-deposit/' + savingsAccount.id, data).then(res=>{
             if(res.data.status === 'saved'){
                 notification.success({
-                    message: 'Deposit Recorded!',
-                    description: 'Deposit successfully recorded.',
+                    message: 'Transaction Recorded!',
+                    description: 'Transaction successfully recorded.',
                     placement: 'bottomRight'
                 });
 

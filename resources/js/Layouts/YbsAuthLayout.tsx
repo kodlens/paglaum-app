@@ -6,7 +6,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import { User } from '@/types';
 
-export default function Authenticated({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
+export default function YbsAuthLayout({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     const links = [
@@ -37,30 +37,23 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                    <NavLink href={route('member.dashboard.index')} active={route().current('member.dashboard.index')}>
+                                    <NavLink href={route('ybs.dashboard.index')} active={route().current('ybs.dashboard.index')}>
                                         Dashboard
                                     </NavLink>
                                 </div>
+                             
                               <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('member.my-loans.index')} active={route().current('member.my-loans.index')}>
-                                  My Loans
-                                </NavLink>
-                              </div>
-                              <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('member.my-savings.index')} active={route().current('member.my-savings.index')}>
+                                <NavLink href={route('ybs.my-savings.index')} active={route().current('ybs.my-savings.index')}>
                                   My Savings
                                 </NavLink>
                               </div>
-                              {/* <div className="hidd/ space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('member.account-setting.index')} active={route().current('member.account-setting.index')}>
+                              <div className="hidd/ space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink href="" active={route().current('ybs.account-setting.index')}>
                                   Account Settings
                                 </NavLink>
-                              </div> */}
-
+                              </div>
                             </div>
-
                             
-
                             <div className="ms-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -88,7 +81,7 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('member.profile.edit')}>Profile</Dropdown.Link>
+                                        <Dropdown.Link href="">Profile</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>
@@ -140,9 +133,8 @@ export default function Authenticated({ user, header, children }: PropsWithChild
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route('member.profile.edit')}>Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink href={route('member.my-loans.index')}>My Loan</ResponsiveNavLink>
                             <ResponsiveNavLink href={route('member.my-savings.index')}>My Savings</ResponsiveNavLink>
-                            {/* <ResponsiveNavLink href={route('member.account-setting.index')}>Account Settings</ResponsiveNavLink> */}
+                            <ResponsiveNavLink href={route('member.account-setting.index')}>Account Settings</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Log Out
                             </ResponsiveNavLink>

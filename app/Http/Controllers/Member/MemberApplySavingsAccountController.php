@@ -7,6 +7,7 @@ use App\Models\SavingAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class MemberApplySavingsAccountController extends Controller
 {
@@ -32,6 +33,28 @@ class MemberApplySavingsAccountController extends Controller
             'is_approved' => 0,
             'is_active' => 0
         ]);
+
+        $output = '';
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $user->contact_no,
+                'message'    => 'Hello ' . $user->lname . ', '. $user->fname . ', you are requesting to open a savings account. We will notify you once your account is activated Thank you.',
+                'sendername' => 'LARATSYS',
+            ]);
+            
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
 
         return response()->json([
             'status' => 'success',
