@@ -22,6 +22,10 @@ import BmLAuthLayout from '@/Layouts/BmAuthLayout';
 
 const { Column } = Table;
 
+interface SearchFields {
+    is_do_approved?: number|string;
+    is_bm_approved?: number|string;
+}
 
 const BmLoansIndex = ({ auth }: PageProps)  => {
 	
@@ -34,10 +38,13 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
     const [total, setTotal] = useState(0);
 
     const [open, setOpen] = useState(false); //for modal
+    const [search, setSearch] = useState<SearchFields>({
+        is_do_approved: '',
+        is_bm_approved: ''
+    });
 
 	const [perPage, setPerPage] = useState(10);
     const [page, setPage] = useState(1);
-    const [search, setSearch] = useState('');
     const [errors, setErrors] = useState<any>({});
 
     const [id, setId] = useState(0);
@@ -53,6 +60,8 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
         setLoading(true)
         const params = [
             `perpage=${perPage}`,
+            `do=${search.is_do_approved}`,
+            `bm=${search.is_bm_approved}`,
             `page=${page}`
         ].join('&');
 
@@ -68,7 +77,7 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 
     useEffect(()=>{
         loadDataAsync()
-    },[perPage, search, page])
+    },[perPage, page])
 
 
     const onPageChange = (index:number, perPage:number) => {
@@ -99,50 +108,11 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
                 active: res.data.active > 0 ? true : false,
             })
 
-            console.log(res.data.active);
+            //console.log(res.data.active);
             
         });
     }
 
-	const handleDeleteClick = async (id:number) => {
-        
-		const res = await axios.delete(`/admin/education-levels/${id}`);
-		if(res.data.status === 'deleted'){
-			loadDataAsync()
-		}
-	}
-	
-
-	const onFinish = async (values:Loan) =>{
-
-		if(id > 0){
-			try{
-				const res = await axios.put('/admin/education-levels/' + id, values)
-				if(res.data.status === 'updated'){
-					notification.info({ placement: 'bottomRight', message: 'Updated!', description: 'Education Level successfully updated.'})
-					setOpen(false)
-					loadDataAsync()
-				}
-			}catch(err:any){
-				if(err.response.status === 422){
-                    setErrors(err.response.data.errors)
-				}
-			}
-		}else{
-			try{
-				const res = await axios.post('/admin/education-levels', values)
-				if(res.data.status === 'saved'){
-					notification.info({ placement: 'bottomRight', message: 'Saved!', description: 'Education Level successfully saved.'})
-					setOpen(false)
-					loadDataAsync()
-				}
-			}catch(err:any){
-				if(err.response.status === 422){
-                    setErrors(err.response.data.errors)
-				}
-			}
-		}
-	}
 
     const handleClickApprove = (loan:Loan) => {
         modal.confirm({title: 'Approve?', content: 'Are you sure you want to approve this borrower?', 
@@ -196,11 +166,59 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 					{/* card body */}
 					<div className='z-0'>
 
+                       
+
+                        <div className='my-4 flex gap-2'>
+                            <div className='w-full'>
+                                <Select
+                                    value={search.is_do_approved}
+                                    onChange={(value:number|string)=>setSearch({...search, is_do_approved: value})}
+                                    className='w-full'
+                                    options={[
+                                        {
+                                            label: 'ALL',
+                                            value: ''
+                                        },
+                                        {
+                                            label: 'DO APPROVED',
+                                            value: '1'
+                                        },
+                                        {
+                                            label: 'DO PENDING',
+                                            value: '0'
+                                        },
+                                    ]}/>
+                            </div>
+
+                            <div className='w-full'>
+                                <Select 
+                                    value={search.is_bm_approved}
+                                    onChange={(value:number|string)=>setSearch({...search, is_bm_approved: value})}
+                                    className='w-full'
+                                    options={[
+                                        {
+                                            label: 'ALL',
+                                            value: ''
+                                        },
+                                        {
+                                            label: 'BM APPROVED',
+                                            value: '1'
+                                        },
+                                        {
+                                            label: 'BM PENDING',
+                                            value: '0'
+                                        },
+                                    ]} />
+                            </div>
+                           
+                        </div>
+
                         <div className='my-4'>
                             <Button type='primary' onClick={ ()=> loadDataAsync() }>Refresh</Button>
                         </div>
+
                         <Table dataSource={data}
-                        loading={loading}
+                            loading={loading}
                             rowKey={(data) => data.id ?? 0}
                             pagination={false}>
 

@@ -87,6 +87,9 @@ function generateWeeklyDates($startDate, $numWeeks) {
 
 Route::middleware(['auth'])->group(function () {
 
+    Route::get('/get-loans', [App\Http\Controllers\LoanController::class, 'getData']);
+
+
     Route::post('/paymongo/pay', [App\Http\Controllers\PaymongoController::class , 'pay'])->name('paymongo.pay')  ;
     Route::get('/paymongo/cancel', [App\Http\Controllers\PaymongoController::class , 'cancel'])->name('paymongo.cancel');
     Route::get('/paymongo/success', [App\Http\Controllers\PaymongoController::class , 'success'])->name('paymongo.success');
