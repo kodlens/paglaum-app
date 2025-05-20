@@ -271,7 +271,31 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                     <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">PERSONAL INFORMATION</span>
                 </div>
 
-                <div className='flex flex-col gap-x-4 sm:flex-row'>
+                <Form.Item
+                    label="Account Type"
+                    className="w-full"
+                    validateStatus={errors.role ? "error" : ""}
+                    help={errors.role ? errors.role[0] : ""}
+                        >
+                    <Select
+                        className="w-full h-10"
+                        onChange={(value)=>setData('role', value)} 
+                        value={data.role}
+                        options={[
+                            {
+                                value: "YBS",
+                                label: 'YOUTH BEE SAVER'
+                            },
+                            {
+                                value: "MEMBER",
+                                label: 'STANDARD MEMBER'
+                            },
+
+                        ]}
+                    />
+                </Form.Item>
+
+                <div className='flex flex-col gap-x-4 sm:flex-row'>  
                     <Form.Item label="Last Name"
                         className="w-full"
                         validateStatus={errors?.lname ? 'error' : ''}
@@ -442,30 +466,35 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                             placeholder='Household Size...' />
                     </Form.Item>
                 </div>
+                
+                {
+                    data.role === 'MEMBER' ? (
+                        <div className='flex flex-col gap-x-4 sm:flex-row'>
+                            <Form.Item label="GSIS"
+                                className='w-full'
+                                validateStatus={errors?.gsis ? 'error' : ''}
+                                help={errors?.gsis ? errors?.gsis[0] : ''}
+                            >
+                                <Input placeholder="GSIS"
+                                    onChange={(e)=>setData('gsis', e.target.value)} 
+                                    value={data.gsis} 
+                                    size="large" />
+                            </Form.Item>
 
-                <div className='flex flex-col gap-x-4 sm:flex-row'>
-                    <Form.Item label="GSIS"
-                        className='w-full'
-                        validateStatus={errors?.gsis ? 'error' : ''}
-                        help={errors?.gsis ? errors?.gsis[0] : ''}
-                    >
-                        <Input placeholder="GSIS"
-                            onChange={(e)=>setData('gsis', e.target.value)} 
-                            value={data.gsis} 
-                            size="large" />
-                    </Form.Item>
-
-                    <Form.Item label="SSS"
-                        className='w-full'
-                        validateStatus={errors?.sss ? 'error' : ''}
-                        help={errors?.sss ? errors?.sss[0] : ''}
-                    >
-                        <Input placeholder="SSS"
-                            onChange={(e)=>setData('sss', e.target.value)} 
-                            value={data.sss} 
-                            size="large" />
-                    </Form.Item>
-                </div>
+                            <Form.Item label="SSS"
+                                className='w-full'
+                                validateStatus={errors?.sss ? 'error' : ''}
+                                help={errors?.sss ? errors?.sss[0] : ''}
+                            >
+                                <Input placeholder="SSS"
+                                    onChange={(e)=>setData('sss', e.target.value)} 
+                                    value={data.sss} 
+                                    size="large" />
+                            </Form.Item>
+                        </div>
+                    ): null
+                }
+                
 
                 <div className='flex flex-col gap-x-4 sm:flex-row'>
                     <Form.Item label="TIN"
@@ -705,43 +734,43 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     }
 
 
-    const accountType = () => {
-        return (
-            <>
-                <div className="inline-flex items-center justify-center w-full">
-                    <hr className="w-full h-px my-8 bg-gray-200 border-0" />
-                    <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">
-                        ACCOUNT TYPE
-                    </span>
-                </div>
+    // const accountType = () => {
+    //     return (
+    //         <>
+    //             <div className="inline-flex items-center justify-center w-full">
+    //                 <hr className="w-full h-px my-8 bg-gray-200 border-0" />
+    //                 <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">
+    //                     ACCOUNT TYPE
+    //                 </span>
+    //             </div>
                             
-                <Form.Item
-                    label="Account Type"
-                    className="w-full"
-                    validateStatus={errors.role ? "error" : ""}
-                    help={errors.role ? errors.role[0] : ""}
-                >
-                    <Select
-                        className="w-full h-10"
-                        onChange={(value)=>setData('role', value)} 
-                        value={data.role}
-                        options={[
-                            {
-                                value: "YBS",
-                                label: 'YOUTH BEE SAVER'
-                            },
-                            {
-                                value: "MEMBER",
-                                label: 'STANDARD MEMBER'
-                            },
+    //             <Form.Item
+    //                 label="Account Type"
+    //                 className="w-full"
+    //                 validateStatus={errors.role ? "error" : ""}
+    //                 help={errors.role ? errors.role[0] : ""}
+    //             >
+    //                 <Select
+    //                     className="w-full h-10"
+    //                     onChange={(value)=>setData('role', value)} 
+    //                     value={data.role}
+    //                     options={[
+    //                         {
+    //                             value: "YBS",
+    //                             label: 'YOUTH BEE SAVER'
+    //                         },
+    //                         {
+    //                             value: "MEMBER",
+    //                             label: 'STANDARD MEMBER'
+    //                         },
 
-                        ]}
-                    />
-                </Form.Item>
+    //                     ]}
+    //                 />
+    //             </Form.Item>
 
-            </>
-        )
-    }
+    //         </>
+    //     )
+    // }
 
 
     const steps = [
@@ -757,10 +786,10 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
           title: 'Address',
           content: addressInformation(),
         },
-        {
-            title: 'Account Type',
-            content: accountType(),
-        },
+        // {
+        //     title: 'Account Type',
+        //     content: accountType(),
+        // },
     ];
 
     const next = () => {

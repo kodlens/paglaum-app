@@ -20,7 +20,7 @@ class YbsMySavingsController extends Controller
         $user = Auth::user();
 
         return SavingAccount::where('user_id', $user->id)
-            ->where('is_approved', 1)
+            //->where('is_approved', 1)
             ->where('is_active', 1)
             ->orderBy('id', 'desc')
             ->get();

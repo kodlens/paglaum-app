@@ -7,6 +7,7 @@ import { Button } from 'antd';
 import axios from 'axios';
 import { LoanDetail } from '@/types/loanDetail';
 import { Loan } from '@/types/loan';
+import { WalletMinimal } from 'lucide-react';
 
 
 const dateFormat =(date:string|Date, customFormat:string) => {
@@ -142,14 +143,15 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan
                           { !item.is_paid ? (
                             <div>
                               <Button 
-                                className='print:hidden'
+                                className='print:hidden mt-4'
+                                type='primary'
+                                icon={<WalletMinimal size={16} />}
                                 onClick={() => handleMakePayment(item)} 
                                 loading={loading}>
                                   Make a payment
                               </Button>
                             </div>
                           ) : ''}
-    
                       </div>
                       
                     </div>

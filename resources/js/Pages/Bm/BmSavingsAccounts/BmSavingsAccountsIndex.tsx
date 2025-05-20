@@ -263,13 +263,13 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
                                 <span className='font-bold'>&#8369; {balance.toFixed(2).toLocaleString()}</span>
                             )} />
 
-                            <Column title="Approved" dataIndex="is_approved" render={(is_approved: number) => (
+                            {/* <Column title="Approved" dataIndex="is_approved" render={(is_approved: number) => (
                                 is_approved > 0 ? (
                                     <span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
                                 ) : (
                                     <span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
                                 )
-                            )} />
+                            )} /> */}
 
                             <Column title="Active" dataIndex="is_active" render={(is_active: number) => (
                                 is_active > 0 ? (
@@ -287,14 +287,14 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
                                                 placement="bottomRight"
                                                 menu={{
                                                     items: [
-                                                        {
-                                                            key: '2',
-                                                            label: data.is_approved ? 'Disapprove' : 'Approve',
-                                                            icon: <ThumbsUp size={16} />,
-                                                            onClick: () => {
-                                                                handleClickApprove(data)
-                                                            }
-                                                        },
+                                                        // {
+                                                        //     key: '2',
+                                                        //     label: data.is_approved ? 'Disapprove' : 'Approve',
+                                                        //     icon: <ThumbsUp size={16} />,
+                                                        //     onClick: () => {
+                                                        //         handleClickApprove(data)
+                                                        //     }
+                                                        // },
                                                         {
                                                             key: '1',
                                                             label: data.is_active ? 'Deactivate' : 'Activate',

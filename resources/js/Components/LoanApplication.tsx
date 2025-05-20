@@ -1,6 +1,6 @@
 import { PageProps } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { App, Button, Form, Input, InputNumber, Select, Upload, UploadProps } from 'antd'
+import { Alert, App, Button, Form, Input, InputNumber, Select, Upload, UploadProps } from 'antd'
 import TextArea from 'antd/es/input/TextArea';
 import axios from 'axios';
 import { error } from 'console';
@@ -264,9 +264,15 @@ const LoanApplication = () => {
             form={form}
             autoComplete='off'>
             
+            <Alert 
+                className='mb-4'
+                type='info'
+                message={
+                    <span>The <b>PRINCIPAL</b> or <b>LOAN AMOUNT</b> may change depending on the approval of the Branch Manager or Development Officer.</span>
+                }/>
 
             <Form.Item
-                label="Principal"
+                label="Principal / Loan Amount"
                 name="principal"
                 className='w-full'
                 validateStatus={errors.principal ? 'error' : ''}

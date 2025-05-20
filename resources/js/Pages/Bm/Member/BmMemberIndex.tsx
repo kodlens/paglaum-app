@@ -21,6 +21,11 @@ import ChangePassword from './partials/ChangePassword';
 
 const { Column } = Table;
 
+interface SearchFields {
+    lname?: string;
+    role?: string;
+}
+
 
 const BmMemberIndex = ({ auth }: PageProps)=> {
 
@@ -33,11 +38,16 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
     const [total, setTotal] = useState(0);
 
     const [open, setOpen] = useState(false); //for modal
-	const [passwordVisible, setPasswordVisible] = React.useState(false);
+
+	const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const [search, setSearch] = useState<SearchFields>({
+        lname: '',
+        role: '',
+    });
 
 	const [perPage, setPerPage] = useState(10);
     const [page, setPage] = useState(1);
-    const [search, setSearch] = useState('');
     const [errors, setErrors] = useState<any>({});
 
     const [id, setId] = useState(0);
@@ -47,6 +57,8 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
         setLoading(true)
         const params = [
             `perpage=${perPage}`,
+            `lname=${search.lname}`,
+            `role=${search.role}`,
             `page=${page}`
         ].join('&');
 
@@ -173,6 +185,19 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
 					<div className="font-bold mb-4 text-lg">LIST OF MEMBERS / BORROWERS</div>
 					{/* card body */}
 					<div className='z-0'>
+                        <div>
+                            <label>Select Role</label>
+                            <Select
+                                value={search.role}
+                                onChange={(value:string)=>setSearch({...search, role: value})}
+                                className='w-full'
+                                options={[
+                                    { value: "", label: "ALL" },
+                                    { value: "YBS", label: "YOUTH BEE" },
+                                    { value: "MEMBER", label: "MEMBER" },
+                                ]}/>
+                        </div>
+
                         <div className='my-4'>
                             <Button type='primary' 
                                 onClick={()=> loadDataAsync()}>Refresh</Button>
@@ -437,6 +462,7 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
                     >
                         <Select
                             options={[
+                                { value: "YBS", label: "YOUTH BEE" },
                                 { value: "MEMBER", label: "MEMBER" },
                                 { value: "BM", label: "BRANCH MANAGER" },
                                 { value: "ADMIN", label: "ADMINISTRATOR" },

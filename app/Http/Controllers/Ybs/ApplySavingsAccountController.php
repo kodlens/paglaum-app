@@ -24,16 +24,20 @@ class ApplySavingsAccountController extends Controller
         $accountNumber = $this->generateUniqueSavingsAccount();
         $user = Auth::user();
 
+
         $exist = SavingAccount::where('user_id', $user->id)
             ->where('is_approved', 0)
             ->exists();
 
-        return response()->json([
+        if($exist){
+            return response()->json([
             'errors' => [
                 'pending' => ['You already have a pending savings application.']
             ],
             'message' => 'You already have a pending savings application.'
         ], 422);
+        }
+        
 
         SavingAccount::create([
             'user_id' => $user->id,
