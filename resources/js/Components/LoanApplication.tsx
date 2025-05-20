@@ -259,6 +259,7 @@ const LoanApplication = () => {
                 benefits: '',
                 insurance_payment: 0
             }}
+            
             onFinish={onFinish}
             layout='vertical'
             form={form}
