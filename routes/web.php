@@ -117,7 +117,6 @@ Route::post('/temp-remove/{filename}', [App\Http\Controllers\UploadController::c
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/loan-request-count', [App\Http\Controllers\OpenDashboardController::class, 'loanRequestCount']);
-
 });
 
 /* ============ DASHBOARDS REPORT, COMPUTATION, CONSOLIDATION, COUNTS ====================== */
@@ -127,6 +126,15 @@ Route::middleware(['auth'])->group(function () {
 
 /* ============ REPORTS ====================== */
 
+/**
+ * Group of authenticated routes for generating various transaction reports.
+ * 
+ * Contains routes for:
+ * - Loan transaction reports (index and data retrieval)
+ * - Savings transaction reports (index and data retrieval)
+ * 
+ * All routes within this group require user authentication.
+ */
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/reports/loan-transaction', [App\Http\Controllers\Reports\ReportLoanTransactionController::class, 'index'])->name('reports.loan-transaction.index');
@@ -135,7 +143,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/reports/savings-transaction', [App\Http\Controllers\Reports\ReportSavingTransactionController::class, 'index'])->name('reports.savings-transaction.index');
     Route::get('/reports/get-savings-transaction', [App\Http\Controllers\Reports\ReportSavingTransactionController::class, 'getLoanTransaction']);
-    
+  
 });
 
 /* ============ REPORTS ====================== */

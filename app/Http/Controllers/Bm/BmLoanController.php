@@ -20,6 +20,7 @@ class BmLoanController extends Controller
         return Inertia::render('Bm/BmLoans/BmLoansIndex');
     }
 
+    
     public function getData(Request $req){
         $do = $req->do;
         $bm = $req->bm;
