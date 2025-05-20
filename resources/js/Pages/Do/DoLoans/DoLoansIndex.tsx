@@ -20,6 +20,10 @@ import { LoanType } from '@/types/loanType';
 const { Column } = Table;
 
 
+interface SearchFields {
+    is_do_approved?: number|string;
+    is_bm_approved?: number|string;
+}
 const DoLoansIndex = ({ auth }: PageProps)  => {
 	
 	const [form] = Form.useForm();
@@ -35,7 +39,10 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
 
 	const [perPage, setPerPage] = useState(10);
     const [page, setPage] = useState(1);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState<SearchFields>({
+        is_do_approved: '',
+        is_bm_approved: ''
+    });
     const [errors, setErrors] = useState<any>({});
 
     const [loanTypes, setLoanTypes] = useState<any[]>([])
@@ -56,6 +63,8 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
         setLoading(true)
         const params = [
             `perpage=${perPage}`,
+            `do=${search.is_do_approved}`,
+            `bm=${search.is_bm_approved}`,
             `page=${page}`
         ].join('&');
 
@@ -177,6 +186,50 @@ const DoLoansIndex = ({ auth }: PageProps)  => {
 					<div className="font-bold mb-4 text-lg">LIST OF LOAN</div>
 					{/* card body */}
 					<div className='z-0'>
+                        <div className='my-4 flex gap-2'>
+                            <div className='w-full'>
+                                <Select
+                                    value={search.is_do_approved}
+                                    onChange={(value:number|string)=>setSearch({...search, is_do_approved: value})}
+                                    className='w-full'
+                                    options={[
+                                        {
+                                            label: 'ALL',
+                                            value: ''
+                                        },
+                                        {
+                                            label: 'DO APPROVED',
+                                            value: '1'
+                                        },
+                                        {
+                                            label: 'DO PENDING',
+                                            value: '0'
+                                        },
+                                    ]}/>
+                            </div>
+
+                            <div className='w-full'>
+                                <Select 
+                                    value={search.is_bm_approved}
+                                    onChange={(value:number|string)=>setSearch({...search, is_bm_approved: value})}
+                                    className='w-full'
+                                    options={[
+                                        {
+                                            label: 'ALL',
+                                            value: ''
+                                        },
+                                        {
+                                            label: 'BM APPROVED',
+                                            value: '1'
+                                        },
+                                        {
+                                            label: 'BM PENDING',
+                                            value: '0'
+                                        },
+                                    ]} />
+                            </div>
+                            
+                        </div>
 
                         <div className='my-4'>
                             <Button type='primary' 

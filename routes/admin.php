@@ -18,6 +18,9 @@ Route::middleware(['auth', 'admin', 'active'])->group(function () {
     
     Route::resource('/admin/areas', App\Http\Controllers\Administrator\AdminAreaContoller::class)->names('admin.areas');
     Route::get('/admin/get-areas', [App\Http\Controllers\Administrator\AdminAreaContoller::class, 'getData']);
+
+    Route::resource('/admin/id-types', App\Http\Controllers\Administrator\IdTypeController::class)->names('admin.id-types');
+    Route::get('/admin/get-id-types', [App\Http\Controllers\Administrator\IdTypeController::class, 'getData']);
     
     Route::resource('/admin/education-levels', App\Http\Controllers\Administrator\AdminEducationLevelController::class)->names('admin.education-levels');
     Route::get('/admin/get-education-levels', [App\Http\Controllers\Administrator\AdminEducationLevelController::class, 'getData']);

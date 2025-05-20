@@ -77,7 +77,7 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 
     useEffect(()=>{
         loadDataAsync()
-    },[perPage, page])
+    },[perPage,, search, page])
 
 
     const onPageChange = (index:number, perPage:number) => {
@@ -165,9 +165,6 @@ const BmLoansIndex = ({ auth }: PageProps)  => {
 					<div className="font-bold mb-4 text-lg">LIST OF LOAN</div>
 					{/* card body */}
 					<div className='z-0'>
-
-                       
-
                         <div className='my-4 flex gap-2'>
                             <div className='w-full'>
                                 <Select

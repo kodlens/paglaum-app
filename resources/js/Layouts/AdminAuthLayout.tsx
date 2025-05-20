@@ -55,6 +55,13 @@ export default function AdminAuthLayout(
 
         },
         {
+            key: 'admin.id-types.index',
+            icon: <ProfileOutlined />,
+            label: 'Id Type',
+            //onClick: () => router.visit('/admin/sections')
+
+        },
+        {
             key: 'admin.education-levels.index',
             icon: <BarsOutlined />,
             label: 'Education Levels',

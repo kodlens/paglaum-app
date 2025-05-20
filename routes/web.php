@@ -77,14 +77,12 @@ function generateWeeklyDates($startDate, $numWeeks) {
         // Increment the current date by 7 days (1 week)
         $currentDate = strtotime('+1 week', $currentDate);
     }
-
     return $dates;
 }
 
 
 
 /* ============ PAYMONGO ====================== */
-
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/get-loans', [App\Http\Controllers\LoanController::class, 'getData']);
@@ -104,7 +102,6 @@ Route::middleware(['auth'])->group(function () {
     
 
 });
-
 /* ============ PAYMONGO ====================== */
 
 
