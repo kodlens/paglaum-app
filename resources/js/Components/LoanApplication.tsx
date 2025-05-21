@@ -529,7 +529,6 @@ const LoanApplication = () => {
                     help={errors.co_maker_signature ? errors.co_maker_signature[0] : ''}>
                     <SignaturePadComponent  onSave={(v)=>{
                         form.setFieldsValue({...form, co_maker_signature:v})
-                        
                     }} />
                 </Form.Item>
             </div>
