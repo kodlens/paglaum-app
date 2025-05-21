@@ -6,8 +6,10 @@ import MyLoanTable from './partials/MyLoanTable';
 import LoanApplication from '@/Components/LoanApplication';
 import { Button } from 'antd';
 
-export default function MyLoanIndex({ auth }: PageProps) {
+export default function MyLoanIndex({ auth, canLoan }: PageProps<{ canLoan:boolean }>) {
 
+    console.log(canLoan);
+    
     const handleClickApply = () => {
         router.visit('/member/my-loans/create');
     }
@@ -34,11 +36,14 @@ export default function MyLoanIndex({ auth }: PageProps) {
                         <div className='bg-white p-6 shadow-sm'>
                             <MyLoanTable />
 
-                            <div className='my-4'>
-                                <Button type='primary' 
-                                    className='h-10'
-                                    onClick={handleClickApply}>Apply for Loan</Button>
-                            </div>
+                            { canLoan ? (
+                                <div className='my-4'>
+                                    <Button type='primary' 
+                                        className='h-10'
+                                        onClick={handleClickApply}>Apply for Loan</Button>
+                                </div>
+                            ) : null }
+                            
                         </div>
                     ) :
                     (

@@ -48,21 +48,21 @@ const MySavings = ({ auth }: PageProps) => {
                                 <div key={item.id} className='flex flex-col md:flex-row gap-4'>
 
                                     <div className='w-[200px] my-4'>
-                                        <div className='font-semibold text-gray-500'>SAVINGS ACCOUNT</div>
+                                        <div className='font-bold text-gray-500'>SAVINGS ACCOUNT</div>
                                         <div className='ml-2'>{item.account_no}</div>
                                     </div>
 
                                     <div className='w-[200px] my-4'>
-                                        <div className='font-semibold text-gray-500'>ACCOUNT NAME</div>
+                                        <div className='font-bold text-gray-500'>ACCOUNT NAME</div>
                                         <div className='ml-2'>{item.account_name}</div>
                                     </div>
 
                                     <div className='w-[200px] my-4'>
-                                        <div className='font-semibold text-gray-500 md:text-right'>AVAILABLE BALANCE</div>
+                                        <div className='font-bold text-gray-500 md:text-right'>AVAILABLE BALANCE</div>
                                         <div className='ml-2 md:text-right font-bold'>&#8369; {item.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                                     </div>
 
-                                    <div className='w-[200px] my-4 flex flex-col md:flex-row gap-4'>
+                                    <div className='sm:w-[200px] md:my-4 md:ml-10 flex flex-col gap-2'>
                                         <Button className='font-semibold text-gray-500 text-right md:ml-auto'
                                             onClick={()=> router.visit(`/member/my-savings-transactions/${item.id}`)}
                                             icon={<List size={16}/>}>

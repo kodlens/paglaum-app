@@ -18,7 +18,10 @@ class MemberMyLoanController extends Controller
 {
     //
     public function index(){
-        return Inertia::render('Member/MyLoan/MyLoanIndex');
+        $canLoan = !$this->isNotLoanEligible(Auth::user()->id);
+        return Inertia::render('Member/MyLoan/MyLoanIndex', [
+            'canLoan' => $canLoan
+        ]);
     }
 
     public function getMyLoans(Request $req){
@@ -97,11 +100,11 @@ class MemberMyLoanController extends Controller
             'co_maker_identification.required' => 'Please upload an image of a valid Id'
         ]);
 
-        
+
         // check if the user have loan history
         /* -------------- add checking if allowed reloan ------------------ */
         /* -------------- prevent the user to reloan ------------------ */
-        if($this->isLoanEligible($user->id)){
+        if($this->isNotLoanEligible($user->id)){
             return response()->json([
                 'errors' => [
                     'principal' => ['Reloan is not allowed this time.']
@@ -111,7 +114,8 @@ class MemberMyLoanController extends Controller
         }
         /* -------------- *************END*********** ------------------ */
 
-
+        //return 'loan saved';
+        
         try{
 
             \DB::transaction(function () use ($req, $user) {
@@ -266,7 +270,7 @@ class MemberMyLoanController extends Controller
     }
 
 
-    public function isLoanEligible($userId)  {
+    public function isNotLoanEligible($userId)  {
         
         $prevLoan = Loan::where('is_paid', 0)
             ->where('user_id', $userId)
@@ -295,8 +299,8 @@ class MemberMyLoanController extends Controller
 
         if($totalPaid > $totalPayment){
             return false;
-            
         }
+
         return true;
     }
 

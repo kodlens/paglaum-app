@@ -15,8 +15,6 @@ import { InsuranceTypeAgeBracket } from '@/types/insuranceTypeAgeBracket';
 
 
 const LoanApplication = () => {
-
-   
     
     const  { props } = usePage<PageProps>();
     const csrfToken = props.csrf_token ?? ""; // Ensure csrfToken is a string
