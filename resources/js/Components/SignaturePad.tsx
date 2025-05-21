@@ -1,3 +1,4 @@
+import { App, Button } from 'antd';
 import React, { useRef } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 
@@ -7,19 +8,27 @@ interface SignaturePadProps {
 
 const SignaturePadComponent: React.FC<SignaturePadProps> = ({ onSave }) => {
 
+    const { notification } = App.useApp();
+    
     const canvasRef = useRef<SignatureCanvas | null>(null);
 
     const handleSave = () => {
         if (canvasRef.current) {
             const dataUrl = canvasRef.current.toDataURL();
             onSave(dataUrl);
+            notification.success({
+                message: 'Signature uploaded!',
+            })
         }
     };
 
-    const handleClear = () => {
+    const handleClear = (e:any) => {
         if (canvasRef.current) {
             canvasRef.current.clear();
             onSave('')
+             notification.warning({
+                message: 'Signature cleared!',
+            })
         }
     };
 
@@ -33,16 +42,19 @@ const SignaturePadComponent: React.FC<SignaturePadProps> = ({ onSave }) => {
                 />
             </div>
             <div className='flex gap-2'>
-                <button type='button' 
-                    className='bg-blue-500 text-white px-4 py-1 rounded-md hover:bg-blue-600 focus:bg-blue-700' 
+                <Button 
+                    htmlType='button' 
+                    size='small'
+                    type='primary'
                     onClick={handleSave}>
                         Upload
-                </button>
-                <button type='button'
-                    className='bg-red-500 text-white px-4 py-1 rounded-md hover:bg-red-600' 
+                </Button>
+                <Button htmlType='button'
+                    size='small'
+                    danger
                     onClick={handleClear}>
                         Clear
-                </button>
+                </Button>
             </div>
         </div>
     );

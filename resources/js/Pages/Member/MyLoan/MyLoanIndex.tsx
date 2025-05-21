@@ -28,19 +28,27 @@ export default function MyLoanIndex({ auth }: PageProps) {
                     </div>
                 </div>
 
-
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6 ">
-                    <div className='bg-white p-6 shadow-sm'>
-                        <MyLoanTable />
+                {
+                    auth.user.is_loan_allowed ? (
+                        <div className='bg-white p-6 shadow-sm'>
+                            <MyLoanTable />
 
-                        <div className='my-4'>
-                            <Button type='primary' 
-                                className='h-10'
-                                onClick={handleClickApply}>Apply for Loan</Button>
+                            <div className='my-4'>
+                                <Button type='primary' 
+                                    className='h-10'
+                                    onClick={handleClickApply}>Apply for Loan</Button>
+                            </div>
                         </div>
-                    </div>
+                    ) :
+                    (
+                        <div className='bg-white p-6 shadow-sm font-bold text-red-500'>
+                            You are currently not eligible for a loan.
+                        </div>
+                    )
+                }
                 </div>
-
+                
                 {/* <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6 ">
                     <LoanApplication />
                 </div> */}

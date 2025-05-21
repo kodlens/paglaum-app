@@ -33,39 +33,68 @@ class RegisterController extends Controller
             $dob = date('Y-m-d', strtotime($request->birthdate));
         }
 
+        if($request->role === 'YBS'){
 
-        $request->validate([
-            'username' => 'required|string|max:30|unique:users',
-            'lname' => 'required|string|max:255',
-            'fname' => 'required|string|max:255',
-            //'education_level' => 'required|string|max:255',
-            'birthdate' => 'required',
-            'civil_status' => 'required|max:30',
-            //'birthplace' => 'required|string|max:255',
-            'sex' => 'required|string|max:20',
-            'email' => 'required|string|lowercase|email|max:255|unique:users',
-            'contact_no' => 'required|regex:/^9\d{9}$/',
-            'password' => ['required', 'confirmed', Rules\Password::defaults(), 'max:30'],
-            'id_type' => 'required',
-            'province' => 'required',
-            'city' => 'required',
-            'barangay' => 'required',
-            'monthly_income' => 'required|gt:1000',
-            'occupation' => 'required|string|max:255',
-            'business_name' => 'required|string|max:255',
-            'business_address' => 'required|string|max:255',
-            'contact_person' => 'required|string|max:255',
-            'contact_person_no' => 'required|string|max:255',
-            'role' => 'required|string|max:50',
-        ],[
-            'business_name.required' => 'Office/Business name is required.',
-            'business_address.required' => 'Office/Business address is required.'
-        ]);
+            $request->validate([
+                'username' => 'required|string|max:30|unique:users',
+                'lname' => 'required|string|max:255',
+                'fname' => 'required|string|max:255',
+                'birthdate' => 'required',
+                'civil_status' => 'required|max:30',
+                'sex' => 'required|string|max:20',
+                'email' => 'required|string|lowercase|email|max:255|unique:users',
+                'contact_no' => 'required|regex:/^9\d{9}$/',
+                'password' => ['required', 'confirmed', Rules\Password::defaults(), 'max:30'],
+                'id_type' => 'required',
+                'province' => 'required',
+                'city' => 'required',
+                'barangay' => 'required',
+                'role' => 'required|string|max:50'
+            ]);
 
+        }else if($request->role === 'MEMBER'){
 
+            $request->validate([
+                'username' => 'required|string|max:30|unique:users',
+                'lname' => 'required|string|max:255',
+                'fname' => 'required|string|max:255',
+                'birthdate' => 'required',
+                'civil_status' => 'required|max:30',
+                //'birthplace' => 'required|string|max:255',
+                'sex' => 'required|string|max:20',
+                'email' => 'required|string|lowercase|email|max:255|unique:users',
+                'contact_no' => 'required|regex:/^9\d{9}$/',
+                'password' => ['required', 'confirmed', Rules\Password::defaults(), 'max:30'],
+                'id_type' => 'required',
+                'province' => 'required',
+                'city' => 'required',
+                'barangay' => 'required',
+                'monthly_income' => 'required|gt:1000',
+                'occupation' => 'required|string|max:255',
+                'business_name' => 'required|string|max:255',
+                'business_address' => 'required|string|max:255',
+                'contact_person' => 'required|string|max:255',
+                'contact_person_no' => 'required|string|max:255',
+                'role' => 'required|string|max:50',
+            ],[
+                'business_name.required' => 'Office/Business name is required.',
+                'business_address.required' => 'Office/Business address is required.'
+            ]);
+
+        }else{
+
+             return response()->json([
+                'errors' => [
+                    'error' => ['Information not allowed.']
+                ],
+                'message' => 'Information not allowed.'
+            ], 422);
+
+        }
         
 
         $user = User::create([
+
             'username' => $request->username,
             'lname' => $request->lname,
             'fname' => $request->fname,
@@ -85,25 +114,27 @@ class RegisterController extends Controller
             // 'height' => $request->height,
             // 'weight' => $request->weight,
             // 'blood_type' => $request->blood_type,
+
             'sss' => $request->sss,
             'gsis' => $request->gsis,
             'tin' => $request->tin,
             'id_type' => $request->id_type,
             'id_no' => $request->id_no,
-            // 'umid' => $request->umid,
-            'household_size' => $request->household_size,
 
+            // 'umid' => $request->umid,
+
+            'household_size' => $request->household_size,
            
             'occupation' => $request->occupation,
             'monthly_income' => $request->monthly_income,
             'business_name' => $request->business_name,
             'business_address' => $request->business_address,
+
             //'industry_code' => $request->industry_code,
             //'occupational_code' => $request->occupational_code,
+
             'contact_person' => $request->contact_person,
             'contact_person_no' => $request->contact_person_no,
-
-            
 
             
             //'sector_presented' => $request->sector_presented,

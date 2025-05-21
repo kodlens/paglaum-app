@@ -529,9 +529,7 @@ const LoanApplication = () => {
                     help={errors.co_maker_signature ? errors.co_maker_signature[0] : ''}>
                     <SignaturePadComponent  onSave={(v)=>{
                         form.setFieldsValue({...form, co_maker_signature:v})
-                        notification.success({
-                            message: 'Signature uploaded!',
-                        })
+                        
                     }} />
                 </Form.Item>
             </div>
@@ -544,9 +542,6 @@ const LoanApplication = () => {
                     help={errors.signature ? errors.signature[0] : ''}>
                     <SignaturePadComponent  onSave={(v)=>{
                         form.setFieldsValue({...form, signature:v})
-                        notification.success({
-                            message: 'Signature uploaded!',
-                        })
                     }} />
                 </Form.Item>
             </div>

@@ -131,16 +131,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/reports/loan-transaction', [App\Http\Controllers\Reports\ReportLoanTransactionController::class, 'index'])->name('reports.loan-transaction.index');
     Route::get('/reports/get-loan-transaction', [App\Http\Controllers\Reports\ReportLoanTransactionController::class, 'getLoanTransaction']);
-
     
     Route::get('/reports/savings-transaction', [App\Http\Controllers\Reports\ReportSavingTransactionController::class, 'index'])->name('reports.savings-transaction.index');
     Route::get('/reports/get-savings-transaction', [App\Http\Controllers\Reports\ReportSavingTransactionController::class, 'getLoanTransaction']);
-
 
 });
 
 /* ============ REPORTS ====================== */
 
+
+
+// FOR CRON JOB
+Route::get('/cron/apply-savings-interest', [App\Http\Controllers\Cron\SavingsInterestController::class, 'savingsInterest']);
 
 
 //for debugging

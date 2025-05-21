@@ -568,91 +568,96 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
                     </Form.Item>
                 </div>
 
-                <div className="inline-flex items-center justify-center w-full">
-                    <hr className="w-full h-px my-8 bg-gray-200 border-0" />
-                    <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">
-                        WORK INFORMATION
-                    </span>
-                </div>
+                {
+                    data.role === 'MEMBER' ? (
+                    <>
+                        <div className="inline-flex items-center justify-center w-full">
+                            <hr className="w-full h-px my-8 bg-gray-200 border-0" />
+                            <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">
+                                WORK INFORMATION
+                            </span>
+                        </div>
 
-                <div className='flex flex-col gap-x-4 sm:flex-row'>
-                    <Form.Item label="Occupation"
-                        className='w-full'
-                        validateStatus={errors?.occupation ? 'error' : ''}
-                        help={errors?.occupation ? errors?.occupation[0] : ''}
-                    >
-                        <Input placeholder="ex. Office Staff"
-                            onChange={(e)=>setData('occupation', e.target.value)} 
-                            value={data.occupation} 
-                            size="large" />
-                    </Form.Item>
+                        <div className='flex flex-col gap-x-4 sm:flex-row'>
+                            <Form.Item label="Occupation"
+                                className='w-full'
+                                validateStatus={errors?.occupation ? 'error' : ''}
+                                help={errors?.occupation ? errors?.occupation[0] : ''}
+                            >
+                                <Input placeholder="ex. Office Staff"
+                                    onChange={(e)=>setData('occupation', e.target.value)} 
+                                    value={data.occupation} 
+                                    size="large" />
+                            </Form.Item>
 
-                    <Form.Item label="Monthly Income"
-                        className='w-full'
-                        validateStatus={errors?.monthly_income ? 'error' : ''}
-                        help={errors?.monthly_income ? errors?.monthly_income[0] : ''}
-                    >
-                        <InputNumber 
-                            type='number' 
-                            className='w-full'
-                            placeholder="ex. 10000"
-                            onChange={ (value)=> setData('monthly_income', value ? value : 0)} 
-                            value={data.monthly_income} 
-                            size="large" />
-                    </Form.Item>
-                </div>
+                            <Form.Item label="Monthly Income"
+                                className='w-full'
+                                validateStatus={errors?.monthly_income ? 'error' : ''}
+                                help={errors?.monthly_income ? errors?.monthly_income[0] : ''}
+                            >
+                                <InputNumber 
+                                    type='number' 
+                                    className='w-full'
+                                    placeholder="ex. 10000"
+                                    onChange={ (value)=> setData('monthly_income', value ? value : 0)} 
+                                    value={data.monthly_income} 
+                                    size="large" />
+                            </Form.Item>
+                        </div>
 
-                <div className='flex flex-col gap-x-4 sm:flex-row'>
-                    <Form.Item label="Office/Business Name"
-                        className='w-full'
-                        validateStatus={errors?.business_name ? 'error' : ''}
-                        help={errors?.business_name ? errors?.business_name[0] : ''}
-                    >
-                        <Input placeholder="ex. Business Name..."
-                            onChange={(e)=>setData('business_name', e.target.value)} 
-                            value={data.business_name} 
-                            size="large" />
-                    </Form.Item>
+                        <div className='flex flex-col gap-x-4 sm:flex-row'>
+                            <Form.Item label="Office/Business Name"
+                                className='w-full'
+                                validateStatus={errors?.business_name ? 'error' : ''}
+                                help={errors?.business_name ? errors?.business_name[0] : ''}
+                            >
+                                <Input placeholder="ex. Business Name..."
+                                    onChange={(e)=>setData('business_name', e.target.value)} 
+                                    value={data.business_name} 
+                                    size="large" />
+                            </Form.Item>
 
-                    <Form.Item label="Office/Business Address"
-                        className='w-full'
-                        validateStatus={errors?.business_address ? 'error' : ''}
-                        help={errors?.business_address ? errors?.business_address[0] : ''}
-                    >
-                        <Input placeholder="ex. Business Address..."
-                            onChange={(e)=>setData('business_address', e.target.value)} 
-                            value={data.business_address} 
-                            size="large" />
-                    </Form.Item>
+                            <Form.Item label="Office/Business Address"
+                                className='w-full'
+                                validateStatus={errors?.business_address ? 'error' : ''}
+                                help={errors?.business_address ? errors?.business_address[0] : ''}
+                            >
+                                <Input placeholder="ex. Business Address..."
+                                    onChange={(e)=>setData('business_address', e.target.value)} 
+                                    value={data.business_address} 
+                                    size="large" />
+                            </Form.Item>
 
-                   
-                </div>
+                        
+                        </div>
 
-                <div className='flex flex-col gap-x-4 sm:flex-row'>
-                    <Form.Item label="Contact Person"
-                        className='w-full'
-                        validateStatus={errors?.contact_person ? 'error' : ''}
-                        help={errors?.contact_person ? errors?.contact_person[0] : ''}
-                    >
-                        <Input placeholder="ex. Juan Cruz"
-                            onChange={(e)=>setData('contact_person', e.target.value)} 
-                            value={data.contact_person} 
-                            size="large" />
-                    </Form.Item>
+                        <div className='flex flex-col gap-x-4 sm:flex-row'>
+                            <Form.Item label="Contact Person"
+                                className='w-full'
+                                validateStatus={errors?.contact_person ? 'error' : ''}
+                                help={errors?.contact_person ? errors?.contact_person[0] : ''}
+                            >
+                                <Input placeholder="ex. Juan Cruz"
+                                    onChange={(e)=>setData('contact_person', e.target.value)} 
+                                    value={data.contact_person} 
+                                    size="large" />
+                            </Form.Item>
 
-                    <Form.Item label="Contact Person No."
-                        className='w-full'
-                        validateStatus={errors?.contact_person_no ? 'error' : ''}
-                        help={errors?.contact_person_no ? errors?.contact_person_no[0] : ''}
-                    >
-                        <Input placeholder="ex. 09361234123"
-                            onChange={(e)=>setData('contact_person_no', e.target.value)} 
-                            value={data.contact_person_no} 
-                            size="large" />
-                    </Form.Item>
+                            <Form.Item label="Contact Person No."
+                                className='w-full'
+                                validateStatus={errors?.contact_person_no ? 'error' : ''}
+                                help={errors?.contact_person_no ? errors?.contact_person_no[0] : ''}
+                            >
+                                <Input placeholder="ex. 09361234123"
+                                    onChange={(e)=>setData('contact_person_no', e.target.value)} 
+                                    value={data.contact_person_no} 
+                                    size="large" />
+                            </Form.Item>
+                        </div>
+                    </>
 
-                   
-                </div>
+                    ) : null 
+                }
             </>
         );
     }

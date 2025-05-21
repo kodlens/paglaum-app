@@ -97,24 +97,20 @@ class MemberMyLoanController extends Controller
             'co_maker_identification.required' => 'Please upload an image of a valid Id'
         ]);
 
+        
         // check if the user have loan history
-        $exists = Loan::where('user_id', $user->id)->existS();
-        if($exists){
-            /* -------------- add checking if allowed reloan ------------------ */
-            /* -------------- prevent the user to reloan ------------------ */
-            
-            if($this->isLoanEligible($user->id)){
-                return response()->json([
-                    'errors' => [
-                        'principal' => ['Reloan is not allowed this time.']
-                    ],
-                    'message' => 'Reloan is not allowed this time.'
-                ], 422);
-            }
-            /* -------------- *************END*********** ------------------ */
+        /* -------------- add checking if allowed reloan ------------------ */
+        /* -------------- prevent the user to reloan ------------------ */
+        if($this->isLoanEligible($user->id)){
+            return response()->json([
+                'errors' => [
+                    'principal' => ['Reloan is not allowed this time.']
+                ],
+                'message' => 'Reloan is not allowed this time.'
+            ], 422);
         }
+        /* -------------- *************END*********** ------------------ */
 
-        //return 'pass';
 
         try{
 
@@ -271,7 +267,7 @@ class MemberMyLoanController extends Controller
 
 
     public function isLoanEligible($userId)  {
-
+        
         $prevLoan = Loan::where('is_paid', 0)
             ->where('user_id', $userId)
             ->orderBy('created_at', 'desc')->first();
