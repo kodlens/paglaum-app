@@ -69,7 +69,7 @@ const MySavings = ({ auth }: PageProps) => {
                                             View Transactions
                                         </Button>
 
-                                         <Button type="primary"
+                                        <Button type="primary"
                                             onClick={()=> router.visit(`/member/deposit-online/${item.id}`)}
                                             icon={<BookUp size={16}/>}>
                                             Make a deposit (ONLINE)
