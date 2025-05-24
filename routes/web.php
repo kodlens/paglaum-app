@@ -160,6 +160,19 @@ Route::middleware(['auth'])->group(function () {
         ->name('reports.monthly-savings.index');
     Route::get('/reports/get-monthly-savings', [App\Http\Controllers\Reports\ReportMonthlySavingsController::class, 'report']);
     
+
+    Route::get('/reports/loan-portfolio', [App\Http\Controllers\Reports\ReportLoanPortfolioController::class, 'index'])
+        ->name('reports.loan-portfolio.index');
+    Route::get('/reports/get-loan-portfolio', [App\Http\Controllers\Reports\ReportLoanPortfolioController::class, 'report']);
+
+    Route::get('/reports/income-interest', [App\Http\Controllers\Reports\ReportIncomeInterestController::class, 'index'])
+        ->name('reports.income-interest.index');
+    Route::get('/reports/get-income-interest', [App\Http\Controllers\Reports\ReportIncomeInterestController::class, 'report']);
+
+  Route::get('/reports/deliquency-report', [App\Http\Controllers\Reports\ReportDeliquencyController::class, 'index'])
+        ->name('reports.deliquency-report.index');
+    Route::get('/reports/get-deliquency-report', [App\Http\Controllers\Reports\ReportDeliquencyController::class, 'report']);
+    
 });
 
 /* ============ REPORTS ====================== */

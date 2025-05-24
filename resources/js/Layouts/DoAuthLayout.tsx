@@ -91,6 +91,18 @@ export default function DoAuthLayout(
                     key: 'reports.monthly-savings.index',
                     label: 'Monthly Savings Report'
                 },
+                {
+                    key: 'reports.loan-portfolio.index',
+                    label: 'Loan Portfolio'
+                },
+                {
+                    key: 'reports.income-interest.index',
+                    label: 'Income Interest'
+                },
+                {
+                    key: 'reports.deliquency-report.index',
+                    label: 'Deliquency Report'
+                },
                
                 
                 { 

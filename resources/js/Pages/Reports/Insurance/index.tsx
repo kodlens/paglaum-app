@@ -46,7 +46,7 @@ export default function ReportInsurance() {
     <>
       <Head title="Savigns Transaction Report"/>
       <div className='min-h-screen p-6'>
-        <div className='mx-auto'>
+        <div className='mx-auto max-w-6xl'>
 
           <div className='flex gap-2 print:hidden'>
             <Button icon={<ArrowLeft size={16}/>} className='mb-2 print:hidden'
