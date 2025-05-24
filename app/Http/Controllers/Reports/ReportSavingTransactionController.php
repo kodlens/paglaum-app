@@ -30,4 +30,5 @@ class ReportSavingTransactionController extends Controller
         
         return $data;
     }
+
 }

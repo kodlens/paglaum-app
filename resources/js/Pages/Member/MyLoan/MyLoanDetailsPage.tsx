@@ -21,7 +21,12 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan
     setLoading(true)
     const fields = {
       amount: loandetail.total_amount,
+      interest_amount: loandetail.interest_amount,
+      principal: loandetail.amount,
+      savings: loandetail.savings,
+      insurance_payment: loandetail.insurance_payment,
       name: '',
+      due_date: loandetail.due_date,
       paymentmethod: 'gcash',
       refno: 'REF'+loandetail.id,
       loanid: loandetail.loan_id,
@@ -102,11 +107,18 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan
               loan.loan_details.map((item:LoanDetail, index:number) => (
                 <div key={index} className='bg-white shadow-sm mt-2 p-6'>
                   <div className=''>
-                    {item.is_paid > 0 ? (
-                      <div className='w-full md:w-[70px] text-center py-1 px-1 bg-green-600 rounded-2xl text-[10px] mb-2 text-white font-bold'>PAID</div>
-                    ) : (
-                      <div className='w-full md:w-[70px] text-center py-1 px-1 bg-red-400 rounded-2xl text-[10px] mb-2 text-white font-bold'>NOT PAID</div>
-                    )}
+
+                    <div className='flex gap-2'>
+                      {item.is_paid > 0 ? (
+                        <div className='w-full md:w-[70px] text-center py-1 px-1 bg-green-600 rounded-2xl text-[10px] mb-2 text-white font-bold'>PAID</div>
+                      ) : (
+                        <div className='w-full md:w-[70px] text-center py-1 px-1 bg-red-400 rounded-2xl text-[10px] mb-2 text-white font-bold'>NOT PAID</div>
+                      )}
+
+                      {item.is_penalty ? (
+                        <div className='w-full md:w-[70px] text-center py-1 px-1 bg-red-400 rounded-2xl text-[10px] mb-2 text-white font-bold'>PENALTY</div>
+                      ) : null}
+                    </div>
                   
                     <div className='flex flex-col sm:flex-row sm:justify-between'>
                       <div>

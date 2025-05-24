@@ -5,10 +5,18 @@ import { ArrowLeft, PrinterCheck } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 interface Fields {
-  transaction_type?: string;
-  count_transaction_type?: number;
+  full_name?: string;
+  sex?: string;
+  loan_id?:number;
+  insurance_type_name?: string;
+  title?: string;
+  benefits?: string;
+  claimable_amount?: number;
+  insurance_expected?: number;
+  insurance_paid?: number;
+  insurance_payment_count?: number;
 }
-export default function ReportSavingsTransaction() {
+export default function ReportInsurance() {
   const [data, setData] = useState<Fields[]>([])
   const [search, setSearch] = useState<any>({
     dateFrom: '',
@@ -22,7 +30,7 @@ export default function ReportSavingsTransaction() {
       `to=${search.dateTo}`
     ].join('&')
 
-    axios.get(`/reports/get-savings-transaction?${params}`).then(res=>{
+    axios.get(`/reports/get-insurances?${params}`).then(res=>{
       //console.log(res.data);
       setData(res.data)
     })
@@ -38,8 +46,8 @@ export default function ReportSavingsTransaction() {
     <>
       <Head title="Savigns Transaction Report"/>
       <div className='min-h-screen p-6'>
-        <div className='max-w-2xl mx-auto'>
-          
+        <div className='mx-auto'>
+
           <div className='flex gap-2 print:hidden'>
             <Button icon={<ArrowLeft size={16}/>} className='mb-2 print:hidden'
               onClick={()=>{
@@ -52,27 +60,41 @@ export default function ReportSavingsTransaction() {
               }}>Print</Button>
           </div>
           
-          <div className='flex gap-2 mb-2 print:hidden'>
-            <DatePicker onChange={(value)=> setSearch({...search, dateFrom: value})}/>
-            <DatePicker onChange={(value)=> setSearch({...search, dateTo: value})}/>
-            <Button
-              onClick={loadLoanTransaction}>Search</Button>
-          </div>
+    
 
-          <div className='font-bold text-center mb-4'>SUMMARY OF SAVINGS TRANSACTIONS</div>
+          <div className='font-bold text-center mb-4'>SUMMARY OF INSURANCE</div>
           <table className='border w-full'>
             <thead className='bg-gray-100 font-bold text-left'>
               <tr>
-                <th className='py-2 px-6'>TRANSACTION TYPE</th>
-                <th className='py-2 px-6'>COUNT</th>
+                <th className='py-2 px-6'>NAME</th>
+                <th className='py-2 px-6'>SEX</th>
+                <th className='py-2 px-6'>LOAN REFERENCE</th>
+                <th className='py-2 px-6'>INSURANCE TYPE</th>
+                <th className='py-2 px-6'>TITLE / BENIFITS</th>
+                <th className='py-2 px-6'>INSURANCE EXPECTED</th>
+                <th className='py-2 px-6'>INSURANCE PAID</th>
+                <th className='py-2 px-6'>INSURANCE PAYMENT COUNT</th>
               </tr>
             </thead>
             <tbody>
                {Array.isArray(data) && data.length > 0 ? (
                 data.map((item: Fields, ix: number) => (
                   <tr key={ix} className="border">
-                    <td className="px-6 py-2">{item?.transaction_type}</td>
-                    <td className="text-right px-6 py-2">{item?.count_transaction_type}</td>
+                    <td className="px-6 py-2">{item?.full_name}</td>
+                    <td className="px-6 py-2">{item?.sex}</td>
+                    <td className="px-6 py-2">REF: {item?.loan_id}</td>
+                    <td className="px-6 py-2">{ item?.insurance_type_name }</td>
+                    <td className="px-6 py-2">
+                        <span className='font-bold'>{item.title} <br></br></span>
+                        <span className='text-sm'>
+                            {item.benefits}
+                        </span>
+
+                    </td>
+                    <td className="px-6 py-2">&#8369; {item?.insurance_expected?.toLocaleString() }</td>
+                    <td className="px-6 py-2">&#8369; {item?.insurance_paid?.toLocaleString() }</td>
+                    <td className="px-6 py-2">{item?.insurance_payment_count?.toLocaleString() }</td>
+                    
                   </tr>
                 ))
               ) : (

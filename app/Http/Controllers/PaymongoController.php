@@ -11,24 +11,38 @@ use Illuminate\Support\Facades\Http;
 use App\Models\SavingTransaction;
 use App\Models\SavingAccount;
 use App\Models\Loan;
+use \Carbon\Carbon;
 
 
 class PaymongoController extends Controller
 {
     //
     public function pay(Request $req){
-        //return $req;
         $user = Auth::user();
-
         $client = new \GuzzleHttp\Client();
 
-        $amount = $req->amount;
+        $isPenalty = 0;
         $name = $user->lname . ', ' . $user->fname;
         $refNo = $req->refno;
 
         $detail = LoanDetail::find($req->loandetailid);
-
         $paymentMethod = $req->paymentmethod;
+
+
+        $date = Carbon::parse($req->due_date); // example date
+        $today = Carbon::today();
+        if ($date->lessThan($today)) {
+            $isPenalty = 1;
+            $monthsBehind = $date->diffInMonths($today) + 1;
+            $percentInterest = $monthsBehind * 5; //tubo per month
+            
+            $interetstAmount = ($req->principal + $req->interest_amount) * ($percentInterest / 100);
+            $amount = round(($req->principal + $req->interest_amount) + $interetstAmount + $req->savings + $req->insurance_payment , 2);
+            //add penalt
+        }else{
+            $amount = $req->amount;
+            $isPenalty = 0;
+        }
 
         $data = [
             'data' => [
@@ -67,7 +81,8 @@ class PaymongoController extends Controller
                         'amount_paid' => $amount,
                         'loan_id' => $req->loanid,
                         'loan_detail_id' => $req->loandetailid,
-                        'user_id' => $user->id
+                        'user_id' => $user->id,
+                        'is_penalty' => $isPenalty
                     ]
                 ],
                 
@@ -109,6 +124,7 @@ class PaymongoController extends Controller
         $paymentMethod = $paymentinfo['payment_method'];
         $loanDetailId = $paymentinfo['loan_detail_id'];
         $amounPaid = $paymentinfo['amount_paid'];
+        $isPenalty = $paymentinfo['is_penalty'];
         $paymentIntent = $paymongoDetails['data']['attributes']['payment_intent'];
 
         $loanDetail = LoanDetail::find($loanDetailId);
@@ -116,6 +132,7 @@ class PaymongoController extends Controller
         $loanDetail->ref = $ref;
         $loanDetail->amount_paid = $amounPaid;
         $loanDetail->payment_method = 'ONLINE';
+        $loanDetail->is_penalty = $isPenalty;
         $loanDetail->payment_transaction = 'ONLINE';
         $loanDetail->payment_session = $paymentSession;
         $loanDetail->payment_intent = $paymentIntent['id'];

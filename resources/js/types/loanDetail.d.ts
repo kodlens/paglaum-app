@@ -15,10 +15,12 @@ export interface LoanDetail {
     payment_transaction: string;
     payment_session: string;
     active: number;
+    insurance_type?:string;
     insurance_payment?: number;
     total_amount?: number;
     shared?: number;
     savings?: number;
+    is_penalty?: number;
     updated_at: Date|unknown;
     created_at: Date|unknown;
 }

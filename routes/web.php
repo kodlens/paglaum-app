@@ -143,6 +143,23 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports/savings-transaction', [App\Http\Controllers\Reports\ReportSavingTransactionController::class, 'index'])->name('reports.savings-transaction.index');
     Route::get('/reports/get-savings-transaction', [App\Http\Controllers\Reports\ReportSavingTransactionController::class, 'getLoanTransaction']);
     
+    Route::get('/reports/loan', [App\Http\Controllers\Reports\ReportLoanController::class, 'index'])
+        ->name('reports.loan.index');
+    Route::get('/reports/get-loans', [App\Http\Controllers\Reports\ReportLoanController::class, 'report']);
+    
+    Route::get('/reports/savings-account', [App\Http\Controllers\Reports\ReportSavingsAccountController::class, 'index'])
+        ->name('reports.savings-account.index');
+    Route::get('/reports/get-savings-accounts', [App\Http\Controllers\Reports\ReportSavingsAccountController::class, 'reportSavingsAccount']);
+    
+
+    Route::get('/reports/insurance', [App\Http\Controllers\Reports\ReportInsuranceController::class, 'index'])
+        ->name('reports.insurance.index');
+    Route::get('/reports/get-insurances', [App\Http\Controllers\Reports\ReportInsuranceController::class, 'report']);
+    
+    Route::get('/reports/monthly-savings', [App\Http\Controllers\Reports\ReportMonthlySavingsController::class, 'index'])
+        ->name('reports.monthly-savings.index');
+    Route::get('/reports/get-monthly-savings', [App\Http\Controllers\Reports\ReportMonthlySavingsController::class, 'report']);
+    
 });
 
 /* ============ REPORTS ====================== */
