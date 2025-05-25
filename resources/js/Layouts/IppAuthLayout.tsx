@@ -23,7 +23,7 @@ const siderStyle: React.CSSProperties = {
 
 };
 
-export default function InsurancePointPersonAuthLayout(
+export default function IppAuthLayout(
 
     { user, children }: PropsWithChildren<{ user:User }>) {
 
@@ -43,23 +43,18 @@ export default function InsurancePointPersonAuthLayout(
 
 		items.push(
             {
-                key: 'do.dashboard.index',
+                key: 'ipp.dashboard.index',
                 icon: <UserOutlined />,
                 label: 'Dashboard'
             },
             {
-                key: 'do.loans.index',
+                key: 'ipp.loans.index',
                 icon: <BarsOutlined />,
                 label: 'Loans'
             },
-            {
-            key: 'do.member-savings-accounts.index',
-            icon: <BarsOutlined />,
-            label: 'Savings Accounts'
-            },
 
             {
-                key: 'do.members.index',
+                key: 'ipp.members.index',
                 icon: <UserOutlined />,
                 label: 'Members/Borrower'
             }

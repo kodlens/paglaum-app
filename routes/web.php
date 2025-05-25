@@ -45,6 +45,7 @@ require __DIR__.'/member.php';
 require __DIR__.'/ybs.php';
 require __DIR__.'/bm.php';
 require __DIR__.'/do.php';
+require __DIR__.'/ipp.php';
 
 
 require __DIR__.'/auth.php';

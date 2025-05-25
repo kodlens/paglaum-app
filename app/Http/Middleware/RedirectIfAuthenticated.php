@@ -33,7 +33,7 @@ class RedirectIfAuthenticated
                     return redirect(RouteServiceProvider::MEMBER);
 
                 if(strtolower($role) == 'ipp')
-                    return redirect(RouteServiceProvider::DO);
+                    return redirect(RouteServiceProvider::IPP);
 
                 if(strtolower($role) == 'bm')
                     return redirect(RouteServiceProvider::BM);

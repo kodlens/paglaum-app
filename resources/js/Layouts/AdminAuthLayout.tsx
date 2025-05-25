@@ -13,7 +13,7 @@ import {
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';
 import PanelSideBarLogo from '@/Components/PanelSideBarLogo';
 import { User } from '@/types';
-import { LogOut } from 'lucide-react';
+import { ClipboardMinus, LogOut } from 'lucide-react';
 
   const { Header, Sider, Content } = Layout;
 
@@ -66,6 +66,68 @@ export default function AdminAuthLayout(
             icon: <BarsOutlined />,
             label: 'Education Levels',
             //onClick: () => router.visit('/admin/categories')
+        },
+        {
+            type: 'divider'
+        },
+
+        {
+            key: 'admin.users.index',
+            icon: <FileJpgOutlined />,
+            label: 'Users',
+            //onClick: ()=> router.visit('/admin/users')
+        },
+        {
+            type: 'divider'
+        },
+
+        {
+            key: 'do.reports.index',
+            icon: <ClipboardMinus size={16}/>,
+            label: 'Report',
+            children: [
+                {
+                    key: 'reports.loan.index',
+                    label: 'Loan Report'
+                },
+                {
+                    key: 'reports.savings-account.index',
+                    label: 'Savings Account'
+                },
+                {
+                    key: 'reports.insurance.index',
+                    label: 'Insurance Report'
+                },
+                {
+                    key: 'reports.monthly-savings.index',
+                    label: 'Monthly Savings Report'
+                },
+                {
+                    key: 'reports.loan-portfolio.index',
+                    label: 'Loan Portfolio'
+                },
+                {
+                    key: 'reports.income-interest.index',
+                    label: 'Income Interest'
+                },
+                {
+                    key: 'reports.deliquency-report.index',
+                    label: 'Deliquency Report'
+                },
+               
+                
+                { 
+                    key: 'reports.loan-transaction.index',
+                    label: 'Loan Transaction'
+                },
+                {
+                    key: 'reports.savings-transaction.index',
+                    label: 'Savings Transaction'
+                
+                },
+               
+               
+            ]
         },
         // {
         //     type: 'divider',
@@ -124,16 +186,7 @@ export default function AdminAuthLayout(
                 
         //     ],
         // },
-        {
-            type: 'divider'
-        },
-
-        {
-            key: 'admin.users.index',
-            icon: <FileJpgOutlined />,
-            label: 'Users',
-            //onClick: ()=> router.visit('/admin/users')
-        });
+       );
 
 		return items;
 	}
