@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'ipp'])->group(function () {
 
-    Route::resource('/ipp/dashboard', App\Http\Controllers\Ipp\IppDashboardController::class)->names('ybs.dashboard');
+    Route::resource('/ipp/dashboard', App\Http\Controllers\Ipp\IppDashboardController::class)->names('ipp.dashboard');
     
 
-    Route::resource('/ipp/profile', App\Http\Controllers\Ybs\YbsProfileController::class)->names('ybs.profile');
+    Route::resource('/ipp/profile', App\Http\Controllers\Ipp\IppProfileController::class)->names('ipp.profile');
 
     Route::resource('/ipp/loans', App\Http\Controllers\Ipp\IppLoanController::class)->names('ipp.loans');
     Route::get('/ipp/get-loans', [App\Http\Controllers\Ipp\IppLoanController::class, 'getData']);
