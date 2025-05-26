@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Auth;
 
-class MemberMiddleware
+class Ensure2FAPassed
 {
     /**
      * Handle an incoming request.
@@ -16,14 +16,11 @@ class MemberMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
-        //return redirect(RouteServiceProvider::HOME);
-        if(strtolower($user->role) == 'member'){
-
-            return $next($request);
+        if (auth()->check() && auth()->user()->is_2fa && !session('2fa_passed')) {
+            Auth::logout();
+            return redirect()->route('member.otp-form');
         }
-        return abort(403);
-  
 
+        return $next($request);
     }
 }

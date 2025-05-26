@@ -72,5 +72,7 @@ class Kernel extends HttpKernel
         'ybs' => \App\Http\Middleware\YouthBeeSaverMiddleware::class,
         'ipp' => \App\Http\Middleware\InsurancePointPersonMiddleware::class,
         'active' => \App\Http\Middleware\ActiveMiddleware::class,
+        'twoFA' => \App\Http\Middleware\Ensure2FAPassed::class,
+        
     ];
 }

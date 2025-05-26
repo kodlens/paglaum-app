@@ -10,7 +10,7 @@ use App\Http\Controllers\ProfileController;
 Route::get('/inactive', [App\Http\Controllers\InActiveController::class, 'index'])->name('inactive.index')
     ->middleware(['auth']);
 
-Route::middleware(['auth', 'verified','active', 'member'])->group(function () {
+Route::middleware(['auth', 'verified','active', 'member', 'twoFA'])->group(function () {
 
     Route::resource('/member/dashboard', App\Http\Controllers\Member\MemberDashboardController::class)->names('member.dashboard');
 
@@ -57,7 +57,7 @@ Route::middleware(['auth', 'verified','active', 'member'])->group(function () {
 Route::middleware(['auth', 'verified','active'])->group(function () {
     //avoid loop,, dapat sa gawas sa member middleware
     Route::get('/member/otp-form', [App\Http\Controllers\Member\OtpAuthenticationController::class, 'index'])->name('member.otp-form');
-    Route::post('/member/check-otp', [App\Http\Controllers\Member\OtpAuthenticationController::class, 'checkOTP']);
+    Route::post('/member/check-otp', [App\Http\Controllers\Member\OtpAuthenticationController::class, 'checkOTP'])->name('member.verify-otp');
         
     
 });
