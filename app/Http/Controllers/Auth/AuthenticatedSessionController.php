@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use \Illuminate\Support\Facades\Session;
+use App\Models\User;
+use \Carboon\Carbon;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -31,13 +34,12 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)//: RedirectResponse
     {
         //return $request;
-        
         $request->authenticate();
 
-        
         $request->session()->regenerate();
 
         $user = Auth::user();
+       
         $role = $user->role;
 
         if($user->hasVerifiedEmail()){
@@ -51,6 +53,17 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->intended(RouteServiceProvider::BM);   
             
             if(strtolower($role) == 'member')
+                if($user->is_2fa){
+                    // $otp = $this->generateOTP();
+                    // $data = User::find($user->id);
+                    // $data->code_2fa = $otp;
+                    // $data->expiration_code_2fa = \Carbon\Carbon::now()->addMinutes(5);
+                    // $data->save();
+                    // echo $otp;
+
+                    Session::put('is2fa', true);
+                    Session::put('twoFAValidated', false);
+                }
                 return redirect()->intended(RouteServiceProvider::MEMBER);  
 
             if(strtolower($role) == 'ybs')
@@ -58,13 +71,19 @@ class AuthenticatedSessionController extends Controller
         }else{
             return redirect()->route('verification.notice');
         }
-        
-        
 
         //$request->session()->regenerate();
         //return redirect()->intended(RouteServiceProvider::YBS);
 
        // 
+    }
+
+    function generateOTP($length = 6) {
+        $otp = '';
+        for ($i = 0; $i < $length; $i++) {
+            $otp .= mt_rand(0, 9);
+        }
+        return $otp;
     }
 
     /**

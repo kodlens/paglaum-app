@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Auth;
+use \Illuminate\Support\Facades\Session;
 
 class MemberMiddleware
 {
@@ -17,9 +18,15 @@ class MemberMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        //return redirect(RouteServiceProvider::HOME);
         if(strtolower($user->role) == 'member'){
+            
+            // if($user->is_2fa && $user->code_2fa != null){
+            //     return redirect()->intended(route('member.otp-form'));
+            // }
 
+            if(Session::has('is2fa') && session('is2fa') && !session('twoFAValidated')){
+                return redirect()->intended(route('member.otp-form'));
+            }
             return $next($request);
         }
         return abort(403);

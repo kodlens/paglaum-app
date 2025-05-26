@@ -195,3 +195,11 @@ Route::get('/applogout', function (Request $req) {
 });
 
 
+Route::get('/session', function (Request $req) {
+    //$req->session()->invalidate();
+
+    //$req->session()->regenerateToken();
+    //return session('_previous');
+    return Session::all();
+});
+

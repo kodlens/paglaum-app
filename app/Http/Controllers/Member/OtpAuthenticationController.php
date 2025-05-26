@@ -83,7 +83,7 @@ class OtpAuthenticationController extends Controller
         $otp_sender = $req->send_to;
         $now = Carbon::now();
 
-        $request->session()->put('otp', $otp);
+        //$req->session()->put('otp', $otp);
         
         //check is otp is exist on the current auth user
         $exist = User::where('id', $user->id)
@@ -100,11 +100,8 @@ class OtpAuthenticationController extends Controller
             ], 422);
         }
 
-        User::where('id', $user->id)
-            ->update([
-                'code_2fa' => null, 
-            ]);
-
+        session(['twoFAValidated' => true]);
+        
         return response()->json([
             'status' => 'approved',
         ], 200);

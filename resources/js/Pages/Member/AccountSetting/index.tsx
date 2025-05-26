@@ -1,6 +1,6 @@
 import MemberAuthLayout from "@/Layouts/MemberAuthLayout";
 import { PageProps } from "@/types";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { App, Button, Input, Select, Switch } from "antd";
 import axios from "axios";
 import { RefreshCw } from "lucide-react";
@@ -21,7 +21,7 @@ export default function AccountSetting ( {auth}: PageProps) {
         code_2fa: ''
     })
 
-    const { notification } = App.useApp();
+    const { notification, modal } = App.useApp();
     
     const [loading, setLoading] = useState<boolean>(false)
     const [requestCodeLoading, setRequestCodeLoading] = useState<boolean>(false)
@@ -40,9 +40,18 @@ export default function AccountSetting ( {auth}: PageProps) {
     const handleClick = () => {
         axios.post('/member/save-two-fa-setting', fields).then(res=>{
             if(res.data.status === 'updated'){
-                notification.success({
-                    message: 'Updated!',
-                    description: `2FA ${res.data.is_2fa ? 'enabled.' : 'disabled.'}.`
+                // notification.success({
+                //     message: 'Updated!',
+                //     description: `2FA ${res.data.is_2fa ? 'enabled.' : 'disabled.'}.`
+                // })
+                modal.confirm({
+                    title: 'Settings updated.',
+                    content: 'You will be logged out.',
+                    onOk: () => {
+                        axios.post('/logout').then(()=>{
+                            router.visit('/login');
+                        })
+                    }
                 })
             }
         }).catch(err => {
