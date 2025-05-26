@@ -81,7 +81,6 @@ const MySavings = ({ auth }: PageProps) => {
 
                     </div>
                 </div>
-
             </div>
         </MemberAuthLayout>
     )

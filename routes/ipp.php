@@ -13,7 +13,10 @@ Route::middleware(['auth', 'ipp'])->group(function () {
 
     Route::resource('/ipp/loans', App\Http\Controllers\Ipp\IppLoanController::class)->names('ipp.loans');
     Route::get('/ipp/get-loans', [App\Http\Controllers\Ipp\IppLoanController::class, 'getData']);
-    Route::post('/ipp/approve-loan', [App\Http\Controllers\Ipp\IppLoanController::class, 'approveLoan']);
-    Route::post('/ipp/disapprove-loan', [App\Http\Controllers\Ipp\IppLoanController::class, 'disapproveLoan']);
+
+    Route::get('/ipp/ipp-loan-details/{id}',[App\Http\Controllers\Ipp\IppLoanDetailController::class, 'index']);
+
+    // Route::post('/ipp/approve-loan', [App\Http\Controllers\Ipp\IppLoanController::class, 'approveLoan']);
+    // Route::post('/ipp/disapprove-loan', [App\Http\Controllers\Ipp\IppLoanController::class, 'disapproveLoan']);
 
 });

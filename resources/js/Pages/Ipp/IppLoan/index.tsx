@@ -171,7 +171,7 @@ const IppLoanIndex = ({ auth }: PageProps)  => {
     }
 
     const showLoanInformation = (loan:Loan) => {
-       router.visit(`/do/do-member-loan-details/${loan.id}`)
+       router.visit(`/ipp/ipp-loan-details/${loan.id}`)
     }
 
 	return (
@@ -282,22 +282,6 @@ const IppLoanIndex = ({ auth }: PageProps)  => {
                                             placement="bottomRight"
                                             menu={{
                                                 items: [
-                                                    // {
-                                                    //     key: '1',
-                                                    //     label: 'Edit',
-                                                    //     icon: <Pencil size={16} />,
-                                                    //     onClick: ()=>{
-                                                    //         handleEditClick(data.id)
-                                                    //     }
-                                                    // },
-                                                    {
-                                                        key: '2',
-                                                        label: data.is_do_approve ? 'Disapprove' : 'Approve',
-                                                        icon: <ThumbsUp  size={16} />,
-                                                        onClick: ()=>{
-                                                            handleClickApprove(data)
-                                                        }
-                                                    },
                                                     {
                                                         key: '3',
                                                         label: 'Details',
@@ -306,14 +290,14 @@ const IppLoanIndex = ({ auth }: PageProps)  => {
                                                             showLoanInformation(data)
                                                         }
                                                     },
-                                                    {
-                                                        key: '4',
-                                                        label: 'Make A Payment',
-                                                        icon: <Wallet  size={16} />,
-                                                        onClick: ()=>{
-                                                            router.visit('/do/make-a-payment/' + data.id)
-                                                        }
-                                                    },
+                                                    // {
+                                                    //     key: '4',
+                                                    //     label: 'Make A Payment',
+                                                    //     icon: <Wallet  size={16} />,
+                                                    //     onClick: ()=>{
+                                                    //         router.visit('/do/make-a-payment/' + data.id)
+                                                    //     }
+                                                    // },
                                                 ],
                                             }}
                                             trigger={['click']}

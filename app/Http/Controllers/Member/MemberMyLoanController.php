@@ -277,7 +277,7 @@ class MemberMyLoanController extends Controller
             ->exists();
         
         if(!$exist){
-            return true;
+            return false;
         }
         
         $prevLoan = Loan::where('is_paid', 0)

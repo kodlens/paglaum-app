@@ -1,13 +1,11 @@
 import { useState, PropsWithChildren } from 'react';
-import { Link, router, useForm, usePage } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    FilePptOutlined,
-    UserOutlined,ProfileOutlined,
-    FormOutlined,
-    BarsOutlined, FileJpgOutlined
+    BarsOutlined,
+    UserOutlined
   } from '@ant-design/icons';
 
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';
@@ -26,7 +24,9 @@ const siderStyle: React.CSSProperties = {
 export default function IppAuthLayout(
 
     { user, children }: PropsWithChildren<{ user:User }>) {
-
+    
+    //console.log(user);
+        
     const { post } = useForm();
 
     const [collapsed, setCollapsed] = useState(false);
@@ -53,11 +53,11 @@ export default function IppAuthLayout(
                 label: 'Loans'
             },
 
-            {
-                key: 'ipp.members.index',
-                icon: <UserOutlined />,
-                label: 'Members/Borrower'
-            }
+            // {
+            //     key: 'ipp.members.index',
+            //     icon: <UserOutlined />,
+            //     label: 'Members/Borrower'
+            // }
         );
 
 		return items;
@@ -110,9 +110,11 @@ export default function IppAuthLayout(
                             />
 
                             <div className='ml-auto mr-4 flex items-center gap-4'>
-                                <div>
-                                    {user.lname}, {user.fname ? user.fname[0] : ''} <span className='font-bold'>({user.role})</span>
-                                </div>
+                                { user ? (
+                                    <div>
+                                        {user.lname}, {user.fname ? user.fname[0] : ''} <span className='font-bold'>({user.role})</span>
+                                    </div>
+                                ): null}
                                 <Button className=''
                                     danger
                                     onClick={handleLogout}>
