@@ -18,6 +18,7 @@ class MemberMyLoanController extends Controller
 {
     //
     public function index(){
+
         $canLoan = !$this->isNotLoanEligible(Auth::user()->id);
         return Inertia::render('Member/MyLoan/MyLoanIndex', [
             'canLoan' => $canLoan
@@ -271,6 +272,13 @@ class MemberMyLoanController extends Controller
 
 
     public function isNotLoanEligible($userId)  {
+
+        $exist = Loan::where('user_id', $userId)
+            ->exists();
+        
+        if(!$exist){
+            return true;
+        }
         
         $prevLoan = Loan::where('is_paid', 0)
             ->where('user_id', $userId)
