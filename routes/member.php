@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified','active'])->group(function () {
     //avoid loop,, dapat sa gawas sa member middleware
     Route::get('/member/otp-form', [App\Http\Controllers\Member\OtpAuthenticationController::class, 'index'])->name('member.otp-form');
     Route::post('/member/check-otp', [App\Http\Controllers\Member\OtpAuthenticationController::class, 'checkOTP'])->name('member.verify-otp');
+    Route::post('/member/request-otp', [App\Http\Controllers\Member\OtpAuthenticationController::class, 'requestOTP'])->name('member.request-otp');
         
     
 });

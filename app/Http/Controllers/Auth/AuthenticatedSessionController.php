@@ -14,6 +14,7 @@ use Inertia\Response;
 use \Illuminate\Support\Facades\Session;
 use App\Models\User;
 use \Carboon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -54,13 +55,7 @@ class AuthenticatedSessionController extends Controller
             
             if(strtolower($role) == 'member')
                 if($user->is_2fa){
-                    // $otp = $this->generateOTP();
-                    // $data = User::find($user->id);
-                    // $data->code_2fa = $otp;
-                    // $data->expiration_code_2fa = \Carbon\Carbon::now()->addMinutes(5);
-                    // $data->save();
-                    // echo $otp;
-
+                    
                     Session::put('is2fa', true);
                     Session::put('twoFAValidated', false);
                 }

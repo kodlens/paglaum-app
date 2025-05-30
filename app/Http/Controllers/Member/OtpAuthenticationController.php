@@ -28,7 +28,14 @@ class OtpAuthenticationController extends Controller
 
 
     public function index(){
+        $user = Auth::user();
 
+        return Inertia::render('Member/OTP/index',[
+            'otpSender' => $user->otp_sender
+        ]);
+    }
+
+    public function requestOTP() {
         $user = Auth::user();
         $otp = $this->generateOTP();
 
@@ -52,6 +59,7 @@ class OtpAuthenticationController extends Controller
                     'sendername' => 'LARATSYS',
                 ]);
                 
+                
                 // Check if request was successful
                 if ($response->successful()) {
                     $output = $response->json(); // Optional: handle the JSON response
@@ -63,11 +71,8 @@ class OtpAuthenticationController extends Controller
                     ]);
                 }
             }
+            \Log::info('Your otp ' . $otp);
         }
-
-        return Inertia::render('Member/OTP/index',[
-            'otpSender' => $user->otp_sender
-        ]);
     }
 
 

@@ -35,6 +35,9 @@ class AccountSettingController extends Controller
         ],[
             'send_to.required' => 'Please select how this OTP should be sent.'
         ]);
+
+        //return $req;
+
         $user = Auth::user();
         $otp = $this->generateOTP();
 
@@ -100,8 +103,10 @@ class AccountSettingController extends Controller
     public function saveSetting(Request $req){
         $req->validate([
             'code_2fa' => ['required'],
+            'send_to' => ['required']
         ],[
-            'code_2fa.required' => 'OTP is required.'
+            'code_2fa.required' => 'OTP is required.',
+            'send_to.required' => 'Please select how this OTP should be sent.'
         ]);
 
         $user = Auth::user();
@@ -127,6 +132,7 @@ class AccountSettingController extends Controller
       
         $data = User::find($user->id);
         $data->is_2fa = $req->is_2fa ? 1 : 0;
+        $data->otp_sender = $otp_sender;
         $data->save();
 
         return response()->json([
