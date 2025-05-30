@@ -116,8 +116,8 @@ class MemberDepositOnlineController extends Controller
         
         SavingTransaction::create([
             'saving_account_id' => $savingsId,
-            'transaction_type' => 'ONLINE',
-            'payment_method' => $paymentMethod,
+            'transaction_type' => 'DEPOSIT',
+            'payment_method' => 'ONLINE',
             'payment_session' => $paymentSession,
             'payment_intent' => $paymentIntent['id'],
             'refno' => $refno,

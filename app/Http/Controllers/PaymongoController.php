@@ -18,7 +18,21 @@ class PaymongoController extends Controller
 {
     //
     public function pay(Request $req){
+
         $user = Auth::user();
+
+        $savingsAcc = SavingAccount::where('user_id', $user->id)
+            ->where('default_account', 1)->exists();
+
+        if(!$savingsAcc){
+            return response()->json([
+                'errors' => [
+                    'savings' => ['No default savings account detected.']
+                ],
+                'message' => 'No default savings account detected.'
+            ], 422);
+        }
+
         $client = new \GuzzleHttp\Client();
 
         $isPenalty = 0;
@@ -160,7 +174,7 @@ class PaymongoController extends Controller
 
         SavingTransaction::create([
             'saving_account_id' => $savingsAcc->id,
-            'transaction_type' => 'ONLINE/LOAN PAYMENT',
+            'transaction_type' => 'DEPOSIT',
             'payment_method' => 'ONLINE/LOAN PAYMENT',
             'refno' => 'loanref_'.$ref,
             'remarks' => 'SAVINGS FROM LOAN',

@@ -142,7 +142,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports/get-loan-transaction', [App\Http\Controllers\Reports\ReportLoanTransactionController::class, 'getLoanTransaction']);
     
     Route::get('/reports/savings-transaction', [App\Http\Controllers\Reports\ReportSavingTransactionController::class, 'index'])->name('reports.savings-transaction.index');
-    Route::get('/reports/get-savings-transaction', [App\Http\Controllers\Reports\ReportSavingTransactionController::class, 'getLoanTransaction']);
+    Route::get('/reports/get-savings-transaction', [App\Http\Controllers\Reports\ReportSavingTransactionController::class, 'getSavingsTransaction']);
     
     Route::get('/reports/loan', [App\Http\Controllers\Reports\ReportLoanController::class, 'index'])
         ->name('reports.loan.index');

@@ -14,7 +14,7 @@ class ReportSavingTransactionController extends Controller
         return Inertia::render('Reports/SavingsTransaction/index');
     }
 
-    public function getLoanTransaction(Request $req){
+    public function getSavingsTransaction(Request $req){
         
         $dateFrom = $req->from ? date('Y-m-d', strtotime($req->from)) : '';
         $dateTo = $req->to ? date('Y-m-d', strtotime($req->to)) : '';
@@ -26,7 +26,7 @@ class ReportSavingTransactionController extends Controller
             FROM saving_transactions a
             WHERE a.created_at >= ? AND a.created_at <= ?
             GROUP BY a.transaction_type'
-                    , [$dateFrom, $dateTo]);
+            , [$dateFrom, $dateTo]);
         
         return $data;
     }

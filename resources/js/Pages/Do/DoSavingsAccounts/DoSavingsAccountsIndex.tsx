@@ -332,7 +332,7 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                                                     //     }
                                                     // },
                                                     {
-                                                        key: '3',
+                                                        key: '2',
                                                         label: data.is_active ? 'Deactivate' : 'Activate',
                                                         icon: <ShieldCheck size={16} />,
                                                         onClick: () => {

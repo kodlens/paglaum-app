@@ -20,9 +20,7 @@ class CheckDueDateController extends SendSMS
 
             if ($user && $user['contact_no']) {
                 $dueDate = date('M d Y', strtotime($loan['due_date']));
-                //$message = "Dear ".$user['lname'] .", ". $user['fname'] .", your loan is due on ". $loan['due_date']->format('Y-m-d'). ". Please make sure to pay on time.";
                 $message = 'Dear ' .$user['lname'] . ', '. $user['fname']. ', your loan is due on ' . $dueDate . '. Please make sure to pay on time.';
-                // Replace this with your actual SMS sending logic
                 $this->sendSMS($user['contact_no'], $message);
             }
         }

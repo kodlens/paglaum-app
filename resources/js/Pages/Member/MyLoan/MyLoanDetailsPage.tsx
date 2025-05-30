@@ -3,7 +3,7 @@ import { PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
 import React, { useState } from 'react'
 import dayjs from 'dayjs';
-import { Button } from 'antd';
+import { Button, notification } from 'antd';
 import axios from 'axios';
 import { LoanDetail } from '@/types/loanDetail';
 import { Loan } from '@/types/loan';
@@ -40,6 +40,12 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan
       window.location = res.data.data.attributes.checkout_url
  
     }).catch(err => {
+      if(err.response.data.errors.savings){
+        notification.error({
+          message: 'Payment invalid!',
+          description: err.response.data.message
+        })
+      }
       setLoading(false)
     })
   }

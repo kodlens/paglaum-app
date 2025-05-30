@@ -29,7 +29,7 @@ class SavingsInterestController extends Controller
 
             SavingTransaction::create([
                 'saving_account_id' => $saving['id'],
-                'transaction_type' => 'INTEREST',
+                'transaction_type' => 'DEPOSIT',
                 'payment_method' => 'INTEREST',
                 'ref_no' => 'REF' .$saving['id'],
                 'remarks' => 'INTEREST',
