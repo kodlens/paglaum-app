@@ -182,6 +182,7 @@ Route::middleware(['auth'])->group(function () {
 
 // FOR CRON JOB
 Route::get('/cron/apply-savings-interest', [App\Http\Controllers\Cron\SavingsInterestController::class, 'savingsInterest']);
+Route::get('/cron/check-due-date', [App\Http\Controllers\Cron\CheckDueDateController::class, 'checkDue']);
 
 
 //for debugging
@@ -202,4 +203,3 @@ Route::get('/session', function (Request $req) {
     //return session('_previous');
     return Session::all();
 });
-

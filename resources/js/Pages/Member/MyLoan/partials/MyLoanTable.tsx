@@ -4,7 +4,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import '../style.css'
 
-export default function MyLoanTable() {
+export default function     MyLoanTable() {
 
     const [loans, setLoans] = useState([]);
 
@@ -21,12 +21,13 @@ export default function MyLoanTable() {
     return (
         <>
 
-            <div className="font-bold mb-4">
-                LOAN LIST
+            <div className='mb-4'>
+                <h3 className="text-lg font-semibold text-slate-800">My Loans</h3>
+                <p className="text-slate-500">Your loan details.</p>
             </div>
 
 
-            <div className='relative overflow-x-auto'>
+            <div className='relative shadow-sm rounded-xl overflow-x-auto'>
 
                 <table className='table-loan w-full text-sm text-left rtl:text-right text-gray-500 overflow-auto'>
                     <tbody>

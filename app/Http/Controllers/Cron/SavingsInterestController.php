@@ -43,6 +43,8 @@ class SavingsInterestController extends Controller
                 ]);
         }
 
+        \Log::info("Check saving interest");
+
         return response()->json([
             'status' => 'interest'
         ], 200);;

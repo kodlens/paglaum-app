@@ -29,9 +29,9 @@ export default function Authenticated({ user, header, children }: PropsWithChild
             <nav className="bg-white border-b border-gray-100 print:hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
-                        <div className="flex">
+                        <div className="flex py-2">
 
-
+                            <ApplicationLogo w={50} className={''} h={50} />
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
