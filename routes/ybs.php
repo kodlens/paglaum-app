@@ -25,4 +25,16 @@ Route::middleware(['auth', 'verified','active'])->group(function () {
     Route::get('/ybs/deposit-online-success', [App\Http\Controllers\Ybs\DepositOnlineController::class , 'success'])->name('paymongo.deposit-success');
 
 
+    Route::get('/ybs/account-setting', [App\Http\Controllers\Ybs\AccountSettingController::class, 'index']);
+    Route::get('/ybs/get-account-settings', [App\Http\Controllers\Ybs\AccountSettingController::class, 'getData']);
+    Route::post('/ybs/request-code', [App\Http\Controllers\Ybs\AccountSettingController::class, 'requestCode']);
+    Route::post('/ybs/save-two-fa-setting', [App\Http\Controllers\Ybs\AccountSettingController::class, 'saveSetting']);
+
+
+    Route::get('/ybs/profile', [App\Http\Controllers\Ybs\ProfileController::class, 'edit'])->name('ybs.profile.edit');
+    Route::patch('/ybs/profile', [App\Http\Controllers\Ybs\ProfileController::class, 'update'])->name('ybs.profile.update');
+    Route::delete('/ybs/profile', [App\Http\Controllers\Ybs\ProfileController::class, 'destroy'])->name('ybs.profile.destroy');
+    Route::patch('/ybs/update-member-profile', [App\Http\Controllers\Ybs\YbsProfileController::class, 'updateProfile'])->name('ybs.update-ybs-profile');
+    
+
 });

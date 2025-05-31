@@ -20,6 +20,7 @@ class DoMemberController extends Controller
 
         $data = User::where('lname', 'like', $req->lname . '%')
             ->where('role', 'MEMBER')
+            ->orWhere('role', 'YBS')
             ->paginate($req->perPage);
 
         return $data;
@@ -41,12 +42,15 @@ class DoMemberController extends Controller
         $user->save();
 
         $output = '';
+
         if(env('SMS') > 0){
             $apiKey = env('SMS_API_KEY');
+            $msg = 'Hello ' . $user->lname . ', '. $user->fname . ', Your PAGLAUM account is now activated. Thank you.';
+            
             $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
                 'apikey'     => $apiKey,
                 'number'     => $user->contact_no,
-                'message'    => 'Hello ' . $user->lname . ', '. $user->fname . ', Your PAGLAUM account is now activated. Thank you.',
+                'message'    => $msg,
                 'sendername' => 'LARATSYS',
             ]);
             
@@ -60,6 +64,8 @@ class DoMemberController extends Controller
                     'status' => $response->status(),
                 ]);
             }
+
+            \Log::info($msg);
         }
 
 

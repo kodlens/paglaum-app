@@ -132,9 +132,9 @@ export default function YbsAuthLayout({ user, header, children }: PropsWithChild
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('member.profile.edit')}>Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink href={route('member.my-savings.index')}>My Savings</ResponsiveNavLink>
-                            <ResponsiveNavLink href={route('member.account-setting.index')}>Account Settings</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('ybs.profile.edit')}>Profile</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('ybs.my-savings.index')}>My Savings</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('ybs.account-setting.index')}>Account Settings</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 Log Out
                             </ResponsiveNavLink>
