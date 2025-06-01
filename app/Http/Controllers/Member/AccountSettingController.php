@@ -60,7 +60,7 @@ class AccountSettingController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'otp' => $otp,
+                //'otp' => $otp,
                 'message' => 'OTP successfully sent to your email.'
             ], 200);
         }
@@ -89,7 +89,7 @@ class AccountSettingController extends Controller
             }
             return response()->json([
                 'status' => 'success',
-                'otp' => $otp,
+                //'otp' => $otp,
                 'message' => 'OTP successfully sent.'
             ], 200);
         }

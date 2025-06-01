@@ -43,7 +43,10 @@ class AuthenticatedSessionController extends Controller
        
         $role = $user->role;
 
+        \Log::info('Role is: ' . $role);
+
         if($user->hasVerifiedEmail()){
+
             if(strtolower($role) == 'admin')
                 return redirect()->intended(RouteServiceProvider::ADMIN);
         
@@ -53,28 +56,26 @@ class AuthenticatedSessionController extends Controller
             if(strtolower($role) == 'bm')
                 return redirect()->intended(RouteServiceProvider::BM);   
             
-            if(strtolower($role) == 'member')
+            if(strtolower($role) == 'member'){
                 if($user->is_2fa){
                     
                     Session::put('is2fa', true);
                     Session::put('twoFAValidated', false);
                 }
                 return redirect()->intended(RouteServiceProvider::MEMBER);  
+            }
 
-            if(strtolower($role) == 'ybs')
+            if(strtolower($role) == 'ybs'){
                 if($user->is_2fa){
                     Session::put('is2fa', true);
                     Session::put('twoFAValidated', false);
                 }
                 return redirect()->intended(RouteServiceProvider::YBS);
+            }
+
         }else{
             return redirect()->route('verification.notice');
         }
-
-        //$request->session()->regenerate();
-        //return redirect()->intended(RouteServiceProvider::YBS);
-
-       // 
     }
 
     function generateOTP($length = 6) {
