@@ -113,7 +113,7 @@ class DepositOnlineController extends Controller
         
         SavingTransaction::create([
             'saving_account_id' => $savingsId,
-            'transaction_type' => 'ONLINE',
+            'transaction_type' => 'DEPOSIT',
             'payment_method' => $paymentMethod,
             'payment_session' => $paymentSession,
             'payment_intent' => $paymentIntent['id'],

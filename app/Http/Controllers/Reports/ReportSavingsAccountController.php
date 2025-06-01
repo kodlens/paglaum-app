@@ -18,6 +18,7 @@ class ReportSavingsAccountController extends Controller
     
 
     public function reportSavingsAccount(){
+        
         $data = \DB::select(
             "SELECT 
                 sa.user_id,
@@ -36,8 +37,7 @@ class ReportSavingsAccountController extends Controller
             LEFT JOIN 
                 users u ON u.id = sa.user_id -- Optional, if you want to show user names
             WHERE 
-                sa.is_approved = 1
-                AND sa.is_active = 1
+                sa.is_active = 1
             GROUP BY 
                 sa.user_id
             ORDER BY 
