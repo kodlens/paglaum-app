@@ -25,7 +25,7 @@ class MemberMiddleware
             // }
 
             if(Session::has('is2fa') && session('is2fa') && !session('twoFAValidated')){
-                return redirect()->intended(route('member.otp-form'));
+                return redirect()->intended(route('otp-form'));
             }
             return $next($request);
         }

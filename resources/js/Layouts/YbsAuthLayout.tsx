@@ -48,7 +48,7 @@ export default function YbsAuthLayout({ user, header, children }: PropsWithChild
                                 </NavLink>
                               </div>
                               <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href="" active={route().current('ybs.account-setting.index')}>
+                                <NavLink href={route('ybs.account-setting.index')} active={route().current('ybs.account-setting.index')}>
                                   Account Settings
                                 </NavLink>
                               </div>

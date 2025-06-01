@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Member;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -30,7 +29,7 @@ class OtpAuthenticationController extends Controller
     public function index(){
         $user = Auth::user();
 
-        return Inertia::render('Member/OTP/index',[
+        return Inertia::render('OTP/index',[
             'otpSender' => $user->otp_sender
         ]);
     }

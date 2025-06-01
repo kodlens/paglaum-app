@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Auth;
-
+use \Illuminate\Support\Facades\Session;
 
 class YouthBeeSaverMiddleware
 {
@@ -17,14 +17,16 @@ class YouthBeeSaverMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        //return $next($request);
+        $user = Auth::user();
+        if(strtolower($user->role) == 'ybs'){
 
-        $role = Auth::user()->role;
-        //return redirect(RouteServiceProvider::HOME);
-        if(strtolower($role) == 'ybs')
+            if(Session::has('is2fa') && session('is2fa') && !session('twoFAValidated')){
+                return redirect()->intended(route('otp-form'));
+            }
             return $next($request);
-
+        }
         return abort(403);
+        
   
     }
 }

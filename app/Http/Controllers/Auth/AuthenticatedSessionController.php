@@ -62,6 +62,10 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->intended(RouteServiceProvider::MEMBER);  
 
             if(strtolower($role) == 'ybs')
+                if($user->is_2fa){
+                    Session::put('is2fa', true);
+                    Session::put('twoFAValidated', false);
+                }
                 return redirect()->intended(RouteServiceProvider::YBS);
         }else{
             return redirect()->route('verification.notice');

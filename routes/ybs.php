@@ -4,11 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::middleware(['auth', 'verified','active'])->group(function () {
+Route::middleware(['auth', 'verified','active' , 'ybs'])->group(function () {
 
     Route::resource('/ybs/dashboard', App\Http\Controllers\Ybs\YbsDashboardController::class)->names('ybs.dashboard');
-    
-
  
     Route::resource('/ybs/my-savings', App\Http\Controllers\Ybs\YbsMySavingsController::class)->names('ybs.my-savings');
     Route::get('/ybs/get-my-savings', [App\Http\Controllers\Ybs\YbsMySavingsController::class, 'getData']);
@@ -24,10 +22,10 @@ Route::middleware(['auth', 'verified','active'])->group(function () {
     Route::get('/ybs/deposit-online-success', [App\Http\Controllers\Ybs\DepositOnlineController::class , 'success'])->name('paymongo.deposit-success');
 
 
-    Route::get('/ybs/account-setting', [App\Http\Controllers\Ybs\AccountSettingController::class, 'index']);
-    Route::get('/ybs/get-account-settings', [App\Http\Controllers\Ybs\AccountSettingController::class, 'getData']);
-    Route::post('/ybs/request-code', [App\Http\Controllers\Ybs\AccountSettingController::class, 'requestCode']);
-    Route::post('/ybs/save-two-fa-setting', [App\Http\Controllers\Ybs\AccountSettingController::class, 'saveSetting']);
+    Route::get('/ybs/account-setting', [App\Http\Controllers\Ybs\YbsAccountSettingController::class, 'index'])->name('ybs.account-setting.index');
+    Route::get('/ybs/get-account-settings', [App\Http\Controllers\Ybs\YbsAccountSettingController::class, 'getData']);
+    Route::post('/ybs/request-code', [App\Http\Controllers\Ybs\YbsAccountSettingController::class, 'requestCode']);
+    Route::post('/ybs/save-two-fa-setting', [App\Http\Controllers\Ybs\YbsAccountSettingController::class, 'saveSetting']);
 
 
     Route::resource('/ybs/profile', App\Http\Controllers\Ybs\YbsProfileController::class)->names('ybs.profile');

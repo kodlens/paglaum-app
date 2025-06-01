@@ -13,7 +13,7 @@ export default function OtpForm( {otpSender}:PageProps<{otpSender:string}>) {
     const [fields, setFields] = useState<Fields>({
         otp: ''
     })
-
+    
     const [loading, setLoading] = useState<boolean>(false)
     const { notification } = App.useApp();
 
@@ -26,9 +26,9 @@ export default function OtpForm( {otpSender}:PageProps<{otpSender:string}>) {
 
     const handleConfirm = () => {
         setLoading(true)
-        axios.post('/member/check-otp', fields).then(res=>{
+        axios.post('/check-otp', fields).then(res=>{
             if(res.data.status === 'approved'){
-                router.visit('/member/dashboard')
+                router.visit('/login')
             }
         }).catch(err => {
             setLoading(false)
@@ -45,7 +45,7 @@ export default function OtpForm( {otpSender}:PageProps<{otpSender:string}>) {
 
     const handleRequestOTP = () => {
         setLoading(true)
-        axios.post('/member/request-otp', fields).then(res=>{
+        axios.post('/request-otp', fields).then(res=>{
             setLoading(false)
 
              notification.success({

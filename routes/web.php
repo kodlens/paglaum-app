@@ -40,6 +40,15 @@ Route::get('load-barangays', [App\Http\Controllers\AddressController::class , 'l
 
 
 
+Route::middleware(['auth', 'verified','active'])->group(function () {
+    //avoid loop,, dapat sa gawas sa member middleware
+    Route::get('/otp-form', [App\Http\Controllers\OtpAuthenticationController::class, 'index'])->name('otp-form');
+    Route::post('/check-otp', [App\Http\Controllers\OtpAuthenticationController::class, 'checkOTP'])->name('verify-otp');
+    Route::post('/request-otp', [App\Http\Controllers\OtpAuthenticationController::class, 'requestOTP'])->name('request-otp');     
+    
+});
+
+
 require __DIR__.'/admin.php';
 require __DIR__.'/member.php';
 require __DIR__.'/ybs.php';
