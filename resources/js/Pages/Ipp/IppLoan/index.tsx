@@ -10,9 +10,11 @@ import { Space, Table,
     InputNumber} from 'antd';
 
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios';
-import { Captions, FileLock2, MessageSquareMore, MonitorCheck, Pencil, RefreshCcwIcon, ShieldOff, ThumbsUp, Trash2, Wallet } from 'lucide-react';
+import { Captions, FileLock2, MessageSquareMore, 
+    RefreshCcwIcon } from 'lucide-react';
+
 import { Loan } from '@/types/loan';
 import { LoanType } from '@/types/loanType';
 import IppAuthLayout from '@/Layouts/IppAuthLayout';
