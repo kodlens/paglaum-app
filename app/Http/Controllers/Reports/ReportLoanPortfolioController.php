@@ -36,7 +36,6 @@ class ReportLoanPortfolioController extends Controller
                     WHEN MAX(ld.due_date < CURDATE() - INTERVAL 30 DAY AND ld.is_paid = 0) THEN 'At Risk'
                     ELSE 'Current'
                 END AS par_status
-
             FROM 
                 users u
             LEFT JOIN 

@@ -42,7 +42,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
 
     const onFinish = (values: any) => {
         setLoading(true)
-        axios.patch('/member/update-member-profile', values).then(res => {
+        axios.patch(route('update-profile'), values).then(res => {
             if (res.data.status === 'updated') {
                 setLoading(false)
 
@@ -170,7 +170,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors?.lname ? 'error' : ''}
                             help={errors?.lname ? errors?.lname[0] : ''}
                         >
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g Dela Cruz' />
+                            <Input type='text' disabled readOnly className='w-full p-2' placeholder='e.g Dela Cruz' />
                         </Form.Item>
 
                         <Form.Item label='First Name'
@@ -179,7 +179,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors?.fname ? 'error' : ''}
                             help={errors?.fname ? errors?.fname[0] : ''}
                         >
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Juan' />
+                            <Input type='text' disabled readOnly className='w-full p-2' placeholder='e.g. Juan' />
                         </Form.Item>
 
                         <Form.Item label='Middle Name'
@@ -188,7 +188,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors?.mname ? 'error' : ''}
                             help={errors?.mname ? errors?.mname[0] : ''}
                         >
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Juan' />
+                            <Input type='text' disabled readOnly className='w-full p-2' placeholder='e.g. Juan' />
                         </Form.Item>
                     </div>
 
@@ -201,7 +201,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors?.suffix ? 'error' : ''}
                             help={errors?.suffix ? errors?.suffix[0] : ''}
                         >
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Jr., II, III' />
+                            <Input type='text' disabled readOnly className='w-full p-2' placeholder='e.g. Jr., II, III' />
                         </Form.Item>
 
                         <Form.Item
@@ -244,7 +244,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.contact_no ? "error" : ""}
                             help={errors.contact_no ? errors.contact_no[0] : ""}>
                          
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Contact no...' />
+                            <Input type='text' readOnly disabled className='w-full p-2' placeholder='e.g. Contact no...' />
                         
                         </Form.Item>
 
@@ -254,7 +254,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.email ? "error" : ""}
                             help={errors.email ? errors.email[0] : ""}>
 
-                            <Input type='email' readOnly className='w-full p-2' placeholder='e.g. Email' />
+                            <Input type='email' readOnly disabled className='w-full p-2' placeholder='e.g. Email' />
                         </Form.Item>
    
                     </div>
@@ -387,7 +387,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.id_no ? "error" : ""}
                             help={errors.id_no ? errors.id_no[0] : ""}>
 
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Id No...' />
+                            <Input type='text' readOnly disabled className='w-full p-2' placeholder='e.g. Id No...' />
                         </Form.Item>
 
                         <Form.Item label="Household Size"
@@ -396,7 +396,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.household_size ? "error" : ""}
                             help={errors.household_size ? errors.household_size[0] : ""}>
 
-                            <InputNumber readOnly type='number' className='w-full p-1' placeholder='e.g. 12...' />
+                            <InputNumber readOnly disabled type='number' className='w-full p-1' placeholder='e.g. 12...' />
                             
                         </Form.Item>
    
@@ -466,7 +466,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors?.street ? 'error' : ''}
                             help={errors?.street ? errors?.street[0] : ''}
                         >
-                            <Input placeholder="ex. Juan Dela Cruz St." readOnly size="large" />
+                            <Input placeholder="ex. Juan Dela Cruz St." readOnly disabled size="large" />
                         </Form.Item>
                     </div>
 
@@ -480,7 +480,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.occupation ? "error" : ""}
                             help={errors.occupation ? errors.occupation[0] : ""}>
                          
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Occupation' />
+                            <Input type='text' readOnly disabled className='w-full p-2' placeholder='e.g. Occupation' />
                         
                         </Form.Item>
 
@@ -490,7 +490,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.monthly_income ? "error" : ""}
                             help={errors.monthly_income ? errors.monthly_income[0] : ""}>
 
-                            <InputNumber type='number' readOnly className='w-full p-1' placeholder='e.g. Id No...' />
+                            <InputNumber type='number' readOnly disabled className='w-full p-1' placeholder='e.g. Id No...' />
                         </Form.Item>
 
                       
@@ -505,7 +505,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.business_name ? "error" : ""}
                             help={errors.business_name ? errors.business_name[0] : ""}>
 
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Business Name...' />
+                            <Input type='text' readOnly disabled className='w-full p-2' placeholder='e.g. Business Name...' />
                             
                         </Form.Item>
 
@@ -515,7 +515,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.business_address ? "error" : ""}
                             help={errors.business_address ? errors.business_address[0] : ""}>
 
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Business Address...' />
+                            <Input type='text' readOnly disabled className='w-full p-2' placeholder='e.g. Business Address...' />
                             
                         </Form.Item>
 
@@ -530,7 +530,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.contact_person ? "error" : ""}
                             help={errors.contact_person ? errors.contact_person[0] : ""}>
 
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Contact Person' />
+                            <Input type='text' readOnly disabled className='w-full p-2' placeholder='e.g. Contact Person' />
                             
                         </Form.Item>
 
@@ -540,7 +540,7 @@ const MemberProfile = ( { profile } : { profile:any  }) => {
                             validateStatus={errors.contact_person_no ? "error" : ""}
                             help={errors.contact_person_no ? errors.contact_person_no[0] : ""}>
 
-                            <Input type='text' readOnly className='w-full p-2' placeholder='e.g. Contact Person No...' />
+                            <Input type='text' readOnly disabled className='w-full p-2' placeholder='e.g. Contact Person No...' />
                             
                         </Form.Item>
                     </div>

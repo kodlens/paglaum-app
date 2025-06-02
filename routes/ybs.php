@@ -29,7 +29,7 @@ Route::middleware(['auth', 'verified','active' , 'ybs'])->group(function () {
 
 
     Route::resource('/ybs/profile', App\Http\Controllers\Ybs\YbsProfileController::class)->names('ybs.profile');
-    
+  
     // Route::get('/ybs/profile', [App\Http\Controllers\Ybs\YbsProfileController::class, 'edit'])->name('ybs.profile.edit');
     // Route::patch('/ybs/profile', [App\Http\Controllers\Ybs\YbsProfileController::class, 'update'])->name('ybs.profile.update');
     // Route::delete('/ybs/profile', [App\Http\Controllers\Ybs\YbsProfileController::class, 'destroy'])->name('ybs.profile.destroy');

@@ -95,6 +95,7 @@ function generateWeeklyDates($startDate, $numWeeks) {
 /* ============ PAYMONGO ====================== */
 Route::middleware(['auth'])->group(function () {
 
+ 
     Route::get('/get-loans', [App\Http\Controllers\LoanController::class, 'getData']);
 
 
@@ -119,6 +120,15 @@ Route::middleware(['auth'])->group(function () {
 //upload id
 Route::post('/temp-upload', [App\Http\Controllers\UploadController::class, 'tempUpload']);
 Route::post('/temp-remove/{filename}', [App\Http\Controllers\UploadController::class, 'removeUpload']);
+
+
+/* ============ AUTH ====================== */
+Route::middleware(['auth'])->group(function () {
+
+   Route::patch('/update-profile', [App\Http\Controllers\ProfileController::class, 'updateProfile'])->name('update-profile');
+
+});
+/* ============ AUTH ====================== */
 
 
 

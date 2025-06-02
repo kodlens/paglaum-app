@@ -17,8 +17,7 @@ Route::middleware(['auth', 'verified','active', 'member'])->group(function () {
     Route::get('/member/profile', [ProfileController::class, 'edit'])->name('member.profile.edit');
     Route::patch('/member/profile', [ProfileController::class, 'update'])->name('member.profile.update');
     Route::delete('/member/profile', [ProfileController::class, 'destroy'])->name('member.profile.destroy');
-    Route::patch('/member/update-member-profile', [App\Http\Controllers\Member\MemberProfileController::class, 'updateProfile'])->name('member.update-member-profile');
-
+ 
     Route::resource('/member/my-loans', App\Http\Controllers\Member\MemberMyLoanController::class)->names('member.my-loans');
     Route::get('/member/get-my-loans', [App\Http\Controllers\Member\MemberMyLoanController::class, 'getMyLoans']);
     Route::post('/member/co-maker-temp-upload', [App\Http\Controllers\Member\MemberMyLoanController::class, 'coMakerTempUpload']);

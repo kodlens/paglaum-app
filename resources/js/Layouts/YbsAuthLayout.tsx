@@ -81,7 +81,7 @@ export default function YbsAuthLayout({ user, header, children }: PropsWithChild
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href="">Profile</Dropdown.Link>
+                                        <Dropdown.Link href={route('ybs.profile.index')}>Profile</Dropdown.Link>
                                         <Dropdown.Link href={route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>
