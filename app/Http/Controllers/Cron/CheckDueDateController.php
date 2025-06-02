@@ -25,7 +25,10 @@ class CheckDueDateController extends SendSMS
             }
         }
 
-        //return $dueSoonLoans;
+        return response()->json([
+            'status' => 'sent',
+            'count' => count($dueSoonLoans)
+        ], 200);
 
     }
 }

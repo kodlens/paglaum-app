@@ -1,13 +1,21 @@
 import MemberAuthLayout from '@/Layouts/MemberAuthLayout';
 import { PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
-import React, { useState } from 'react'
-import dayjs from 'dayjs';
+import React, { useEffect, useState } from 'react'
+import dayjs, { Dayjs } from 'dayjs';
 import { Button, notification } from 'antd';
 import axios from 'axios';
 import { LoanDetail } from '@/types/loanDetail';
 import { Loan } from '@/types/loan';
 import { WalletMinimal } from 'lucide-react';
+
+
+// Optional: for better date handling
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+
+dayjs.extend(isSameOrBefore)
+dayjs.extend(isSameOrAfter)
 
 
 const dateFormat =(date:string|Date, customFormat:string) => {
@@ -16,7 +24,7 @@ const dateFormat =(date:string|Date, customFormat:string) => {
 export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan }>) {
 
   const [loading, setLoading] = useState<boolean>(false);
-  
+
   const handleMakePayment = (loandetail:any) => {
     setLoading(true)
     const fields = {
@@ -49,6 +57,19 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan
       setLoading(false)
     })
   }
+
+  const isDueSoon = (dueDate:Dayjs ) => {
+    
+    const today = dayjs()
+    const fiveDaysFromNow = today.add(5, 'day')
+    // Check if dueDate is today or within next 5 days
+    return dueDate.isSameOrBefore(fiveDaysFromNow) && dueDate.isSameOrAfter(today)
+  }
+
+  useEffect(()=> {
+   
+        
+  },[loan])
 
   return (
     <>
@@ -123,6 +144,10 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan
 
                       {item.is_penalty ? (
                         <div className='w-full md:w-[70px] text-center py-1 px-1 bg-red-400 rounded-2xl text-[10px] mb-2 text-white font-bold'>PENALTY</div>
+                      ) : null}
+
+                       { isDueSoon(dayjs(item.due_date)) ? (
+                        <div className='w-full md:w-[70px] text-center py-1 px-1 bg-orange-200 rounded-2xl text-[10px] mb-2 font-bold'>DUE SOON</div>
                       ) : null}
                     </div>
                   

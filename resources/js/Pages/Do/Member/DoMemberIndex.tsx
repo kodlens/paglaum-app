@@ -21,6 +21,11 @@ import DoAuthLayout from '@/Layouts/DoAuthLayout';
 const { Column } = Table;
 
 
+interface SearchFields {
+    lname?: string;
+    role?: string;
+}
+
 const DoMemeberIndex = ({ auth }: PageProps)=> {
 
 	const [form] = Form.useForm();
@@ -36,7 +41,10 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
 
 	const [perPage, setPerPage] = useState(10);
     const [page, setPage] = useState(1);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState<SearchFields>({
+        lname: '',
+        role: '',
+    });
     const [errors, setErrors] = useState<any>({});
 
     const [id, setId] = useState(0);
@@ -44,8 +52,10 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
 	const loadDataAsync = async () => {
 
         setLoading(true)
-        const params = [
+       const params = [
             `perpage=${perPage}`,
+            `lname=${search.lname}`,
+            `role=${search.role}`,
             `page=${page}`
         ].join('&');
 
@@ -128,6 +138,19 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
 					<div className="font-bold mb-4 text-lg">LIST OF MEMBERS / BORROWERS</div>
 					{/* card body */}
 					<div className='z-0'>
+                        <div>
+                            <label>Select Role</label>
+                            <Select
+                                value={search.role}
+                                onChange={(value:string)=>setSearch({...search, role: value})}
+                                className='w-full'
+                                options={[
+                                    { value: "", label: "ALL" },
+                                    { value: "YBS", label: "YOUTH BEE" },
+                                    { value: "MEMBER", label: "MEMBER" },
+                                ]}/>
+                        </div>
+                        
                         <div className='my-4'>
                             <Button type='primary' 
                                 onClick={()=> loadDataAsync()}>Refresh</Button>

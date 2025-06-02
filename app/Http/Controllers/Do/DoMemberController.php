@@ -18,12 +18,19 @@ class DoMemberController extends Controller
 
     public function getData(Request $req){
 
-        $data = User::where('lname', 'like', $req->lname . '%')
-            ->where('role', 'MEMBER')
-            ->orWhere('role', 'YBS')
-            ->paginate($req->perPage);
+        $data = User::where('lname', 'like', $req->lname . '%');
 
-        return $data;
+        if($req->role == ''){
+            $data->where('role', 'MEMBER')
+                ->orWhere('role', 'YBS');
+        }else{
+            $data->where('role', 'LIKE', $req->role . '%')
+                ->where('role', '!=', 'ADMIN')
+                ->where('role', '!=', 'DO')
+                ->where('role', '!=', 'BM');
+        }
+            
+        return $data->paginate($req->perPage);
     }
 
     public function show($id){

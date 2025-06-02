@@ -26,6 +26,7 @@ Route::middleware(['auth', 'do'])->group(function () {
 
 
     /* ============ OVER THE COUNTER FOR SAVINGS ROUTE ====================== */
+
     /* ============ TEMPORARY (MAYBE PANG DO, OR PANG BM ====================== */
     Route::resource('/do/member-savings-accounts', App\Http\Controllers\Do\DoMemberSavingsAccountController::class)->names('do.member-savings-accounts');
     Route::get('/do/get-member-savings-accounts', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'getData']); //this route for making a payment
@@ -36,6 +37,10 @@ Route::middleware(['auth', 'do'])->group(function () {
 
     Route::post('/do/approve-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'approve']); //approve
     Route::post('/do/disapprove-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'disapprove']); //disapprove
+
+     Route::get('/do/savings-account-details/{id}', [App\Http\Controllers\Do\DoSavingsAccountDetailController::class, 'index']);
+      Route::get('/do/get-savings-account-details', [App\Http\Controllers\Do\DoSavingsAccountDetailController::class, 'getData']);
+
 
     // Route::post('/do/approve-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'activate']); //approve
     // Route::post('/do/disapprove-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'deactivate']); //disapprove

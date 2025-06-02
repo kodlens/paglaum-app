@@ -31,7 +31,9 @@ class BmSavingsAccountController extends Controller
 
 
     public function approve($id){
-        $data = SavingAccount::find($id);
+        $data = SavingAccount::with(['user'])
+            ->find($id);
+        
         if($data->is_bm_approved == 1){
             return response()->json([
                 'errors' => [
@@ -49,8 +51,8 @@ class BmSavingsAccountController extends Controller
             $apiKey = env('SMS_API_KEY');
             $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
                 'apikey'     => $apiKey,
-                'number'     => $user->contact_no,
-                'message'    => "Your savings application with account no. '.$data->account_no.' has been successfully activated.",
+                'number'     => $data->user['contact_no'],
+                'message'    => 'Your savings application with account no. '.$data->account_no.' has been successfully activated.',
                 'sendername' => 'LARATSYS',
             ]);
 

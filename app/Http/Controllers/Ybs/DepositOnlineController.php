@@ -128,7 +128,7 @@ class DepositOnlineController extends Controller
             $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
                 'apikey'     => $apiKey,
                 'number'     => $paymentinfo['contact'],
-                'message'    => "You have successfully paid the amount of P". $amounPaid .". Thank you.",
+                'message'    => "You have successfully paid the amount of P". $paymentinfo['amount_paid'] .". Thank you.",
                 'sendername' => 'LARATSYS',
             ]);
             // Check if request was successful
