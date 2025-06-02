@@ -18,6 +18,8 @@ class SavingAccount extends Model
         'interest_rate',
         'is_approved',
         'is_active',
+        'is_bm_approved',
+        'is_do_approved',
         'opened_at',
         'closed_at',
         'default_account'

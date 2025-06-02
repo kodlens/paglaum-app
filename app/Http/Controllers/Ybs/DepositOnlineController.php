@@ -104,12 +104,6 @@ class DepositOnlineController extends Controller
         $paymentIntent = $paymongoDetails['data']['attributes']['payment_intent'];
 
         $data = SavingAccount::find($savingsId);
-        // $data->refno = $refno;
-        // $data->payment_method = 'ONLINE';
-        // $data->transaction_type = 'ONLINE';
-        // $data->payment_session = $paymentSession;
-        // $data->datetime_deposit = \Carbon\Carbon::now();
-        // $data->save();
         
         SavingTransaction::create([
             'saving_account_id' => $savingsId,
@@ -126,11 +120,28 @@ class DepositOnlineController extends Controller
         ]);
 
         $data->balance = $data->balance + $paymentinfo['amount_paid'];
-
-        //return $data;
         $data->save();
 
-        //return $paymongoDetails;
+        if(env('SMS') > 0){
+            $apiKey = env('SMS_API_KEY');
+            $response = Http::asForm()->post('https://semaphore.co/api/v4/messages', [
+                'apikey'     => $apiKey,
+                'number'     => $paymentinfo['contact'],
+                'message'    => "You have successfully paid the amount of P". $amounPaid .". Thank you.",
+                'sendername' => 'LARATSYS',
+            ]);
+            // Check if request was successful
+            if ($response->successful()) {
+                $output = $response->json(); // Optional: handle the JSON response
+            } else {
+                // Handle the error
+                \Log::error('SMS sending failed', [
+                    'response' => $response->body(),
+                    'status' => $response->status(),
+                ]);
+            }
+        }
+        //\Log::info('SMS deposited YBS');
 
         return Inertia::render('Ybs/MySavings/Paymongo/SavingsDepositSuccess');
     }

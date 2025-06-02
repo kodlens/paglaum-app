@@ -28,6 +28,9 @@ return new class extends Migration
             $table->double('interest_rate')->default(0);
 
             $table->tinyInteger('is_approved')->default(1);
+            $table->tinyInteger('is_bm_approved')->default(0);
+            $table->tinyInteger('is_do_approved')->default(0);
+            
             $table->tinyInteger('is_active')->default(1);
             $table->dateTime('opened_at')->nullable();
             $table->dateTime('closed_at')->nullable();
