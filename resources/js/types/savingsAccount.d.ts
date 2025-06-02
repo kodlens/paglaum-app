@@ -26,6 +26,8 @@ export interface SavingsAccount {
   interest_rate: number;
   is_active?: number;
   is_approved?: number;
+  is_do_approved?: number;
+  is_bm_approved?: number;
   opened_at?: DateTime;
   closed_at?: DateTime;
   updated_at?: Date;

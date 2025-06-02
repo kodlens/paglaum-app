@@ -14,7 +14,7 @@ import {
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { BookUp, Captions, FileLock2, MessageSquareMore, Pencil, RefreshCcwIcon, ShieldCheck, ShieldOff, ThumbsUp, Trash2, Wallet } from 'lucide-react';
+import { BookUp, Captions, FileLock2, MessageSquareMore, Pencil, RefreshCcwIcon, ShieldCheck, ShieldOff, ThumbsDown, ThumbsUp, Trash2, Wallet } from 'lucide-react';
 import { Loan } from '@/types/loan';
 import DoAuthLayout from '@/Layouts/DoAuthLayout';
 import { LoanType } from '@/types/loanType';
@@ -84,23 +84,26 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
         const { name, value } = e.target;
         setFields({ ...fields, [name]: value })
     }
+    
+
+
     const handleClickApprove = (savingsAccount: SavingsAccount) => {
         modal.confirm({
-            title: savingsAccount.is_approved ? 'Disapprove?' : 'Approve?', content: `Are you sure you want to ${savingsAccount.is_approved ? 'disapprove' : 'approve'} this SA?`,
+            title: savingsAccount.is_do_approved ? 'Disapprove?' : 'Approve?', content: `Are you sure you want to ${savingsAccount.is_do_approved ? 'disapprove' : 'approve'} this SA?`,
             onOk: () => {
-                if (!!savingsAccount.is_approved) {
+                if (!!savingsAccount.is_do_approved) {
                     axios.post('/do/disapprove-savings-account/' + savingsAccount.id).then(res => {
                         if (res.data.status === 'disapproved') {
-                            notification.success({ placement: 'bottomRight', message: 'Disapproved!', description: 'SA Disapproved successfully.' })
+                            notification.success({ placement: 'bottomRight', message: 'Disapproved!', description: 'SA disapproved successfully.' })
                             loadDataAsync()
                         }
                     }).catch(err => {
 
-                        if (err.response.status === 422) {
+                        if (err.response.error.approve) {
                             notification.error({
                                 placement: 'bottomRight',
                                 description: 'Error: ' + err.response.data.message,
-                                message: 'Approved Already!'
+                                message: 'Not Allowed!'
                             });
                         }
 
@@ -118,67 +121,6 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                     axios.post('/do/approve-savings-account/' + savingsAccount.id).then(res => {
                         if (res.data.status === 'approved') {
                             notification.success({ placement: 'bottomRight', message: 'Approved!', description: 'SA approved successfully.' })
-                            loadDataAsync()
-                        }
-                    }).catch(err => {
-                        if (err.response.data.errors.loan) {
-                            notification.error({
-                                placement: 'bottomRight',
-                                description: 'Error: ' + err.response.data.message,
-                                message: 'Approved Already!'
-                            });
-                        }
-                        if (err.response.data.status === 500) {
-                            if (err.response.data.errors.loan) {
-                                notification.error({
-                                    placement: 'bottomRight',
-                                    description: 'Error: Unknown',
-                                    message: 'Contact System Administrator'
-                                });
-                            }
-                        }
-
-                    })
-                }
-            }
-        })
-    }
-
-
-    const handleActivate = (savingsAccount: SavingsAccount) => {
-        modal.confirm({
-            title: savingsAccount.is_active ? 'Deactivate?' : 'Activate?', content: `Are you sure you want to ${savingsAccount.is_active ? 'deactivate' : 'activate'} this SA?`,
-            onOk: () => {
-                if (!!savingsAccount.is_active) {
-                    axios.post('/do/deactivate-savings-account/' + savingsAccount.id).then(res => {
-                        if (res.data.status === 'deactivated') {
-                            notification.success({ placement: 'bottomRight', message: 'Deactivated!', description: 'SA deactivated successfully.' })
-                            loadDataAsync()
-                        }
-                    }).catch(err => {
-
-                        if (err.response.status === 422) {
-                            notification.error({
-                                placement: 'bottomRight',
-                                description: 'Error: ' + err.response.data.message,
-                                message: 'Approved Already!'
-                            });
-                        }
-
-                        if (err.response.data.status === 500) {
-                            if (err.response.data.errors.loan) {
-                                notification.error({
-                                    placement: 'bottomRight',
-                                    description: 'Error: Unknown',
-                                    message: 'Contact System Administrator'
-                                });
-                            }
-                        }
-                    })
-                } else {
-                    axios.post('/do/activate-savings-account/' + savingsAccount.id).then(res => {
-                        if (res.data.status === 'activated') {
-                            notification.success({ placement: 'bottomRight', message: 'Activated!', description: 'SA activate successfully.' })
                             loadDataAsync()
                         }
                     }).catch(err => {
@@ -302,13 +244,22 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                                 )
                             )} />
 
-                            <Column title="Active" dataIndex="is_active" render={(is_active: number) => (
-                                is_active > 0 ? (
+                            <Column title="DO Approved" dataIndex="is_do_approved" render={(is_do_approved: number) => (
+                                is_do_approved ? (
                                     <span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
                                 ) : (
                                     <span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
                                 )
                             )} />
+
+                            <Column title="BM Approved" dataIndex="is_bm_approved" render={(is_bm_approved: number) => (
+                                is_bm_approved ? (
+                                    <span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
+                                ) : (
+                                    <span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
+                                )
+                            )} />
+
                             <Column title="Action" key="action"
                                 render={(_, data: SavingsAccount) => (
                                     <div className='flex gap-2'>
@@ -333,10 +284,10 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
                                                     // },
                                                     {
                                                         key: '2',
-                                                        label: data.is_active ? 'Deactivate' : 'Activate',
-                                                        icon: <ShieldCheck size={16} />,
+                                                        label: data.is_do_approved ? 'Disapprove' : 'Approve',
+                                                        icon: data.is_do_approved ? <ThumbsDown size={16} /> : <ThumbsUp size={16} />,
                                                         onClick: () => {
-                                                            handleActivate(data)
+                                                            handleClickApprove(data)
                                                         }
                                                     },
                                                     {

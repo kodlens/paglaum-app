@@ -37,8 +37,8 @@ Route::middleware(['auth', 'do'])->group(function () {
     Route::post('/do/approve-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'approve']); //approve
     Route::post('/do/disapprove-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'disapprove']); //disapprove
 
-    Route::post('/do/activate-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'activate']); //approve
-    Route::post('/do/deactivate-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'deactivate']); //disapprove
+    // Route::post('/do/approve-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'activate']); //approve
+    // Route::post('/do/disapprove-savings-account/{id}', [App\Http\Controllers\Do\DoMemberSavingsAccountController::class, 'deactivate']); //disapprove
 
 
     /* ================WITHDRAWAL/DEPOSIT========================= */

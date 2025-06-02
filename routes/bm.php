@@ -25,8 +25,8 @@ Route::middleware(['auth', 'bm'])->group(function () {
     Route::post('/bm/approve-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'approve']); //approve
     Route::post('/bm/disapprove-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'disapprove']); //disapprove
 
-    Route::post('/bm/activate-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'activate']); //approve
-    Route::post('/bm/deactivate-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'deactivate']); //disapprove
+    //Route::post('/bm/activate-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'activate']); //approve
+    //Route::post('/bm/deactivate-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'deactivate']); //disapprove
 
       /* ================WITHDRAWAL/DEPOSIT========================= */
       Route::get('/bm/withdraw-deposit/{id}', [App\Http\Controllers\Bm\BmWithdrawDepositController::class, 'index']);

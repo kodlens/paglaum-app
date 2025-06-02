@@ -32,7 +32,17 @@ class BmSavingsAccountController extends Controller
 
     public function approve($id){
         $data = SavingAccount::find($id);
+        if($data->is_bm_approved == 1){
+            return response()->json([
+                'errors' => [
+                    'approval' => ['Already approved.']
+                ],
+                'message' => 'Already approved.'
+            ], 422);
+        }
+        $data->is_bm_approved = 1;
         $data->is_approved = 1;
+        $data->is_active = 1;
         $data->save();
 
         if(env('SMS') > 0){
@@ -55,6 +65,7 @@ class BmSavingsAccountController extends Controller
                 ]);
             }
         }
+        //\Log::info('SMS sent for approve savings acc');
 
         return response()->json([
             'status' => 'approved',
@@ -63,6 +74,17 @@ class BmSavingsAccountController extends Controller
 
     public function disapprove($id){
         $data = SavingAccount::find($id);
+        if($data->is_bm_approved == 0){
+            return response()->json([
+                'errors' => [
+                    'approval' => ['Already disapproved.']
+                ],
+                'message' => 'Already disapproved.',
+            ], 422);
+        }
+
+        $data->is_bm_approved = 0;
+        $data->is_active = 0;
         $data->is_approved = 0;
         $data->save();
 
