@@ -22,7 +22,9 @@ import { Captions, FileLock2, MonitorCheck, Pencil, RefreshCw, ShieldOff, Trash2
 const { Column } = Table;
 
 interface SearchFields {
-    lname:string;
+    lname?:string;
+    role?: string;
+
 }
 
 const AdminUserIndex = ({ auth }: PageProps)=> {
@@ -41,7 +43,8 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
 	const [perPage, setPerPage] = useState(10);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState<SearchFields>({
-        lname: ''
+        lname: '',
+        role: '',
     });
 
     const [errors, setErrors] = useState<any>({
@@ -66,6 +69,7 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
         setLoading(true)
         const params = [
             `lname=${search.lname}`,
+            `role=${search.role}`,
             `perpage=${perPage}`,
             `page=${page}`
         ].join('&');
@@ -170,9 +174,31 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
 					{/* card body */}
 
                     <div className='my-4'>
-                        <div className='flex flex-col gap-2'>
-                            <label htmlFor="search-lname">Last Name</label>
-                            <Input id='search-lname' name='lname' onChange={handleChange} placeholder="Search Last Name"/>
+                        <div className='flex md:flex-row flex-col gap-2'>
+                            <div className='flex flex-col gap-2 w-full'>
+                                <label htmlFor="search-lname">Last Name</label>
+                                <Input id='search-lname' 
+                                    name='lname' onChange={handleChange} 
+                                    placeholder="Search Last Name"/>
+                            </div>
+                            <div className='flex flex-col gap-2 w-full'>
+                                <label>Select Role</label>
+                                    <Select
+                                        value={search.role}
+                                        onChange={(value:string)=>setSearch({...search, role: value})}
+                                        className='w-full'
+                                        options={[
+                                            { value: "", label: "ALL" },
+                                            { value: "ADMIN", label: "ADMIN" },
+                                            { value: "BM", label: "BM" },
+                                            { value: "DO", label: "DO" },
+                                            { value: "IPP", label: "IPP" },
+                                             { value: "MEMBER", label: "MEMBER" },
+                                            { value: "YBS", label: "YOUTH BEE" },
+                                           
+                                            
+                                        ]}/>
+                            </div>
                         </div>
                         
                         <Button type='primary' className='mt-4'

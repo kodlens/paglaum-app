@@ -18,10 +18,15 @@ class UserController extends Controller
 
     public function getData(Request $req){
 
-        $data = User::where('lname', 'like', $req->lname . '%')
-            ->paginate($req->perPage);
+        $data = User::where('lname', 'like', $req->lname . '%');
 
-        return $data;
+        if($req->role !== ''){
+            $data->where('role', 'LIKE', $req->role . '%');
+        }
+            
+        return $data->paginate($req->perPage);
+
+        
     }
 
     public function show($id){
