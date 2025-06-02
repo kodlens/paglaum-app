@@ -142,7 +142,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/open-dashboard/load-loan-payment-today', [App\Http\Controllers\OpenDashboardController::class, 'loadLoanPaymentToday']);
     Route::get('/open-dashboard/load-total-deposit-today', [App\Http\Controllers\OpenDashboardController::class, 'loadLoanDepositToday']);
 
-
+    //chart
+    Route::get('/open-dashboard/chart-monthly-financial-report', [App\Http\Controllers\ChartReport\MonthlyFinancialSummaryReportController::class, 'report']);
+    
     
 });
 
@@ -196,10 +198,13 @@ Route::middleware(['auth'])->group(function () {
         ->name('reports.income-interest.index');
     Route::get('/reports/get-income-interest', [App\Http\Controllers\Reports\ReportIncomeInterestController::class, 'report']);
 
-  Route::get('/reports/deliquency-report', [App\Http\Controllers\Reports\ReportDeliquencyController::class, 'index'])
+    Route::get('/reports/deliquency-report', [App\Http\Controllers\Reports\ReportDeliquencyController::class, 'index'])
         ->name('reports.deliquency-report.index');
     Route::get('/reports/get-deliquency-report', [App\Http\Controllers\Reports\ReportDeliquencyController::class, 'report']);
+   
+ 
     
+
 });
 
 /* ============ REPORTS ====================== */
