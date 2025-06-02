@@ -11,7 +11,7 @@ import {
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';
 import PanelSideBarLogo from '@/Components/PanelSideBarLogo';
 import { User } from '@/types';
-import { LogOut } from 'lucide-react';
+import { ClipboardMinus, LogOut } from 'lucide-react';
 
   const { Header, Sider, Content } = Layout;
 
@@ -52,6 +52,19 @@ export default function IppAuthLayout(
                 icon: <BarsOutlined />,
                 label: 'Loans'
             },
+            {
+                key: 'do.reports.index',
+                icon: <ClipboardMinus size={16}/>,
+                label: 'Report',
+                children: [
+                   
+                   
+                    {
+                        key: 'reports.insurance.index',
+                        label: 'Insurance Report'
+                    },
+                ]
+            }
 
             // {
             //     key: 'ipp.members.index',

@@ -1,10 +1,8 @@
 import { PageProps } from '@/types'
 import { Head } from '@inertiajs/react'
 import { User } from 'lucide-react'
-import React from 'react'
 
 import dayjs from 'dayjs';
-import axios from 'axios'
 const dateFormat = (item:Date, customFormat:string):string=> {
 	return dayjs(item).format(customFormat)
 }
@@ -23,6 +21,10 @@ import {
 } from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
 import DoAuthLayout from '@/Layouts/DoAuthLayout';
+import LoanPendingApplication from '@/Components/Dashboard/LoanPendingApplication';
+import PendingAccounts from '@/Components/Dashboard/PendingAccounts';
+import TotalLoanPaymentToday from '@/Components/Dashboard/TotalLoanPaymentToday';
+import TotalDepositToday from '@/Components/Dashboard/TotalSavingsDepositToday';
 
 
 ChartJS.register(
@@ -39,13 +41,6 @@ ChartJS.register(
 
 export default function Dashboard( { auth } : PageProps) {
 
-    const [data, setData] = React.useState<any>(null)
-
-    const loadDashboardReport = () => {
-        axios.get('/do/load-dashboard-report').then(res=>{
-            
-        })
-    }
 
     const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
@@ -104,31 +99,15 @@ export default function Dashboard( { auth } : PageProps) {
             </div>
 
             <div className='mt-4 flex gap-4 flex-wrap'>
-                <div className='bg-white shadow-sm flex-1 p-4'>
-                    <div className=''>
-                        <div className='text-[2rem] font-bold'>125</div>
-                        <div className=''>Pending Application</div>
-                    </div>
-                </div>
-                <div className='bg-white shadow-sm flex-1 p-4'>
-                    <div className=''>
-                        <div className='text-[2rem] font-bold'>54</div>
-                        <div className=''>Pending Payment</div>
-                    </div>  
-                </div>
-                <div className='bg-white shadow-sm flex-1 p-4'>
-                    <div className=''>
-                        <div className='text-[2rem] font-bold'>10</div>
-                        <div className=''>Pending Accounts</div>
-                    </div>  
-                </div>
+                
+                <LoanPendingApplication />
+                
+                <PendingAccounts />
 
-                <div className='bg-white shadow-sm flex-1 p-4'>
-                    <div className=''>
-                        <div className='text-[2rem] font-bold'>&#x20B1; 10,500</div>
-                        <div className=''>Income Today</div>
-                    </div>  
-                </div>
+                <TotalLoanPaymentToday />
+
+                <TotalDepositToday />
+                
             </div>
 
 
