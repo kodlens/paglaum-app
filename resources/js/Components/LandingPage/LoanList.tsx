@@ -1,4 +1,11 @@
+import { router } from "@inertiajs/react";
+
 export default () => {
+
+    const handleClick = () => {
+        router.visit('/register');
+    }
+    
     const plans = [
         {
             name: "PROJECT LOAN (FLAT INTEREST RATE)",
@@ -84,7 +91,7 @@ export default () => {
                                     </span>
                                 </div>
                                 <p>{item.desc}</p>
-                                <button className="px-3 py-3 rounded-lg w-full font-semibold text-sm duration-150 text-white bg-sky-600 hover:bg-indigo-500 active:bg-indigo-700">
+                                <button onClick={handleClick} className="px-3 py-3 rounded-lg w-full font-semibold text-sm duration-150 text-white bg-sky-600 hover:bg-indigo-500 active:bg-indigo-700">
                                     Avail Now!
                                 </button>
                             </div>

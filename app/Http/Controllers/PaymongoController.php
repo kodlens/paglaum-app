@@ -52,7 +52,7 @@ class PaymongoController extends Controller
             
 
             //principal amount + the normal interest amount and then apply percentInterest
-            $penaltyAmount = ($req->principal + $req->interest_amount) * ($percentInterest / 100);
+            $penaltyAmount = round(($req->principal + $req->interest_amount) * ($percentInterest / 100), 2);
             $amount = round(($req->principal + $req->interest_amount) + $penaltyAmount + $req->savings + $req->insurance_payment , 2);
             //add penalty
         }else{

@@ -211,6 +211,11 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+/* ============ REGISTRATION VALIDATION REQUEST ====================== */
+    Route::post('/check-username', [App\Http\Controllers\RegisterValidation::class, 'checkUsername']);
+
+
+
 // FOR CRON JOB
 Route::get('/cron/apply-savings-interest', [App\Http\Controllers\Cron\SavingsInterestController::class, 'savingsInterest']);
 Route::get('/cron/check-due-date', [App\Http\Controllers\Cron\CheckDueDateController::class, 'checkDue']);
