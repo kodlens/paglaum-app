@@ -28,7 +28,8 @@ class LoanDetail extends Model
         'insurance_payment',
         'total_amount',
         'savings',
-        'is_penalty'
+        'is_penalty',
+        'penalty_amount'
     ];
 
     public function user(){

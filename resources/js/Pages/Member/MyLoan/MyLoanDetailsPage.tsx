@@ -146,7 +146,7 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan
                         <div className='w-full md:w-[70px] text-center py-1 px-1 bg-red-400 rounded-2xl text-[10px] mb-2 text-white font-bold'>PENALTY</div>
                       ) : null}
 
-                       { isDueSoon(dayjs(item.due_date)) ? (
+                       { !item.is_paid && isDueSoon(dayjs(item.due_date)) ? (
                         <div className='w-full md:w-[70px] text-center py-1 px-1 bg-orange-200 rounded-2xl text-[10px] mb-2 font-bold'>DUE SOON</div>
                       ) : null}
                     </div>
@@ -177,6 +177,11 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan
                         <div>&#8369; {item.insurance_payment}</div>
                       </div>
 
+                      <div>
+                        <div className='font-bold text-gray-500'>Penalty</div>
+                        <div>&#8369; {item.penalty_amount}</div>
+                      </div>
+
                      
 
                       <div>
@@ -196,8 +201,11 @@ export default function MyLoanDetailsPage({ auth, loan }: PageProps<{ loan: Loan
                             </div>
                           ) : ''}
                       </div>
+
+                      
                       
                     </div>
+                  
                   </div>
 
                 </div>

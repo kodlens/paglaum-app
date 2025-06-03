@@ -52,6 +52,7 @@ return new class extends Migration
             $table->double('total_amount')->default(0);
             $table->double('savings')->default(0);
             $table->tinyInteger('is_penalty')->default(0);
+            $table->double('penalty_amount')->default(0);
 
             $table->timestamps();
         });

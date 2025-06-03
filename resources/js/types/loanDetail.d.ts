@@ -21,6 +21,7 @@ export interface LoanDetail {
     shared?: number;
     savings?: number;
     is_penalty?: number;
+    penalty_amount?: number;
     updated_at: Date|unknown;
     created_at: Date|unknown;
 }

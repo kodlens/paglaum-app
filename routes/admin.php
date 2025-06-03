@@ -29,6 +29,9 @@ Route::middleware(['auth', 'admin', 'active'])->group(function () {
     Route::post('/admin/user-set-active/{id}', [App\Http\Controllers\Administrator\UserController::class, 'userSetActive']);
     Route::post('/admin/user-set-inactive/{id}', [App\Http\Controllers\Administrator\UserController::class, 'userSetInactive']);
     
+    Route::post('/admin/change-password/{id}', [App\Http\Controllers\Administrator\UserController::class, 'changePassword']);
+
+
 });
 
   /* ===============================

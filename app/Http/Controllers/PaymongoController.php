@@ -50,9 +50,11 @@ class PaymongoController extends Controller
             $monthsBehind = $date->diffInMonths($today) + 1;
             $percentInterest = $monthsBehind * 5; //tubo per month
             
-            $interetstAmount = ($req->principal + $req->interest_amount) * ($percentInterest / 100);
-            $amount = round(($req->principal + $req->interest_amount) + $interetstAmount + $req->savings + $req->insurance_payment , 2);
-            //add penalt
+
+            //principal amount + the normal interest amount and then apply percentInterest
+            $penaltyAmount = ($req->principal + $req->interest_amount) * ($percentInterest / 100);
+            $amount = round(($req->principal + $req->interest_amount) + $penaltyAmount + $req->savings + $req->insurance_payment , 2);
+            //add penalty
         }else{
             $amount = $req->amount;
             $isPenalty = 0;
@@ -96,7 +98,8 @@ class PaymongoController extends Controller
                         'loan_id' => $req->loanid,
                         'loan_detail_id' => $req->loandetailid,
                         'user_id' => $user->id,
-                        'is_penalty' => $isPenalty
+                        'is_penalty' => $isPenalty,
+                        'penalty_amount' => $penaltyAmount
                     ]
                 ],
                 
@@ -139,6 +142,7 @@ class PaymongoController extends Controller
         $loanDetailId = $paymentinfo['loan_detail_id'];
         $amounPaid = $paymentinfo['amount_paid'];
         $isPenalty = $paymentinfo['is_penalty'];
+        $penaltyAmount = $paymentinfo['penalty_amount'];
         $paymentIntent = $paymongoDetails['data']['attributes']['payment_intent'];
 
         $loanDetail = LoanDetail::find($loanDetailId);
@@ -151,6 +155,7 @@ class PaymongoController extends Controller
         $loanDetail->payment_session = $paymentSession;
         $loanDetail->payment_intent = $paymentIntent['id'];
         $loanDetail->datetime_paid = \Carbon\Carbon::now();
+        $loanDetail->penalty_amount = $penaltyAmount;
         $loanDetail->save();
 
         //check if naa pa bay next loan to pay

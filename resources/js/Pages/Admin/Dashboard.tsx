@@ -113,7 +113,7 @@ export default function Dashboard( { auth } : PageProps) {
 
 
             <div className='flex gap-2'>
-                <MonthlyFinancialSummaryReport />
+                {/* <MonthlyFinancialSummaryReport /> */}
 
                 {/* <div className='flex-1 bg-white shadow-sm p-5 mt-4'>
                     <Bar options={options} data={dataSets} />
