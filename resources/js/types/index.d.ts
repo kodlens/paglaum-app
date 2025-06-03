@@ -34,7 +34,7 @@ export interface User {
     occupation?: string;
     industry_code?: string;
     occupational_code?: string;
-    monthly_income?: string;
+    monthly_income?: string|number;
     business_name?:string;
     business_address?: string;
     contact_person?: string;
@@ -52,7 +52,8 @@ export interface User {
     zip_code?: string|number;
     image?: string;
     email_verified_at?: string;
-    role?: string;
+    role?: string|null;
+    id_image?: string|null;
     membership_date?: Date|null;
     active?: number;
     is_loan_allowed?: number;

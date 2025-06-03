@@ -69,14 +69,13 @@ const AccountInformation = ({ handleNext }: { handleNext: any }) => {
           </div>
         }
         type="primary" onClick={() => {
-
           axios.post('/check-username', {
             username: data.username,
             password: data.password,
             password_confirmation: data.password_confirmation
           }).then(res => {
             if (res.data.status === 'valid') {
-              handleNext(1, data)
+              handleNext(data)
             }
           }).catch(err => {
             setErrors(err.response.data.errors)

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { EducationLevel } from '@/types/educationLevel';
 import { ArrowDownRight, ArrowRight, Captions, Divide } from 'lucide-react';
 import AccountInformation from './RegisterPartials/AccountInformation';
+import PersonalInformation from './RegisterPartials/PersonalInformation';
 
 export default function RegisterPage({ educationLevels }: { educationLevels: EducationLevel[] }) {
 
@@ -20,12 +21,11 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
   const [provinces, setProvinces] = useState<any[]>([]);
   const [cities, setCities] = useState<any[]>([]);
   const [barangays, setBarangays] = useState<any[]>([]);
-  const [idTypes, setIdTypes] = React.useState<any>([])
-
+ 
   const [form] = Form.useForm();
   const [errors, setErrors] = useState<any>({});
 
-  const { data, setData } = useForm({
+  const { data, setData } = useState<User>({
     username: '',
     password: '',
     password_confirmation: '',
@@ -66,7 +66,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
     id_image: null,
 
-
     province: null,
     city: null,
     barangay: null,
@@ -75,66 +74,9 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     role: '',
   });
 
-  const loadIdTypes = () => {
-    axios.get('/load-id-types').then(res => {
-      setIdTypes(res.data);
-    })
-  }
+  
 
-  useEffect(() => {
-    loadIdTypes()
-  }, [])
-
-  const { props } = usePage<PageProps>();
-  const csrfToken = props.csrf_token ?? ""; // Ensure csrfToken is a string
-
-  const uploadProps: UploadProps = {
-    name: "id_image",
-    action: "/temp-upload",
-    headers: {
-      "X-CSRF-Token": csrfToken,
-    },
-    beforeUpload: (file) => {
-      const isPNG = file.type === "image/png";
-      const isJPG = file.type === "image/jpeg";
-
-      if (!isPNG && !isJPG) {
-        message.error(`${file.name} is not a png/jpg file`);
-      }
-      return isPNG || isJPG || Upload.LIST_IGNORE;
-    },
-
-    onChange(info) {
-      // if (id > 0) {
-      //     //console.log(info);
-      //     //form.setFieldValue('featured_image', info.file.name)
-      // } else {
-
-      // }
-
-      //console.log(info.file);
-
-      if (info.file.status === "done") {
-        console.log(info.file.response);
-        info.file.url = '/storage/temp/' + info.file.response
-        setData('id_image', info.file.response)
-        message.success(
-          `${info.file.name} file uploaded successfully`
-        );
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-    onRemove(info) {
-      axios
-        .post("/temp-remove/" + info.response)
-        .then((res) => {
-          if (res.data.status === "temp_deleted") {
-            message.success("File removed.");
-          }
-        });
-    },
-  };
+ 
 
 
   const submit = () => {
@@ -160,9 +102,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     }).catch((error: any) => {
       setLoading(false);
       if (error.response.status === 422) {
-
         setErrors(error.response.data.errors);
-
         notification.error({
           placement: 'bottomRight',
           message: 'Invalid Input',
@@ -343,7 +283,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
   const steps = [
     {
       title: 'Account',
-      content: <AccountInformation handleNext={(v: any, values:any) => {
+      content: <AccountInformation handleNext={(values:any) => {
         setCurrent(current + 1)
         setData({...data,
           username: values.username,
@@ -355,7 +295,13 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     },
     {
       title: 'Personal',
-      content: personalInformation(),
+      content: <PersonalInformation educationLevels={educationLevels} handleNext={(values:User)=>{
+        setCurrent(current + 1)
+        setData({...data,
+          lname: values.lname,
+          fname: values.fname
+        })
+      }} />,
     },
     {
       title: 'Address',

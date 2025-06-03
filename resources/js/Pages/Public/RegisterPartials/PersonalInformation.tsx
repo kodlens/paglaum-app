@@ -1,19 +1,121 @@
+import { PageProps, User } from "@/types";
 import { EducationLevel } from "@/types/educationLevel";
-import { App, DatePicker, Form, Input, Select } from "antd";
-import { useState } from "react";
+import { usePage } from "@inertiajs/react";
+import { App, Button, DatePicker, Form, Input, InputNumber, Select, Upload, UploadProps } from "antd";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { ArrowLeftOutlined, FileAddOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons'
+import { ArrowRight } from "lucide-react";
 
-const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
 
-  const { notification } = App.useApp();
+const PersonalInformation =  ( {educationLevels, handleNext }: { educationLevels:EducationLevel[] , handleNext:any }) => {
 
-  const [errors, setErrors] = useState<any>(null);
+  const { notification, message } = App.useApp();
+
+  const [errors, setErrors] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(false);
+  const [idTypes, setIdTypes] = useState<any>([])
 
-  const [data, setData] = useState<any>({
-    role: '',
-    password: '',
-    password_confirmation: ''
+  const [data, setData] = useState<User>({
+    lname: '',
+    fname: '',
+    mname: '',
+    suffix: '',
+    email: '',
+    contact_no: '',
+
+    sex: '',
+    education_level: '',
+    birthplace: '',
+    birthdate: null,
+    civil_status: '',
+
+    religion: '',
+    ethnic_group: '',
+    nationality: '',
+    height: 0,
+    weight: 0,
+    blood_type: '',
+    sss: '',
+    tin: '',
+    gsis: '',
+    id_type: '',
+    id_no: '',
+    philhealth: '',
+    umid: '',
+    household_size: 0,
+    occupation: '',
+    monthly_income: 0,
+    business_name: '',
+    business_address: '',
+    contact_person: '',
+    contact_person_no: '',
+    id_image: null,
+    role: 'MEMBER'
   });
+
+
+  const loadIdTypes = () => {
+    axios.get('/load-id-types').then(res => {
+      setIdTypes(res.data);
+    })
+  }
+  
+  useEffect(() => {
+    loadIdTypes()
+  }, [])
+
+
+   const { props } = usePage<PageProps>();
+  const csrfToken = props.csrf_token ?? ""; // Ensure csrfToken is a string
+
+  const uploadProps: UploadProps = {
+    name: "id_image",
+    action: "/temp-upload",
+    headers: {
+      "X-CSRF-Token": csrfToken,
+    },
+    beforeUpload: (file) => {
+      const isPNG = file.type === "image/png";
+      const isJPG = file.type === "image/jpeg";
+
+      if (!isPNG && !isJPG) {
+        message.error(`${file.name} is not a png/jpg file`);
+      }
+      return isPNG || isJPG || Upload.LIST_IGNORE;
+    },
+
+    onChange(info) {
+      // if (id > 0) {
+      //     //console.log(info);
+      //     //form.setFieldValue('featured_image', info.file.name)
+      // } else {
+
+      // }
+
+      //console.log(info.file);
+
+      if (info.file.status === "done") {
+        console.log(info.file.response);
+        info.file.url = '/storage/temp/' + info.file.response
+        setData({...data, id_image: info.file.response})
+        message.success(
+          `${info.file.name} file uploaded successfully`
+        );
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    onRemove(info) {
+      axios
+        .post("/temp-remove/" + info.response)
+        .then((res) => {
+          if (res.data.status === "temp_deleted") {
+            message.success("File removed.");
+          }
+        });
+    },
+  };
 
   return (
     <>
@@ -212,7 +314,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
         >
           <InputNumber size='large' className='w-full'
             value={data.household_size}
-            onChange={(value) => setData({'household_size', value ? value : 0})}
+            onChange={(value) => setData({...data, household_size:value ? value : 0})}
             placeholder='Household Size...' />
         </Form.Item>
       </div>
@@ -226,7 +328,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
               help={errors?.gsis ? errors?.gsis[0] : ''}
             >
               <Input placeholder="GSIS"
-                onChange={(e) => setData('gsis', e.target.value)}
+                onChange={(e) => setData({...data, gsis:e.target.value})}
                 value={data.gsis}
                 size="large" />
             </Form.Item>
@@ -237,7 +339,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
               help={errors?.sss ? errors?.sss[0] : ''}
             >
               <Input placeholder="SSS"
-                onChange={(e) => setData('sss', e.target.value)}
+                onChange={(e) => setData({...data, sss: e.target.value})}
                 value={data.sss}
                 size="large" />
             </Form.Item>
@@ -253,7 +355,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
           help={errors?.tin ? errors?.tin[0] : ''}
         >
           <Input placeholder="TIN"
-            onChange={(e) => setData('tin', e.target.value)}
+            onChange={(e) => setData({...data, tin: e.target.value})}
             value={data.tin}
             size="large" />
         </Form.Item>
@@ -268,7 +370,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
 
           <Select
             value={data.id_type}
-            onChange={(value) => setData('id_type', value)}
+            onChange={(value) => setData({...data, id_type: value})}
             className='h-10'
             options={idTypes.map((type: any) => ({
               value: type.id_type,
@@ -283,7 +385,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
           help={errors?.id_no ? errors?.id_no[0] : ''}
         >
           <Input placeholder="ex. 1234567"
-            onChange={(e) => setData('id_no', e.target.value)}
+            onChange={(e) => setData({...data, id_no: e.target.value})}
             value={data.id_no}
             size="large" />
         </Form.Item>
@@ -335,7 +437,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
                 help={errors?.occupation ? errors?.occupation[0] : ''}
               >
                 <Input placeholder="ex. Office Staff"
-                  onChange={(e) => setData('occupation', e.target.value)}
+                  onChange={(e) => setData({...data, occupation: e.target.value})}
                   value={data.occupation}
                   size="large" />
               </Form.Item>
@@ -349,7 +451,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
                   type='number'
                   className='w-full'
                   placeholder="ex. 10000"
-                  onChange={(value) => setData('monthly_income', value ? value : 0)}
+                  onChange={(value) => setData({...data, monthly_income: value ? value : 0})}
                   value={data.monthly_income}
                   size="large" />
               </Form.Item>
@@ -362,7 +464,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
                 help={errors?.business_name ? errors?.business_name[0] : ''}
               >
                 <Input placeholder="ex. Business Name..."
-                  onChange={(e) => setData('business_name', e.target.value)}
+                  onChange={(e) => setData({...data, business_name: e.target.value})}
                   value={data.business_name}
                   size="large" />
               </Form.Item>
@@ -373,7 +475,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
                 help={errors?.business_address ? errors?.business_address[0] : ''}
               >
                 <Input placeholder="ex. Business Address..."
-                  onChange={(e) => setData('business_address', e.target.value)}
+                  onChange={(e) => setData({...data, business_address: e.target.value})}
                   value={data.business_address}
                   size="large" />
               </Form.Item>
@@ -388,7 +490,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
                 help={errors?.contact_person ? errors?.contact_person[0] : ''}
               >
                 <Input placeholder="ex. Juan Cruz"
-                  onChange={(e) => setData('contact_person', e.target.value)}
+                  onChange={(e) => setData({...data, contact_person: e.target.value})}
                   value={data.contact_person}
                   size="large" />
               </Form.Item>
@@ -399,7 +501,7 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
                 help={errors?.contact_person_no ? errors?.contact_person_no[0] : ''}
               >
                 <Input placeholder="ex. 09361234123"
-                  onChange={(e) => setData('contact_person_no', e.target.value)}
+                  onChange={(e) => setData({...data, contact_person_no: e.target.value})}
                   value={data.contact_person_no}
                   size="large" />
               </Form.Item>
@@ -407,6 +509,41 @@ const PersonalInformation =  ( {educationLevels}: {educationLevels:[]}) => {
           </>
         ) : null
       }
+
+      <Button iconPosition='end'
+        loading={loading}
+        icon={
+          <div>
+            <ArrowRight size={18} />
+          </div>
+        }
+        type="primary" onClick={() => {
+
+          axios.post('/check-account-information', data).then(res => {
+            if (res.data.status === 'valid') {
+              handleNext(1, data)
+            }
+          }).catch(err => {
+            setErrors(err.response.data.errors)
+            if (err.response.status === 422) {
+              if (err.response.data.errors.username) {
+                notification.error({
+                  description: err.response.data.message,
+                  message: 'Invalid!'
+                })
+              }
+            }
+            if (err.response.status === 500) {
+              notification.error({
+                description: 'Unknown error. Please contact system administrator.',
+                message: 'Error!'
+              })
+            }
+          })
+        }}>
+        Next
+      </Button>
+      
     </>
   );
 }
