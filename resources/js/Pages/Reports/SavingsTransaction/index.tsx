@@ -1,16 +1,25 @@
+import ReportLogo from '@/Components/ReportLogo'
 import { Head } from '@inertiajs/react'
 import { Button, DatePicker } from 'antd'
 import axios from 'axios'
 import { ArrowLeft, PrinterCheck } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import dayjs from 'dayjs'
+
 
 interface Fields {
   transaction_type?: string;
   count_transaction_type?: number;
 }
+
+interface SearchFields {
+  dateFrom?: string;
+  dateTo?: string;
+}
+
 export default function ReportSavingsTransaction() {
   const [data, setData] = useState<Fields[]>([])
-  const [search, setSearch] = useState<any>({
+  const [search, setSearch] = useState<SearchFields>({
     dateFrom: '',
     dateTo: ''
   })
@@ -53,13 +62,21 @@ export default function ReportSavingsTransaction() {
           </div>
           
           <div className='flex gap-2 mb-2 print:hidden'>
-            <DatePicker onChange={(value)=> setSearch({...search, dateFrom: value})}/>
-            <DatePicker onChange={(value)=> setSearch({...search, dateTo: value})}/>
+            <DatePicker onChange={(value)=> setSearch({...search, dateFrom: value ? dayjs(value).format('YYYY-MM-DD') : ''})}/>
+                        <DatePicker onChange={(value)=> setSearch({...search, dateTo: value ? dayjs(value).format('YYYY-MM-DD') : ''})}/>
             <Button
               onClick={loadLoanTransaction}>Search</Button>
           </div>
 
-          <div className='font-bold text-center mb-4'>SUMMARY OF SAVINGS TRANSACTIONS</div>
+          <ReportLogo />
+
+          <div className='text-center my-4'>
+            <div className='font-bold'>
+              SUMMARY OF SAVINGS TRANSACTIONS
+            </div>
+            <div>As of {search.dateFrom ? search.dateFrom : null } to { search.dateTo ? search.dateTo : null }</div>
+          </div>
+
           <table className='border w-full'>
             <thead className='bg-gray-100 font-bold text-left'>
               <tr>

@@ -1,3 +1,4 @@
+import ReportLogo from '@/Components/ReportLogo'
 import { Head } from '@inertiajs/react'
 import { Button, DatePicker } from 'antd'
 import axios from 'axios'
@@ -58,6 +59,7 @@ export default function ReportMonthlySavings() {
           </div>
           
     
+          <ReportLogo />
 
           <div className='font-bold text-center mb-4'>MONTHLY SAVINGS</div>
           <table className='border w-full'>

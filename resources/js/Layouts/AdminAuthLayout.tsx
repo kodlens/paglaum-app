@@ -47,26 +47,36 @@ export default function AdminAuthLayout(
             label: 'Dashboard',
             //onClick: () => router.visit('/admin/dashboard')
 		},
-        {
-            key: 'admin.areas.index',
-            icon: <ProfileOutlined />,
-            label: 'Areas',
-            //onClick: () => router.visit('/admin/sections')
 
-        },
         {
-            key: 'admin.id-types.index',
-            icon: <ProfileOutlined />,
-            label: 'Id Type',
-            //onClick: () => router.visit('/admin/sections')
+            key: 'do.settngs.index',
+            icon: <ClipboardMinus size={16}/>,
+            label: 'Settings',
+            children: [
+                {
+                    key: 'admin.areas.index',
+                    icon: <ProfileOutlined />,
+                    label: 'Areas',
+                    //onClick: () => router.visit('/admin/sections')
 
+                },
+                {
+                    key: 'admin.id-types.index',
+                    icon: <ProfileOutlined />,
+                    label: 'Id Type',
+                    //onClick: () => router.visit('/admin/sections')
+
+                },
+                {
+                    key: 'admin.education-levels.index',
+                    icon: <BarsOutlined />,
+                    label: 'Education Levels',
+                    //onClick: () => router.visit('/admin/categories')
+                },
+            ]
         },
-        {
-            key: 'admin.education-levels.index',
-            icon: <BarsOutlined />,
-            label: 'Education Levels',
-            //onClick: () => router.visit('/admin/categories')
-        },
+
+        
         {
             type: 'divider'
         },
