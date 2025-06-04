@@ -4,7 +4,6 @@ export interface User {
     username?: string;
     password?: string;
     password_confirmation?: string;
-    title?: string;
     lname?: string;
     fname?: string;
     mname?: string;

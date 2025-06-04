@@ -22,6 +22,16 @@ const AccountInformation = ({ handleNext }: { handleNext: any }) => {
     password_confirmation: ''
   });
 
+
+  const validateContactNo = (value: string) => {
+    const regex = /^9\d{9}$/;
+    if (!regex.test(value)) {
+      setErrors((prev: any) => ({ ...prev, contact_no: ['Invalid contact number. Must start with 9 and be 10 digits.'] }));
+    } else {
+      setErrors((prev: any) => ({ ...prev, contact_no: null }));
+    }
+  };
+
   return (
     <>
       <div className="inline-flex items-center justify-center w-full">
