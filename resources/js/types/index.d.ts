@@ -11,7 +11,7 @@ export interface User {
     contact_no?: string;
     email?: string;
     education_level?: string;
-    birthdate?: Date | null;
+    birthdate?: Date | null | Dayjs;
     birthplace?: string;
     sex?: string;
     civil_status?: string;
@@ -26,7 +26,6 @@ export interface User {
     gsis?:string;
     id_type?: string;
     id_no?: string;
-    drivers_license?: string;
     philhealth?: string;
     umid?: string;
     household_size?: number;
@@ -44,11 +43,11 @@ export interface User {
     
     name?: string;
     
-    province?: any;
-    city?: any;
-    barangay?: any;
-    street?: string|number;
-    zip_code?: string|number;
+    province?: string|number|null;
+    city?: string|number|null;
+    barangay?: string|number|null;
+    street?: string|number|null;
+    zip_code?: string|number|null;
     image?: string;
     email_verified_at?: string;
     role?: string|null;

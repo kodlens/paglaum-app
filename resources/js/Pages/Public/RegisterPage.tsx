@@ -84,9 +84,7 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
     axios.post('/register', data).then(res => {
       setLoading(false);
-
       if (res.data.status === 'registered') {
-
         modal.info({
           title: 'Registration Success!',
           content: 'Your account information has been successfully submitted and will be reviewed by PAGLAUM. You will be notified via email once your account is activated.',
@@ -110,10 +108,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
 
   const [current, setCurrent] = useState(0);
-
-
-
-  
 
   // const accountType = () => {
   //     return (
@@ -176,14 +170,42 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
           fname: values.fname,
           mname: values.mname,
           sex: values.sex,
-
+          suffix: values.suffix,
+          email: values.email,
+          contact_no: values.contact_no,
+          education_level: values.education_level,
+          birthdate: values.birthdate,
+          birthplace: values.birthplace,
+          civil_status: values.civil_status,
+          //religion: values.religion,
+          //ethnic_group: values.ethnic_group,
+          //nationality: values.nationality,
+          //height: values.height,
+          //weight: values.weight,
+          //blood_type: values.blood_type,
+          sss: values.sss,
+          tin: values.tin,
+          gsis: values.gsis,
+          id_type: values.id_type,
+          id_no: values.id_no,
+          //philhealth: values.philhealth,
+          //umid: values.umid,
+          household_size: values.household_size,
+          occupation: values.occupation,
+          monthly_income: values.monthly_income,
+          business_name: values.business_name,
+          business_address: values.business_address,
+          contact_person: values.contact_person,
+          contact_person_no: values.contact_person_no,
+          id_image: values.id_image,
+          role: values.role
         })
       }} />,
     },
     {
       title: 'Address',
       content: <AddressInformation handleNext={(values:User)=>{
-        setCurrent(current + 1)
+        //setCurrent(current + 1)
         setData({...data,
           province: values.province,
           city: values.city,
@@ -198,11 +220,9 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
   ];
 
   useEffect(()=>{
-    console.log(data)
+    console.log('inputted data are: ', data)
   }, [data])
-  const next = () => {
 
-  };
 
   const prev = () => {
     setCurrent(current - 1);
@@ -228,17 +248,12 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
           <Form layout='vertical'>
             <Steps current={current} items={items} />
             <div>{steps[current].content}</div>
-            <div style={{ marginTop: 24 }} className='flex gap-2'>
+            {/* <div style={{ marginTop: 24 }} className='flex gap-2'>
               {current === steps.length - 1 && (
 
-                <Button className='ml-auto font-bold'
-                  onClick={submit}
-                  icon={<UserOutlined />}
-                  type="primary">
-                  SUBMIT APPLICATION
-                </Button>
+                
               )}
-            </div>
+            </div> */}
 
           </Form>
 

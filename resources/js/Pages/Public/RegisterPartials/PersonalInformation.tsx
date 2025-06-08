@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ArrowLeftOutlined, FileAddOutlined, UploadOutlined, UserOutlined } from '@ant-design/icons'
 import { ArrowRight } from "lucide-react";
+import dayjs from 'dayjs'
 
 
 const PersonalInformation =  ( {educationLevels, handleNext }: { educationLevels:EducationLevel[] , handleNext:any }) => {
@@ -30,19 +31,19 @@ const PersonalInformation =  ( {educationLevels, handleNext }: { educationLevels
     birthdate: null,
     civil_status: '',
 
-    religion: '',
-    ethnic_group: '',
-    nationality: '',
-    height: 0,
-    weight: 0,
-    blood_type: '',
+    // religion: '',
+    // ethnic_group: '',
+    // nationality: '',
+    // height: 0,
+    // weight: 0,
+    // blood_type: '',
     sss: '',
     tin: '',
     gsis: '',
     id_type: '',
     id_no: '',
-    philhealth: '',
-    umid: '',
+    //philhealth: '',
+    //umid: '',
     household_size: 0,
     occupation: '',
     monthly_income: 0,
@@ -117,8 +118,36 @@ const PersonalInformation =  ( {educationLevels, handleNext }: { educationLevels
     },
   };
 
+  const handleDebug = () => {
+    setData({...data, 
+      lname: 'AMparado',
+      fname: 'Etienne',
+      mname: 'N',
+      email: 'etienne@mail.com',
+      contact_no: '9167789585',
+      sex: 'MALE',
+      birthdate: dayjs(),
+      civil_status: 'SINGLE',
+      id_type: 'DRIVER LICENSE'
+      ,occupation: 'IT Staff',
+      monthly_income: 20000,
+      business_name: 'IT SOLUTION',
+      business_address: 'Maloro, Tangub City',
+      contact_person: 'Grace',
+      contact_person_no: '09167789585'
+    })
+  }
+
   return (
     <>
+      <Button 
+        type="primary"
+        onClick={handleDebug}
+      >
+        Debug
+      </Button>
+
+
       <div className="inline-flex items-center justify-center w-full">
         <hr className="w-full h-px my-8 bg-gray-200 border-0" />
         <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">PERSONAL INFORMATION</span>
@@ -521,7 +550,7 @@ const PersonalInformation =  ( {educationLevels, handleNext }: { educationLevels
 
           axios.post('/check-account-information', data).then(res => {
             if (res.data.status === 'valid') {
-              handleNext(1, data)
+              handleNext(data)
             }
           }).catch(err => {
             setErrors(err.response.data.errors)

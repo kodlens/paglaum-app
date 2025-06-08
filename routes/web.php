@@ -214,6 +214,9 @@ Route::middleware(['auth'])->group(function () {
 /* ============ REGISTRATION VALIDATION REQUEST ====================== */
     Route::post('/check-username', [App\Http\Controllers\RegisterValidation::class, 'checkUsername']);
     Route::post('/check-account-information', [App\Http\Controllers\RegisterValidation::class, 'checkAccountInformation']);
+    Route::post('/check-address-information', [App\Http\Controllers\RegisterValidation::class, 'checkAddressInformation']);
+
+    
 
 
 

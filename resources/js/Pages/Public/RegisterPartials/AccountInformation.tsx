@@ -17,9 +17,9 @@ const AccountInformation = ({ handleNext }: { handleNext: any }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [data, setData] = useState<AccountInformationFields>({
-    username: '',
-    password: '',
-    password_confirmation: ''
+    username: 'sample',
+    password: '1234',
+    password_confirmation: '1234'
   });
 
 
@@ -34,6 +34,8 @@ const AccountInformation = ({ handleNext }: { handleNext: any }) => {
 
   return (
     <>
+
+
       <div className="inline-flex items-center justify-center w-full">
         <hr className="w-full h-px my-8 bg-gray-200 border-0" />
         <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">

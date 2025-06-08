@@ -1,6 +1,10 @@
 import { User } from "@/types";
-import { App, Form, Input, Select } from "antd";
+import { App, Button, Form, Input, Select } from "antd";
 import axios from "axios";
+import { UserOutlined } from '@ant-design/icons'
+
+
+
 import { useEffect, useState } from "react";
 
 const addressInformation = ( { handleNext } : { handleNext:any }) => {
@@ -11,8 +15,14 @@ const addressInformation = ( { handleNext } : { handleNext:any }) => {
   const [cities, setCities] = useState<any[]>([]);
   const [barangays, setBarangays] = useState<any[]>([]);
 
-  const [data, setData] = useState<User>()
-  const [errors, setErrors] = useState<any>()
+  const [data, setData] = useState<User>({
+    province: '',
+    city: '',
+    barangay: '',
+    street: '',
+    zip_code: ''
+  })
+  const [errors, setErrors] = useState<any>({})
 
   const loadProvinces = () => {
     axios.get('/load-provinces').then(res => {
@@ -21,25 +31,30 @@ const addressInformation = ( { handleNext } : { handleNext:any }) => {
   }
 
   const handleChangeProvince = (value: any) => {
-    setData({...data, province: value})
+    setData({...data, province: value })
+  }
+
+  useEffect(()=>{
     setData({...data, city:null})
-    setData({...data, barangay: null})
-   
-    axios.get('/load-cities?provcode=' + value).then(res => {
+    axios.get('/load-cities?provcode=' + data.province).then(res => {
       setCities(res.data);
     })
-  }
-  const handleChangeCity = (value: any) => {
-    setData({...data, city:value})
+  }, [data.province])
+
+  useEffect(()=>{
     setData({...data, barangay: null})
-
-    // form.setFields([
-    //     { name: 'barangay', value: null }
-    // ]);
-
-    axios.get(`/load-barangays?citycode=${value}`).then(res => {
+    axios.get(`/load-barangays?citycode=${data.city}`).then(res => {
       setBarangays(res.data);
     })
+  }, [data.city])
+
+  useEffect(()=>{
+    console.log(data);
+    
+  }, [data.barangay])
+
+  const handleChangeCity = (value: any) => {
+    setData({...data, city:value})
   }
 
 
@@ -47,6 +62,10 @@ const addressInformation = ( { handleNext } : { handleNext:any }) => {
     loadProvinces()
   }, [])
 
+
+  const handleSubmit = () => {
+
+  }
 
   return (
     <>
@@ -115,9 +134,40 @@ const addressInformation = ( { handleNext } : { handleNext:any }) => {
       >
         <Input placeholder="ex. Juan Dela Cruz St."
           onChange={(e) => setData({...data, street: e.target.value })}
-          value={data?.street}
+          value={data?.street ? data?.street : ''}
           size="large" />
       </Form.Item>
+
+
+      <Button className='ml-auto font-bold'
+        onClick={()=>{
+          axios.post('/check-address-information', data).then(res => {
+            if (res.data.status === 'valid') {
+              handleNext(data)
+            }
+          }).catch(err => {
+            setErrors(err.response.data.errors)
+            if (err.response.status === 422) {
+              if (err.response.data.errors.username) {
+                notification.error({
+                  description: err.response.data.message,
+                  message: 'Invalid!'
+                })
+              }
+            }
+            if (err.response.status === 500) {
+              notification.error({
+                description: 'Unknown error. Please contact system administrator.',
+                message: 'Error!'
+              })
+            }
+          })
+        }}
+
+        icon={<UserOutlined />}
+        type="primary">
+        SUBMIT APPLICATION
+      </Button>
     </>
   )
 }

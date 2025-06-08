@@ -47,6 +47,7 @@ class RegisterValidation extends Controller
                 'email' => 'required|string|lowercase|email|max:255|unique:users',
                 'contact_no' => 'required|regex:/^9\d{9}$/',
                 'id_type' => 'required',
+                'id_image' => ['required', 'string'],
                 // 'province' => 'required',
                 // 'city' => 'required',
                 // 'barangay' => 'required',
@@ -64,6 +65,7 @@ class RegisterValidation extends Controller
                 'email' => 'required|string|lowercase|email|max:255|unique:users',
                 'contact_no' => 'required|regex:/^9\d{9}$/',
                 'id_type' => 'required',
+                'id_image' => ['required', 'string'],
                 // 'province' => 'required',
                 // 'city' => 'required',
                 // 'barangay' => 'required',
@@ -90,8 +92,24 @@ class RegisterValidation extends Controller
 
         }
 
+
         return response()->json([
             'status' => 'valid'
         ], 200);
+    }
+
+
+    public function checkAddressInformation(Request $req) {
+
+        $req->validate([
+            'province' => 'required',
+            'city' => 'required',
+            'barangay' => 'required',
+        ]);
+
+        return response()->json([
+            'status' => 'valid'
+        ], 200);
+        
     }
 }
