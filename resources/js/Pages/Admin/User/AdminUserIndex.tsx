@@ -154,7 +154,7 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
         })
     }
 
-    const handleClickInactive = (id:number) => {
+    const handleClickInactive = (id:any) => {
         axios.post('/admin/user-set-inactive/' + id).then(res=>{
             notification.success({ placement: 'bottomRight', message: 'Active!', description: 'User successfully set to active.'})
             loadDataAsync()
@@ -177,7 +177,12 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
                         <div className='flex md:flex-row flex-col gap-2'>
                             <div className='flex flex-col gap-2 w-full'>
                                 <label htmlFor="search-lname">Last Name</label>
-                                <Input id='search-lname' 
+                                <Input id='search-lname'
+                                    onKeyDown={ (e) =>{
+                                        if(e.key === 'Enter'){
+                                            loadDataAsync()
+                                        }
+                                    }}
                                     name='lname' onChange={handleChange} 
                                     placeholder="Search Last Name"/>
                             </div>
@@ -244,24 +249,33 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
                                                             handleEditClick(data.id)
                                                         }
                                                     },
+                                                    // {
+                                                    //     key: '2',
+                                                    //     label: 'Acitve',
+                                                    //     icon: <MonitorCheck  size={16} />,
+                                                    //     onClick: ()=>{
+                                                    //         handleClickActive(data.id)
+                                                    //     }
+
+                                                    // },
                                                     {
                                                         key: '2',
-                                                        label: 'Acitve',
+                                                        label: data.active ? 'Inactive' : 'Acitve',
                                                         icon: <MonitorCheck  size={16} />,
                                                         onClick: ()=>{
-                                                            handleClickActive(data.id)
+                                                            data.active ? handleClickInactive(data.id) : handleClickActive(data.id)
+                                                            
                                                         }
-
                                                     },
-                                                    {
-                                                        key: '3',
-                                                        label: 'Inactive',
-                                                        icon: <ShieldOff size={16} />,
-                                                        onClick: ()=>{
-                                                            handleClickInactive(data.id ?? 0)
-                                                        }
+                                                    // {
+                                                    //     key: '3',
+                                                    //     label: 'Inactive',
+                                                    //     icon: <ShieldOff size={16} />,
+                                                    //     onClick: ()=>{
+                                                    //         handleClickInactive(data.id ?? 0)
+                                                    //     }
 
-                                                    },
+                                                    // },
                                                     {
                                                         key: '4',
                                                         label: (<ChangePassword data={data} onSuccess={loadDataAsync}/>),

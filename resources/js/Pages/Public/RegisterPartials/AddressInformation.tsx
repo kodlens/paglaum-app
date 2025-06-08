@@ -7,7 +7,7 @@ import { UserOutlined } from '@ant-design/icons'
 
 import { useEffect, useState } from "react";
 
-const addressInformation = ( { handleNext } : { handleNext:any }) => {
+const addressInformation = ( { handleNext } : { handleNext: any}) => {
   
   const { message, modal, notification } = App.useApp();
   const [loading, setLoading] = useState<boolean>(false);
@@ -140,20 +140,23 @@ const addressInformation = ( { handleNext } : { handleNext:any }) => {
 
 
       <Button className='ml-auto font-bold'
+        loading={loading}
         onClick={()=>{
+          setLoading(true)
           axios.post('/check-address-information', data).then(res => {
             if (res.data.status === 'valid') {
+              setLoading(false)
               handleNext(data)
+              //submitData()
             }
           }).catch(err => {
+            setLoading(false)
             setErrors(err.response.data.errors)
             if (err.response.status === 422) {
-              if (err.response.data.errors.username) {
-                notification.error({
-                  description: err.response.data.message,
-                  message: 'Invalid!'
-                })
-              }
+              notification.error({
+                description: err.response.data.message,
+                message: 'Invalid!'
+              })
             }
             if (err.response.status === 500) {
               notification.error({

@@ -81,23 +81,27 @@ const AccountInformation = ({ handleNext }: { handleNext: any }) => {
           </div>
         }
         type="primary" onClick={() => {
+          setLoading(true)
+
           axios.post('/check-username', {
             username: data.username,
             password: data.password,
             password_confirmation: data.password_confirmation
           }).then(res => {
+            setLoading(false)
+            
             if (res.data.status === 'valid') {
               handleNext(data)
             }
           }).catch(err => {
+            setLoading(false)
+
             setErrors(err.response.data.errors)
             if (err.response.status === 422) {
-              if (err.response.data.errors.username) {
-                notification.error({
-                  description: err.response.data.message,
-                  message: 'Invalid!'
-                })
-              }
+              notification.error({
+                description: err.response.data.message,
+                message: 'Invalid!'
+              })
             }
             if (err.response.status === 500) {
               notification.error({

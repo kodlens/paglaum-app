@@ -21,8 +21,10 @@ class DoMemberController extends Controller
         $data = User::where('lname', 'like', $req->lname . '%');
 
         if($req->role == ''){
-            $data->where('role', 'MEMBER')
-                ->orWhere('role', 'YBS');
+             $data->where(function($q){
+                $q->where('role', 'MEMBER')
+                    ->orWhere('role', 'YBS');
+            });
         }else{
             $data->where('role', 'LIKE', $req->role . '%')
                 ->where('role', '!=', 'ADMIN')

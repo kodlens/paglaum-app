@@ -547,20 +547,20 @@ const PersonalInformation =  ( {educationLevels, handleNext }: { educationLevels
           </div>
         }
         type="primary" onClick={() => {
-
+          setLoading(true)
           axios.post('/check-account-information', data).then(res => {
+            setLoading(false)
             if (res.data.status === 'valid') {
               handleNext(data)
             }
           }).catch(err => {
+            setLoading(false)
             setErrors(err.response.data.errors)
             if (err.response.status === 422) {
-              if (err.response.data.errors.username) {
-                notification.error({
-                  description: err.response.data.message,
-                  message: 'Invalid!'
-                })
-              }
+              notification.error({
+                description: err.response.data.message,
+                message: 'Invalid!'
+              })
             }
             if (err.response.status === 500) {
               notification.error({

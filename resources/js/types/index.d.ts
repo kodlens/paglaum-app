@@ -60,6 +60,7 @@ export interface User {
     last_login?: Date|null;
     is_2fa?:boolean;
     code_2fa?:string;
+    shouldSubmit?: boolean;
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {

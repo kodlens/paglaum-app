@@ -12,18 +12,9 @@ import AddressInformation from './RegisterPartials/AddressInformation';
 
 export default function RegisterPage({ educationLevels }: { educationLevels: EducationLevel[] }) {
 
-  interface Province {
-    province: string;
-    id: number
-  }
-
   const { message, modal, notification } = App.useApp();
   const [loading, setLoading] = useState<boolean>(false);
-  const [provinces, setProvinces] = useState<any[]>([]);
-  const [cities, setCities] = useState<any[]>([]);
-  const [barangays, setBarangays] = useState<any[]>([]);
- 
-  const [form] = Form.useForm();
+
   const [errors, setErrors] = useState<any>({});
 
   const [data, setData ] = useState<User>({
@@ -71,15 +62,12 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     city: null,
     barangay: null,
     street: '',
-
+    shouldSubmit: false,
     role: '',
   });
 
-  const submit = () => {
+  const submit = async () => {
 
-    // console.log('data', data);
-
-    //return;
     setLoading(true);
 
     axios.post('/register', data).then(res => {
@@ -108,44 +96,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
 
 
   const [current, setCurrent] = useState(0);
-
-  // const accountType = () => {
-  //     return (
-  //         <>
-  //             <div className="inline-flex items-center justify-center w-full">
-  //                 <hr className="w-full h-px my-8 bg-gray-200 border-0" />
-  //                 <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2">
-  //                     ACCOUNT TYPE
-  //                 </span>
-  //             </div>
-
-  //             <Form.Item
-  //                 label="Account Type"
-  //                 className="w-full"
-  //                 validateStatus={errors.role ? "error" : ""}
-  //                 help={errors.role ? errors.role[0] : ""}
-  //             >
-  //                 <Select
-  //                     className="w-full h-10"
-  //                     onChange={(value)=>setData('role', value)} 
-  //                     value={data.role}
-  //                     options={[
-  //                         {
-  //                             value: "YBS",
-  //                             label: 'YOUTH BEE SAVER'
-  //                         },
-  //                         {
-  //                             value: "MEMBER",
-  //                             label: 'STANDARD MEMBER'
-  //                         },
-
-  //                     ]}
-  //                 />
-  //             </Form.Item>
-
-  //         </>
-  //     )
-  // }
 
 
   const steps = [
@@ -204,25 +154,32 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
     },
     {
       title: 'Address',
-      content: <AddressInformation handleNext={(values:User)=>{
-        //setCurrent(current + 1)
+      content: <AddressInformation handleNext={ (values:User) =>  {
         setData({...data,
           province: values.province,
           city: values.city,
-          barangay: values.barangay
-        })
+          barangay: values.barangay,
+          street: values.street,
+          zip_code: values.zip_code,
+          shouldSubmit: true,
+        });
+
       }} />,
     },
-    // {
-    //     title: 'Account Type',
-    //     content: accountType(),
-    // },
+ 
   ];
+
 
   useEffect(()=>{
     console.log('inputted data are: ', data)
   }, [data])
 
+  useEffect(() => {
+    if (data.shouldSubmit) {
+      submit();
+      setData({...data, shouldSubmit: false }) // This gets triggered after data is updated
+    }
+  }, [data.shouldSubmit]);
 
   const prev = () => {
     setCurrent(current - 1);
@@ -250,8 +207,6 @@ export default function RegisterPage({ educationLevels }: { educationLevels: Edu
             <div>{steps[current].content}</div>
             {/* <div style={{ marginTop: 24 }} className='flex gap-2'>
               {current === steps.length - 1 && (
-
-                
               )}
             </div> */}
 

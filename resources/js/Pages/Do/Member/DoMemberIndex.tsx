@@ -139,16 +139,33 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
 					{/* card body */}
 					<div className='z-0'>
                         <div>
-                            <label>Select Role</label>
-                            <Select
-                                value={search.role}
-                                onChange={(value:string)=>setSearch({...search, role: value})}
-                                className='w-full'
-                                options={[
-                                    { value: "", label: "ALL" },
-                                    { value: "YBS", label: "YOUTH BEE" },
-                                    { value: "MEMBER", label: "MEMBER" },
-                                ]}/>
+                            <div className='flex flex-col gap-2 w-full'>
+                                <label htmlFor="search-lname">Last Name</label>
+                                <Input id='search-lname'
+                                    onKeyDown={ (e) =>{
+                                        if(e.key === 'Enter'){
+                                            loadDataAsync()
+                                        }
+                                    }}
+                                    name='lname' onChange={(e)=>{
+                                        const {name, value} = e.target
+                                        setSearch({...search, [name]:value})
+                                    }} 
+                                    placeholder="Search Last Name"/>
+                            </div>
+
+                            <div>
+                                <label>Select Role</label>
+                                <Select
+                                    value={search.role}
+                                    onChange={(value:string)=>setSearch({...search, role: value})}
+                                    className='w-full'
+                                    options={[
+                                        { value: "", label: "ALL" },
+                                        { value: "YBS", label: "YOUTH BEE" },
+                                        { value: "MEMBER", label: "MEMBER" },
+                                    ]}/>
+                            </div>
                         </div>
                         
                         <div className='my-4'>
