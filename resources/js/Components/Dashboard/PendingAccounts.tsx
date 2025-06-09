@@ -20,7 +20,7 @@ export default function PendingAccounts() {
 
   return (
 
-    <div className='bg-white shadow-sm flex-1 p-4'>
+    <div className='bg-white shadow-sm flex-1 p-4 hover:bg-blue-400 ease-in-out duration-150 hover:cursor-pointer'>
         <div className=''>
             <div className='text-[2rem] font-bold'>
                 { loading ? 0 : data}

@@ -13,7 +13,7 @@ import {
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';
 import PanelSideBarLogo from '@/Components/PanelSideBarLogo';
 import { User } from '@/types';
-import { ClipboardMinus, LogOut } from 'lucide-react';
+import { ClipboardMinus, Loader, LogOut } from 'lucide-react';
 
   const { Header, Sider, Content } = Layout;
 
@@ -52,9 +52,22 @@ export default function DoAuthLayout(
         //     label: 'Areas'
         // },
         {
-            key: 'do.loans.index',
+            key: 'do.loans',
             icon: <BarsOutlined />,
-            label: 'Loans'
+            label: 'Loans',
+            children: [
+                {
+                    key: 'do.loans.index',
+                    label: 'List of Loans',
+                    icon: <BarsOutlined />,
+                },
+                {
+                    key: 'do.pending-loans.index',
+                    label: 'Pending Loans',
+                    icon: <Loader size={16} />,
+                },
+
+            ]
         },
         {
           key: 'do.member-savings-accounts.index',
@@ -63,9 +76,22 @@ export default function DoAuthLayout(
         },
 
         {
-            key: 'do.members.index',
+            key: 'do.members',
             icon: <UserOutlined />,
-            label: 'Members/Borrower'
+            label: 'Members/Borrower',
+            children: [
+                {
+                    key: 'do.members.index',
+                    label: 'List of Members/Borrowers',
+                    icon: <BarsOutlined />,
+                },
+                {
+                    key: 'do.pending-members.index',
+                    label: 'Pending Members/Borrowers',
+                    icon: <Loader size={16} />,
+                },
+
+            ]
         },
         {
             type: 'divider'

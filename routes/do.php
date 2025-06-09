@@ -5,6 +5,8 @@ Route::middleware(['auth', 'do'])->group(function () {
     Route::resource('/do/dashboard', App\Http\Controllers\Do\DoDashboardController::class)->names('do.dashboard');
 
 
+
+
     Route::resource('/do/loans', App\Http\Controllers\Do\DoLoanController::class)->names('do.loans');
     Route::get('/do/get-loans', [App\Http\Controllers\Do\DoLoanController::class, 'getData']);
     Route::post('/do/approve-loan', [App\Http\Controllers\Do\DoLoanController::class, 'approveLoan']);
@@ -16,6 +18,10 @@ Route::middleware(['auth', 'do'])->group(function () {
     Route::get('/do/do-member-loan-details/{id}',[App\Http\Controllers\Do\DoMemberLoanDetailController::class, 'index']);
 
 
+    Route::resource('/do/pending-loans', App\Http\Controllers\Do\DoPendingLoanController::class)->names('do.pending-loans');
+    Route::get('/do/get-pending-loans', [App\Http\Controllers\Do\DoPendingLoanController::class, 'getData']);
+
+
     Route::resource('/do/members', App\Http\Controllers\Do\DoMemberController::class)->names('do.members');
     Route::get('/do/get-members', [App\Http\Controllers\Do\DoMemberController::class, 'getData']);
     Route::post('/do/member-disallow-loan/{id}', [App\Http\Controllers\Do\DoMemberController::class, 'userDisallowLoan']);
@@ -23,6 +29,9 @@ Route::middleware(['auth', 'do'])->group(function () {
 
     Route::post('/do/users-set-inactive/{id}', [App\Http\Controllers\Do\DoMemberController::class, 'setInactive']);
     Route::post('/do/users-set-active/{id}', [App\Http\Controllers\Do\DoMemberController::class, 'setActive']);
+    
+    Route::resource('/do/pending-members', App\Http\Controllers\Do\DoPendingMemberController::class)->names('do.pending-members');
+    Route::get('/do/get-pending-members', [App\Http\Controllers\Do\DoPendingMemberController::class, 'getData']);
 
 
     /* ============ OVER THE COUNTER FOR SAVINGS ROUTE ====================== */
