@@ -43,9 +43,10 @@ export interface User {
     
     name?: string;
     
-    province?: string|number|null;
-    city?: string|number|null;
-    barangay?: string|number|null;
+    province?: string | number | null | Province;
+
+    city?: string|number|null | City;
+    barangay?: string|number|null | Barangay;
     street?: string|number|null;
     zip_code?: string|number|null;
     image?: string;

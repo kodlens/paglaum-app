@@ -133,7 +133,7 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
 			<div className='flex mt-10 justify-center items-center'>
 				{/* card */}
 				<div className='p-6 w-full md:mx-2 bg-white shadow-sm rounded-md
-					md:w-[1120px] overflow-auto'>
+					md:w-[1220px] overflow-auto'>
 					{/* card header */}
 					<div className="font-bold mb-4 text-lg">LIST OF MEMBERS / BORROWERS</div>
 					{/* card body */}
