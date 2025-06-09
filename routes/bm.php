@@ -10,6 +10,9 @@ Route::middleware(['auth', 'bm'])->group(function () {
     Route::post('/bm/approve-loan', [App\Http\Controllers\Bm\BmLoanController::class, 'approveLoan']);
     Route::post('/bm/disapprove-loan', [App\Http\Controllers\Bm\BmLoanController::class, 'disapproveLoan']);
 
+    Route::resource('/bm/pending-loans', App\Http\Controllers\Bm\BmPendingLoanController::class)->names('bm.pending-loans');
+    Route::get('/bm/get-pending-loans', [App\Http\Controllers\Bm\BmPendingLoanController::class, 'getData']);
+
     Route::resource('/bm/members', App\Http\Controllers\Bm\BmMemberController::class)->names('bm.members');
     Route::get('/bm/get-members', [App\Http\Controllers\Bm\BmMemberController::class, 'getData']);
     Route::post('/bm/member-disallow-loan/{id}', [App\Http\Controllers\Bm\BmMemberController::class, 'userDisallowLoan']);
@@ -25,15 +28,19 @@ Route::middleware(['auth', 'bm'])->group(function () {
     Route::post('/bm/approve-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'approve']); //approve
     Route::post('/bm/disapprove-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'disapprove']); //disapprove
 
+    Route::resource('/bm/pending-members', App\Http\Controllers\Bm\BmPendingMemberController::class)->names('bm.pending-members');
+    Route::get('/bm/get-pending-members', [App\Http\Controllers\Bm\BmPendingMemberController::class, 'getData']);
+
+
     //Route::post('/bm/activate-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'activate']); //approve
     //Route::post('/bm/deactivate-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'deactivate']); //disapprove
 
       /* ================WITHDRAWAL/DEPOSIT========================= */
-      Route::get('/bm/withdraw-deposit/{id}', [App\Http\Controllers\Bm\BmWithdrawDepositController::class, 'index']);
-      Route::post('/bm/withdraw-deposit/{id}', [App\Http\Controllers\Bm\BmWithdrawDepositController::class, 'store']);
-  
-      Route::get('/bm/savings-account-details/{id}', [App\Http\Controllers\Bm\BmSavingsAccountDetailController::class, 'index']);
-      Route::get('/bm/get-savings-account-details', [App\Http\Controllers\Bm\BmSavingsAccountDetailController::class, 'getData']);
+    Route::get('/bm/withdraw-deposit/{id}', [App\Http\Controllers\Bm\BmWithdrawDepositController::class, 'index']);
+    Route::post('/bm/withdraw-deposit/{id}', [App\Http\Controllers\Bm\BmWithdrawDepositController::class, 'store']);
+
+    Route::get('/bm/savings-account-details/{id}', [App\Http\Controllers\Bm\BmSavingsAccountDetailController::class, 'index']);
+    Route::get('/bm/get-savings-account-details', [App\Http\Controllers\Bm\BmSavingsAccountDetailController::class, 'getData']);
 
 
     // Route::resource('/admin/areas', App\Http\Controllers\Administrator\AdminAreaContoller::class)->names('admin.areas');

@@ -66,7 +66,6 @@ export default function DoAuthLayout(
                     label: 'Pending Loans',
                     icon: <Loader size={16} />,
                 },
-
             ]
         },
         {

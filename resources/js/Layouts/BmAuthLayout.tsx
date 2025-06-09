@@ -11,7 +11,7 @@ import {
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';
 import PanelSideBarLogo from '@/Components/PanelSideBarLogo';
 import { User } from '@/types';
-import { ClipboardMinus, LogOut } from 'lucide-react';
+import { ClipboardMinus, Loader, LogOut } from 'lucide-react';
 
   const { Header, Sider, Content } = Layout;
 
@@ -50,9 +50,21 @@ export default function BmLAuthLayout(
         //     label: 'Areas'
         // },
         {
-            key: 'bm.loans.index',
+            key: 'bm.loans',
             icon: <BarsOutlined />,
-            label: 'Loans'
+            label: 'Loans', 
+            children: [
+                {
+                    key: 'bm.loans.index',
+                    label: 'List of Loans',
+                    icon: <BarsOutlined />,
+                },
+                {
+                    key: 'bm.pending-loans.index',
+                    label: 'Pending Loans',
+                    icon: <Loader size={16} />,
+                },
+            ]
         },
         {
             key: 'bm.savings-accounts.index',
@@ -60,12 +72,24 @@ export default function BmLAuthLayout(
             label: 'Savings Account'
         },
         {
-            key: 'bm.members.index',
+            key: 'bm.members',
             icon: <UserOutlined />,
-            label: 'Members/Borrower'
+            label: 'Members/Borrower',
+            children: [
+                {
+                    key: 'bm.members.index',
+                    label: 'List of Members/Borrowers',
+                    icon: <BarsOutlined />,
+                },
+                {
+                    key: 'bm.pending-members.index',
+                    label: 'Pending Members/Borrowers',
+                    icon: <Loader size={16} />,
+                },
+            ]
         },
         {
-            key: 'do.reports.index',
+            key: 'reports',
             icon: <ClipboardMinus size={16}/>,
             label: 'Report',
             children: [

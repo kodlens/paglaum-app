@@ -2,6 +2,11 @@ import { PageProps, User } from '@/types'
 import { Head, router } from '@inertiajs/react'
 
 import {
+  FileAddOutlined,
+  EyeInvisibleOutlined, EyeTwoTone
+} from '@ant-design/icons';
+
+import {
   Space, Table,
   Pagination, Button, Modal,
   Form, Input, Select, Checkbox,
@@ -14,51 +19,45 @@ import {
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { Captions, FileLock2, MessageSquareMore, MonitorCheck, Pencil, RefreshCcwIcon, ShieldOff, ThumbsUp, Trash2, Wallet } from 'lucide-react';
+import { Captions, FileLock2, MessageSquareMore, MonitorCheck, Pencil, ShieldOff, ThumbsUp, Trash2 } from 'lucide-react';
+import { Area } from '@/types/area';
 import { Loan } from '@/types/loan';
-import DoAuthLayout from '@/Layouts/DoAuthLayout';
-import { LoanType } from '@/types/loanType';
+import BmLAuthLayout from '@/Layouts/BmAuthLayout';
 
 const { Column } = Table;
-
 
 interface SearchFields {
   is_do_approved?: number | string;
   is_bm_approved?: number | string;
 }
-const DoPendingLoanIndex = ({ auth }: PageProps) => {
+
+const BmPendingLoanIndex = ({ auth }: PageProps) => {
 
   const [form] = Form.useForm();
-  //const { form } = useForm();
+
   const { notification, modal } = App.useApp();
 
   const [data, setData] = useState<Loan[]>([]);
-  const [loan, setLoan] = useState<Loan>();
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
 
   const [open, setOpen] = useState(false); //for modal
-
-  const [perPage, setPerPage] = useState(10);
-  const [page, setPage] = useState(1);
   const [search, setSearch] = useState<SearchFields>({
     is_do_approved: '',
     is_bm_approved: ''
   });
+
+  const [perPage, setPerPage] = useState(10);
+  const [page, setPage] = useState(1);
   const [errors, setErrors] = useState<any>({});
 
-  const [loanTypes, setLoanTypes] = useState<any[]>([])
-  const [loanSubtypes, setLoanSubtypes] = useState<any[]>([])
-
-
   const [id, setId] = useState(0);
+
 
   interface PaginateResponse {
     data: any[],
     total: number;
   }
-
-
 
   const loadDataAsync = async () => {
 
@@ -71,7 +70,7 @@ const DoPendingLoanIndex = ({ auth }: PageProps) => {
     ].join('&');
 
     try {
-      const res = await axios.get<PaginateResponse>(`/do/get-pending-loans?${params}`);
+      const res = await axios.get<PaginateResponse>(`/bm/get-pending-loans?${params}`);
       setData(res.data.data)
       setTotal(res.data.total)
       setLoading(false)
@@ -82,7 +81,7 @@ const DoPendingLoanIndex = ({ auth }: PageProps) => {
 
   useEffect(() => {
     loadDataAsync()
-  }, [perPage, search, page])
+  }, [perPage, , search, page])
 
 
   const onPageChange = (index: number, perPage: number) => {
@@ -90,108 +89,90 @@ const DoPendingLoanIndex = ({ auth }: PageProps) => {
     setPerPage(perPage)
   }
 
-
-  const onFinish = async (values: Loan) => {
-
-    if (id > 0) {
-      try {
-        const res = await axios.put('/do/loans/' + id, values)
-        if (res.data.status === 'updated') {
-          notification.info({ placement: 'bottomRight', message: 'Updated!', description: 'Education Level successfully updated.' })
-          setOpen(false)
-          loadDataAsync()
-        }
-      } catch (err: any) {
-        if (err.response.status === 422) {
-          setErrors(err.response.data.errors)
-        }
-      }
-    } else {
-      try {
-        const res = await axios.post('/do/education-levels', values)
-        if (res.data.status === 'saved') {
-          notification.info({ placement: 'bottomRight', message: 'Saved!', description: 'Education Level successfully saved.' })
-          setOpen(false)
-          loadDataAsync()
-        }
-      } catch (err: any) {
-        if (err.response.status === 422) {
-          setErrors(err.response.data.errors)
-        }
-      }
-    }
+  const handClickNew = () => {
+    //router.visit('/');
+    setId(0)
+    setOpen(true)
   }
 
+  const handleEditClick = (id: any) => {
+    setId(id);
+    setOpen(true);
+    getData(id);
+    //router.visit('/admin/users/' + id + '/edit');
+  }
+
+  const getData = (id: number) => {
+
+    axios.get('/bm/get-loans/' + id).then(res => {
+      form.setFieldsValue({
+        education_level: res.data.education_level,
+        description: res.data.description,
+        order_no: res.data.order_no,
+        active: res.data.active > 0 ? true : false,
+      })
+
+      //console.log(res.data.active);
+
+    });
+  }
+
+
   const handleClickApprove = (loan: Loan) => {
-
     modal.confirm({
-      title: loan.is_do_approve ? 'Disapprove?' : 'Approve?', content: `Are you sure you want to ${loan.is_do_approve ? 'dispprove' : 'approve'} this borrower?`,
+      title: 'Approve?', content: 'Are you sure you want to approve this borrower?',
       onOk: () => {
-        if (!!loan.is_do_approve) {
-          axios.post('/do/disapprove-loan', loan).then(res => {
-            if (res.data.status === 'disapproved') {
-              notification.success({ placement: 'bottomRight', message: 'Disapproved!', description: 'Disapproved successfully.' })
-              loadDataAsync()
-            }
-          }).catch(err => {
+        axios.post('/bm/approve-loan', loan).then(res => {
+          if (res.data.status === 'approved') {
+            notification.success({ placement: 'bottomRight', message: 'Loan Approved!', description: 'Loan approved successfully.' })
+            loadDataAsync()
+          }
+        }).catch(err => {
+          if (err.response.data.errors.loan) {
+            notification.error({
+              placement: 'bottomRight',
+              description: 'Error: ' + err.response.data.message,
+              message: 'Approved Already!'
+            });
+          }
+        })
 
-            if (err.response.status === 422) {
-              notification.error({
-                placement: 'bottomRight',
-                description: 'Error: ' + err.response.data.message,
-                message: 'Approved Already!'
-              });
-            }
-
-            if (err.response.data.status === 500) {
-              if (err.response.data.errors.loan) {
-                notification.error({
-                  placement: 'bottomRight',
-                  description: 'Error: Unknown',
-                  message: 'Contact System Administrator'
-                });
-              }
-            }
-          })
-        } else {
-          axios.post('/do/approve-loan', loan).then(res => {
-            if (res.data.status === 'approved') {
-              notification.success({ placement: 'bottomRight', message: 'Approved!', description: 'Borrower approved successfully.' })
-              loadDataAsync()
-            }
-          }).catch(err => {
-            if (err.response.data.errors.loan) {
-              notification.error({
-                placement: 'bottomRight',
-                description: 'Error: ' + err.response.data.message,
-                message: 'Approved Already!'
-              });
-            }
-          })
-        }
+        // if(loan.is_bm_approve){
+        //     axios.post('/bm/disapprove-loan', loan).then(res=>{
+        //         if(res.data.status === 'approved'){
+        //             notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
+        //             loadDataAsync()
+        //         }
+        //     })
+        // }else{
+        //     axios.post('/bm/approve-loan', loan).then(res=>{
+        //         if(res.data.status === 'approved'){
+        //             notification.success({ placement: 'bottomRight', message: 'Deleted!', description: 'Item deleted successfully.'})
+        //             loadDataAsync()
+        //         }
+        //     })
+        // }
 
       }
     })
   }
 
-  const showLoanInformation = (loan: Loan) => {
-    router.visit(`/do/do-member-loan-details/${loan.id}`)
-  }
+
 
   return (
-    <DoAuthLayout user={auth.user}>
-      <Head title="Pending Loan"></Head>
+    <BmLAuthLayout user={auth.user}>
+      <Head title="Branch Manager"></Head>
 
       <div className='flex mt-10 justify-center items-center'>
         {/* card */}
         <div className='p-6 w-full md:mx-2 bg-white shadow-sm rounded-md
 					md:w-[1120px] overflow-auto'>
           {/* card header */}
-          <div className="font-bold mb-4 text-lg">LIST OF PENDING LOAN</div>
+          <div className="font-bold mb-4 text-lg">LIST OF LOAN</div>
           {/* card body */}
           <div className='z-0'>
             <div className='my-4 flex gap-2'>
-              {/* <div className='w-full'>
+              <div className='w-full'>
                 <Select
                   value={search.is_do_approved}
                   onChange={(value: number | string) => setSearch({ ...search, is_do_approved: value })}
@@ -231,16 +212,14 @@ const DoPendingLoanIndex = ({ auth }: PageProps) => {
                       value: '0'
                     },
                   ]} />
-              </div> */}
+              </div>
 
             </div>
 
             <div className='my-4'>
-              <Button type='primary'
-                icon={<RefreshCcwIcon size={16} />}
-                iconPosition='start'
-                onClick={() => loadDataAsync()}>Refresh</Button>
+              <Button type='primary' onClick={() => loadDataAsync()}>Refresh</Button>
             </div>
+
             <Table dataSource={data}
               loading={loading}
               rowKey={(data) => data.id ?? 0}
@@ -257,12 +236,14 @@ const DoPendingLoanIndex = ({ auth }: PageProps) => {
               )} />
 
               <Column title="Loan Amount" dataIndex='principal' render={(principal: number) => (
-                <span className='font-bold'>&#8369; {principal.toLocaleString()}</span>
+                <span className='font-bold'>{principal.toLocaleString()}</span>
               )} />
 
               <Column title="Terms (Mos)" dataIndex="terms_month" key="terms_month" />
 
               <Column title="Interest(%)" dataIndex="interest" key="interest" />
+
+              <Column title="Mode" dataIndex="mode_payment" key="mode_payment" />
 
               <Column title="Approve(DO)" dataIndex="is_do_approve" render={(is_do_approve: number) => (
                 is_do_approve > 0 ? (
@@ -271,6 +252,7 @@ const DoPendingLoanIndex = ({ auth }: PageProps) => {
                   <span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
                 )
               )} />
+
               <Column title="Approve(BM)" dataIndex="is_bm_approve" render={(is_bm_approve: number) => (
                 is_bm_approve > 0 ? (
                   <span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
@@ -286,36 +268,20 @@ const DoPendingLoanIndex = ({ auth }: PageProps) => {
                       placement="bottomRight"
                       menu={{
                         items: [
-                          // {
-                          //     key: '1',
-                          //     label: 'Edit',
-                          //     icon: <Pencil size={16} />,
-                          //     onClick: ()=>{
-                          //         handleEditClick(data.id)
-                          //     }
-                          // },
                           {
-                            key: '2',
-                            label: data.is_do_approve ? 'Disapprove' : 'Approve',
+                            key: '1',
+                            label: 'Approve',
                             icon: <ThumbsUp size={16} />,
                             onClick: () => {
                               handleClickApprove(data)
                             }
                           },
                           {
-                            key: '3',
+                            key: '2',
                             label: 'Details',
                             icon: <MessageSquareMore size={16} />,
                             onClick: () => {
-                              showLoanInformation(data)
-                            }
-                          },
-                          {
-                            key: '4',
-                            label: 'Make A Payment',
-                            icon: <Wallet size={16} />,
-                            onClick: () => {
-                              router.visit('/do/make-a-payment/' + data.id)
+                              router.visit('/bm/member-loan-details/' + data.id)
                             }
                           },
                         ],
@@ -347,8 +313,10 @@ const DoPendingLoanIndex = ({ auth }: PageProps) => {
         </div>
         {/* card */}
       </div>
-    </DoAuthLayout>
+
+
+    </BmLAuthLayout>
   )
 }
 
-export default DoPendingLoanIndex;
+export default BmPendingLoanIndex;
