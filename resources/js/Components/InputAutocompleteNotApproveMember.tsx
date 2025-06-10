@@ -2,7 +2,7 @@ import { AutoComplete, AutoCompleteProps } from 'antd'
 import axios from 'axios';
 import React from 'react'
 
-export default function InputAutocompleteNotApproveMember( {handleSelect}: { handleSelect:any }) {
+export default function InputAutocompleteNotApproveMember( {handleSelect, onKeyDown}: { handleSelect:any, onKeyDown:any }) {
 
   const [options, setOptions] = React.useState<AutoCompleteProps['options']>([]);
   const debounceRef = React.useRef<NodeJS.Timeout | null>(null);
@@ -25,6 +25,7 @@ export default function InputAutocompleteNotApproveMember( {handleSelect}: { han
   return (
     <AutoComplete
       className='w-full'
+      onKeyDown={onKeyDown}
       onSearch={handleSearch}
       onSelect={handleSelect}
       options={options}

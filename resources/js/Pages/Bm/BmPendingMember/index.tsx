@@ -61,7 +61,7 @@ const BmPendingMemberIndex = ({ auth }: PageProps) => {
     setLoading(true)
     const params = [
       `perpage=${perPage}`,
-      `lname=${search.lname}`,
+      `key=${search.lname}`,
       `role=${search.role}`,
       `page=${page}`
     ].join('&');
@@ -179,10 +179,7 @@ const BmPendingMemberIndex = ({ auth }: PageProps) => {
 
     useEffect(()=>{
       loadDataAsync()
-      console.log('sample waa');
-      
     },[search])
-
   }
 
   return (
@@ -200,7 +197,13 @@ const BmPendingMemberIndex = ({ auth }: PageProps) => {
             <div>
               <div className='flex flex-col mb-4 w-full'>
                 <label className='mb-2'>Last Name</label>
-                 <InputAutocompleteNotApproveMember handleSelect={(value:string)=>{
+                 <InputAutocompleteNotApproveMember 
+                  onKeyDown={(e:any)=>{
+                    if(e.key === 'Enter'){
+                      loadDataAsync()
+                    }
+                  }}
+                  handleSelect={(value:string)=>{
                       setSearch({...search, lname:value})
                   }}/>
               </div>
