@@ -152,10 +152,6 @@ const DoPendingMemberIndex = ({ auth }: PageProps) => {
               <div className='mb-4 flex flex-col w-full'>
                 <label htmlFor="" className='mb-2'>Last Name</label>
                 <InputAutocompleteNotApproveMember
-                  onKeyDown={()=>{
-                    console.log('keydown');
-                    
-                  }}
                   handleSelect={(value:string)=>{
                     setSearch({...search, lname:value})
                 }}/>
