@@ -28,7 +28,6 @@ export default function PendingAccounts() {
     }else{
       router.visit('/' + role.toLocaleLowerCase() + '/pending-members')
     }
-
   }
 
 
