@@ -13,7 +13,7 @@ import {
 import { Button, ConfigProvider, Layout, Menu, MenuProps } from 'antd';
 import PanelSideBarLogo from '@/Components/PanelSideBarLogo';
 import { User } from '@/types';
-import { ClipboardMinus, LogOut } from 'lucide-react';
+import { ClipboardMinus, Loader, LogOut } from 'lucide-react';
 
   const { Header, Sider, Content } = Layout;
 
@@ -47,7 +47,18 @@ export default function AdminAuthLayout(
             label: 'Dashboard',
             //onClick: () => router.visit('/admin/dashboard')
 		},
-
+        {
+            key: 'admin.loans',
+            icon: <BarsOutlined />,
+            label: 'Loans', 
+            children: [
+                {
+                    key: 'admin.pending-loans.index',
+                    label: 'Pending Loans',
+                    icon: <Loader size={16} />,
+                },
+            ]
+        },
         {
             key: 'do.settngs.index',
             icon: <ClipboardMinus size={16}/>,
@@ -82,13 +93,21 @@ export default function AdminAuthLayout(
         },
 
         {
-            key: 'admin.users.index',
+            key: 'admin.users',
             icon: <FileJpgOutlined />,
             label: 'Users',
-            //onClick: ()=> router.visit('/admin/users')
-        },
-        {
-            type: 'divider'
+            children: [
+                {
+                    key: 'admin.users.index',
+                    label: 'List of Users',
+                    icon: <BarsOutlined />,
+                },
+                {
+                    key: 'admin.pending-users.index',
+                    label: 'Pending Users',
+                    icon: <Loader size={16} />,
+                },
+            ]
         },
 
         {

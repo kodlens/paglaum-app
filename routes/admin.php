@@ -32,6 +32,15 @@ Route::middleware(['auth', 'admin', 'active'])->group(function () {
     Route::post('/admin/change-password/{id}', [App\Http\Controllers\Administrator\UserController::class, 'changePassword']);
 
 
+
+    Route::resource('/admin/pending-loans', App\Http\Controllers\Admin\AdminPendingLoanController::class)->names('admin.pending-loans');
+    Route::get('/admin/get-pending-loans', [App\Http\Controllers\Admin\AdminPendingLoanController::class, 'getData']);
+
+    Route::resource('/admin/pending-users', App\Http\Controllers\Admin\AdminPendingUserController::class)->names('admin.pending-users');
+    Route::get('/admin/get-pending-users', [App\Http\Controllers\Admin\AdminPendingUserController::class, 'getData']);
+
+    
+
 });
 
   /* ===============================

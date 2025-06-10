@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Bm;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,10 +8,10 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Loan;
 
-class BmPendingLoanController extends Controller
+class AdminPendingLoanController extends Controller
 {
     public function index(){
-        return Inertia::render('Bm/BmPendingLoan/index');
+        return Inertia::render('Admin/AdminPendingLoan/index');
     }
 
 

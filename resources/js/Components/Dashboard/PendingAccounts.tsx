@@ -23,7 +23,12 @@ export default function PendingAccounts() {
   
   const handleRedirect = () => {
     const role: string = props.auth ? props.auth.user.role : '';
-    router.visit('/' + role.toLocaleLowerCase() + '/pending-members')
+    if(role === 'ADMIN'){
+      router.visit('/' + role.toLocaleLowerCase() + '/pending-users')
+    }else{
+      router.visit('/' + role.toLocaleLowerCase() + '/pending-members')
+    }
+
   }
 
 
