@@ -145,6 +145,8 @@ Route::middleware(['auth'])->group(function () {
     //chart
     Route::get('/open-dashboard/chart-monthly-financial-report', [App\Http\Controllers\ChartReport\MonthlyFinancialSummaryReportController::class, 'report']);
     
+    Route::get('/get-members-autocomplete', [App\Http\Controllers\AutoCompleteMemberController::class, 'memberAutocomplete']);
+    Route::get('/get-not-approve-members-autocomplete', [App\Http\Controllers\AutoCompleteMemberController::class, 'memberNotApproveAutocomplete']);
     
 });
 

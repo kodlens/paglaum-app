@@ -206,7 +206,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
                       <span className='bg-red-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>NO</span>
                   )
               )} />
-              <Column title="Do Approved" dataIndex="is_do_approved" render={(is_do_approved: number) => (
+              <Column title="DO Approved" dataIndex="is_do_approved" render={(is_do_approved: number) => (
                 is_do_approved ? (
                   <span className='bg-green-600 font-bold text-white text-[10px] px-2 py-1 rounded-full'>YES </span>
                 ) : (

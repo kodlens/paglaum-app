@@ -18,6 +18,7 @@ import { PaginateResponse } from '@/types/apiResponse';
 import { Captions, FileLock2, MonitorCheck, Pencil, ShieldOff, Trash2 } from 'lucide-react';
 import BmLAuthLayout from '@/Layouts/BmAuthLayout';
 import ChangePassword from './partials/ChangePassword';
+import InputAutocompleteMember from '@/Components/InputAutocompleteMember';
 
 const { Column } = Table;
 
@@ -168,10 +169,11 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
                 })
             }})
         }
-
-       
-        
     }
+
+    useEffect(()=>{
+        loadDataAsync()
+    },[search])
 
 	return (
 		<BmLAuthLayout user={auth.user}>
@@ -186,19 +188,11 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
 					{/* card body */}
 					<div className='z-0'>
                         <div>
-                            <div className='flex flex-col gap-2 w-full'>
-                                <label htmlFor="search-lname">Last Name</label>
-                                <Input id='search-lname'
-                                    onKeyDown={ (e) =>{
-                                        if(e.key === 'Enter'){
-                                            loadDataAsync()
-                                        }
-                                    }}
-                                    name='lname' onChange={(e)=>{
-                                        const {name, value} = e.target
-                                        setSearch({...search, [name]:value})
-                                    }} 
-                                    placeholder="Search Last Name"/>
+                            <div className='flex flex-col w-full mb-4'>
+                                <label htmlFor="" className='mb-2'>Last Name</label>
+                                <InputAutocompleteMember handleSelect={(value:string)=>{
+                                    setSearch({...search, lname:value})
+                                }}/>
                             </div>
                             <div className='flex flex-col gap-2 w-full'>
                                 <label>Select Role</label>

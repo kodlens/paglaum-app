@@ -9,7 +9,8 @@ import { Space, Table,
     Form, Input, Select, Checkbox,
 	App,
     Popconfirm,
-    Dropdown} from 'antd';
+    Dropdown,
+    AutoComplete} from 'antd';
 
 
 import React, { useEffect, useState } from 'react'
@@ -17,6 +18,8 @@ import axios from 'axios';
 import { PaginateResponse } from '@/types/apiResponse';
 import { Captions, CheckCheck, FileLock2, MonitorCheck, Pencil, Pocket, ShieldOff, Trash2 } from 'lucide-react';
 import DoAuthLayout from '@/Layouts/DoAuthLayout';
+import type { AutoCompleteProps } from 'antd';
+import InputAutocompleteMember from '@/Components/InputAutocompleteMember';
 
 const { Column } = Table;
 
@@ -71,8 +74,11 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
 
     useEffect(()=>{
         loadDataAsync()
-    },[perPage, search, page])
+    },[perPage, page])
 
+    useEffect(()=>{
+        loadDataAsync()
+    },[search])
 
     const onPageChange = (index:number, perPage:number) => {
         setPage(index)
@@ -121,10 +127,8 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
                 })
             }})
         }
-
-       
-        
     }
+
 
 	return (
 		<DoAuthLayout user={auth.user}>
@@ -139,21 +143,12 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
 					{/* card body */}
 					<div className='z-0'>
                         <div>
-                            <div className='flex flex-col gap-2 w-full'>
-                                <label htmlFor="search-lname">Last Name</label>
-                                <Input id='search-lname'
-                                    onKeyDown={ (e) =>{
-                                        if(e.key === 'Enter'){
-                                            loadDataAsync()
-                                        }
-                                    }}
-                                    name='lname' onChange={(e)=>{
-                                        const {name, value} = e.target
-                                        setSearch({...search, [name]:value})
-                                    }} 
-                                    placeholder="Search Last Name"/>
+                            <div className='mb-4 flex flex-col w-full'>
+                                <label htmlFor="" className='mb-2'>Last Name</label>
+                                <InputAutocompleteMember handleSelect={(value:string)=>{
+                                    setSearch({...search, lname:value})
+                                }}/>
                             </div>
-
                             <div>
                                 <label>Select Role</label>
                                 <Select

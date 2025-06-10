@@ -21,6 +21,8 @@ import axios from 'axios';
 import { PaginateResponse } from '@/types/apiResponse';
 import { Captions, CheckCheck, FileLock2, MonitorCheck, Pencil, Pocket, ShieldOff, Trash2 } from 'lucide-react';
 import DoAuthLayout from '@/Layouts/DoAuthLayout';
+import InputAutocompleteMember from '@/Components/InputAutocompleteMember';
+import InputAutocompleteNotApproveMember from '@/Components/InputAutocompleteNotApproveMember';
 
 const { Column } = Table;
 
@@ -147,19 +149,11 @@ const DoPendingMemberIndex = ({ auth }: PageProps) => {
           {/* card body */}
           <div className='z-0'>
             <div>
-              <div className='flex flex-col gap-2 w-full'>
-                <label htmlFor="search-lname">Last Name</label>
-                <Input id='search-lname'
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      loadDataAsync()
-                    }
-                  }}
-                  name='lname' onChange={(e) => {
-                    const { name, value } = e.target
-                    setSearch({ ...search, [name]: value })
-                  }}
-                  placeholder="Search Last Name" />
+              <div className='mb-4 flex flex-col w-full'>
+                <label htmlFor="" className='mb-2'>Last Name</label>
+                <InputAutocompleteNotApproveMember handleSelect={(value:string)=>{
+                    setSearch({...search, lname:value})
+                }}/>
               </div>
 
               <div>

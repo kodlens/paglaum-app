@@ -166,9 +166,6 @@ const AdminPendingUserIndex = ({ auth }: PageProps)=> {
                 })
             }})
         }
-
-       
-        
     }
 
 	return (
