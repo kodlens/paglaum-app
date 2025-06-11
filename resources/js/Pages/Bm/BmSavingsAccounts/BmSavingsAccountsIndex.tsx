@@ -85,7 +85,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
         if (!!savingsAccount.is_bm_approved) {
           axios.post('/bm/disapprove-savings-account/' + savingsAccount.id).then(res => {
             if (res.data.status === 'disapproved') {
-              notification.success({ placement: 'bottomRight', message: 'Disapproved!', description: 'SA disapproved successfully.' })
+              notification.success({ placement: 'topRight', message: 'Disapproved!', description: 'SA disapproved successfully.' })
               loadDataAsync()
             }
           }).catch(err => {
@@ -94,7 +94,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
             if (err.response.status === 422) {
               if (err.response.errors.approval) {
                 notification.error({
-                  placement: 'bottomRight',
+                  placement: 'topRight',
                   description: 'Error: ' + err.response.data.errors.approval[0],
                   message: 'Error!'
                 });
@@ -104,7 +104,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
 
             if (err.response.data.status === 500) {
               notification.error({
-                placement: 'bottomRight',
+                placement: 'topRight',
                 description: 'Error: Unknown',
                 message: 'Contact System Administrator'
               });
@@ -113,20 +113,21 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
         } else {
           axios.post('/bm/approve-savings-account/' + savingsAccount.id).then(res => {
             if (res.data.status === 'approved') {
-              notification.success({ placement: 'bottomRight', message: 'Approved!', description: 'SA approved successfully.' })
+              notification.success({ placement: 'topRight', message: 'Approved!', description: 'SA approved successfully.' })
               loadDataAsync()
             }
           }).catch(err => {
-            if (err.response.data.errors.approval) {
+            if (err.response.status === 422) {
               notification.error({
-                placement: 'bottomRight',
+                placement: 'topRight',
                 description: 'Error: ' + err.response.data.message,
-                message: 'Approved Already!'
+                message: 'Invalid!'
               });
             }
+            
             if (err.response.data.status === 500) {
               notification.error({
-                placement: 'bottomRight',
+                placement: 'topRight',
                 description: 'Error: Unknown',
                 message: 'Contact System Administrator'
               });
@@ -227,7 +228,7 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
 
                     <Dropdown.Button
                       type="primary"
-                      placement="bottomRight"
+                      placement="topRight"
                       menu={{
                         items: [
                           {

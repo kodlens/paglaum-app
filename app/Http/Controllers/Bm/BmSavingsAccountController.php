@@ -7,6 +7,7 @@ use App\Models\SavingAccount;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Http;
+use \Carboon\Carbon;
 
 
 class BmSavingsAccountController extends Controller
@@ -31,8 +32,18 @@ class BmSavingsAccountController extends Controller
 
 
     public function approve($id){
+
         $data = SavingAccount::with(['user'])
             ->find($id);
+
+        if($data->is_do_approved == 0){
+            return response()->json([
+                'errors' => [
+                    'do_approve' => ['Savings Account must approve first by DO.']
+                ],
+                'message' => 'Savings Account must approve first by DO.'
+            ], 422);
+        }
         
         if($data->is_bm_approved == 1){
             return response()->json([
@@ -42,9 +53,12 @@ class BmSavingsAccountController extends Controller
                 'message' => 'Already approved.'
             ], 422);
         }
+
         $data->is_bm_approved = 1;
         $data->is_approved = 1;
         $data->is_active = 1;
+        $data->opened_at = date('Y-m-d');
+        $data->date_approved = date('Y-m-d');
         $data->save();
 
         if(env('SMS') > 0){
@@ -88,6 +102,7 @@ class BmSavingsAccountController extends Controller
         $data->is_bm_approved = 0;
         $data->is_active = 0;
         $data->is_approved = 0;
+        $data->date_approved = null;
         $data->save();
 
         return response()->json([

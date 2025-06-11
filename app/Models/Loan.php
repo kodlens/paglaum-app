@@ -26,6 +26,7 @@ class Loan extends Model
         'is_approve',
         'is_do_approve',
         'is_bm_approve',
+        'date_approved',
         'total_payment',
         'co_maker',
         'co_maker_identification',

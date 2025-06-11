@@ -92,7 +92,7 @@ class BmLoanController extends Controller
         $loan->savings = $req->savings;
         $loan->save();
         
-        if($loan->is_do_approve < 1){
+        if(!$loan->is_do_approve){
             return response()->json([
                 'errors' => [
                     'loan' => ['Development Officer need to approve this loan first.']
@@ -101,7 +101,7 @@ class BmLoanController extends Controller
             ], 422);
         }
 
-        if($loan->is_bm_approve > 0){
+        if($loan->is_bm_approve){
             return response()->json([
                 'errors' => [
                     'loan' => ['Loan already approved.']
@@ -140,6 +140,7 @@ class BmLoanController extends Controller
                     ->update([
                         'is_bm_approve' => 1,
                         'is_approve' => 1,
+                        'date_approved' => Carbon::now(),
                     ]);
             });
             

@@ -60,6 +60,7 @@ return new class extends Migration
 
             $table->tinyInteger('is_do_approve')->default(0);
             $table->tinyInteger('is_bm_approve')->default(0);
+            $table->date('date_approved')->nullable();
             $table->double('total_payment')->default(0);
 
             $table->string('co_maker')->nullable();

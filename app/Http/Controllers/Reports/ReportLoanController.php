@@ -16,50 +16,99 @@ class ReportLoanController extends Controller
 
     
 
-    public function report(){
-        $data = \DB::select(
-            "SELECT 
-                l.user_id,
-                CONCAT(u.lname, ', ', u.fname, ' ', COALESCE(u.mname, '')) AS full_name,
-                u.sex,
-                l.id AS loan_id,
+    public function report(Request $req){
 
-                lt.loan_type,
-                lt.description AS loan_type_description,
+        $startDate = $req->from ? $req->from : '';
+        $endDate = $req->to ? $req->to : '';
 
-                lst.loan_subtype,
-                lst.terms_month,
-                lst.percent AS interest_percent,
+        if($startDate =='' && $endDate == ''){
+            $data = \DB::select(
+                "SELECT 
+                    l.user_id,
+                    CONCAT(u.lname, ', ', u.fname, ' ', COALESCE(u.mname, '')) AS full_name,
+                    u.sex,
+                    l.id AS loan_id,
 
-                ROUND(l.principal, 2) AS principal,
-                ROUND(l.interest, 2) AS interest,
-                ROUND(l.total_payment, 2) AS loan_expected,
+                    lt.loan_type,
+                    lt.description AS loan_type_description,
 
-                ROUND(COALESCE(SUM(ld.amount_paid), 0), 2) AS loan_paid,
-                COUNT(ld.id) AS payment_count,
-                MIN(ld.due_date) AS first_due_date,
-                MAX(ld.datetime_paid) AS last_payment_date
+                    lst.loan_subtype,
+                    lst.terms_month,
+                    lst.percent AS interest_percent,
 
-            FROM 
-                loans l
-            LEFT JOIN 
-                loan_details ld ON l.id = ld.loan_id
-            LEFT JOIN 
-                users u ON u.id = l.user_id
-            LEFT JOIN 
-                loan_types lt ON l.loan_type_id = lt.id
-            LEFT JOIN 
-                loan_subtypes lst ON l.loan_subtype_id = lst.id
+                    ROUND(l.principal, 2) AS principal,
+                    ROUND(l.interest, 2) AS interest,
+                    ROUND(l.total_payment, 2) AS loan_expected,
 
-            WHERE 
-                (l.total_payment > 0 OR ld.amount_paid > 0)
+                    ROUND(COALESCE(SUM(ld.amount_paid), 0), 2) AS loan_paid,
+                    COUNT(ld.id) AS payment_count,
+                    MIN(ld.due_date) AS first_due_date,
+                    MAX(ld.datetime_paid) AS last_payment_date
 
-            GROUP BY 
-                l.id
+                FROM 
+                    loans l
+                LEFT JOIN 
+                    loan_details ld ON l.id = ld.loan_id
+                LEFT JOIN 
+                    users u ON u.id = l.user_id
+                LEFT JOIN 
+                    loan_types lt ON l.loan_type_id = lt.id
+                LEFT JOIN 
+                    loan_subtypes lst ON l.loan_subtype_id = lst.id
+                WHERE 
+                    (l.total_payment > 0 OR ld.amount_paid > 0)
+                GROUP BY 
+                    l.id
+                ORDER BY 
+                    u.lname, u.fname, l.id
+                LIMIT 10;"
+            );
+        }else{
+            $data = \DB::select(
+                "SELECT 
+                    l.user_id,
+                    CONCAT(u.lname, ', ', u.fname, ' ', COALESCE(u.mname, '')) AS full_name,
+                    u.sex,
+                    l.id AS loan_id,
 
-            ORDER BY 
-                u.lname, u.fname, l.id;"
-        );
+                    lt.loan_type,
+                    lt.description AS loan_type_description,
+
+                    lst.loan_subtype,
+                    lst.terms_month,
+                    lst.percent AS interest_percent,
+
+                    ROUND(l.principal, 2) AS principal,
+                    ROUND(l.interest, 2) AS interest,
+                    ROUND(l.total_payment, 2) AS loan_expected,
+
+                    ROUND(COALESCE(SUM(ld.amount_paid), 0), 2) AS loan_paid,
+                    COUNT(ld.id) AS payment_count,
+                    MIN(ld.due_date) AS first_due_date,
+                    MAX(ld.datetime_paid) AS last_payment_date
+                FROM 
+                    loans l
+                LEFT JOIN 
+                    loan_details ld ON l.id = ld.loan_id
+                LEFT JOIN 
+                    users u ON u.id = l.user_id
+                LEFT JOIN 
+                    loan_types lt ON l.loan_type_id = lt.id
+                LEFT JOIN 
+                    loan_subtypes lst ON l.loan_subtype_id = lst.id
+                WHERE 
+                    (l.total_payment > 0 OR ld.amount_paid > 0)
+                AND
+                    l.date_approved BETWEEN ? AND ?
+                GROUP BY 
+                    l.id
+                ORDER BY 
+                    u.lname, u.fname, l.id;",
+                [$startDate, $endDate]
+            );
+        }
+
+       
 
         return $data;
     }
