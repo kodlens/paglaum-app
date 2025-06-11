@@ -71,7 +71,7 @@ export default function ReportSavingsAccount() {
     
           <ReportLogo />
 
-          <div className='font-bold text-center mt-4'>SUMMARY OF SAVINGS ACCOUNTS</div>
+          <div className='font-bold text-center text-md mt-4'>SUMMARY OF SAVINGS ACCOUNTS</div>
 
           { search.dateFrom && search.dateTo ? (
             <div className='font-bold text-center'>
@@ -86,22 +86,22 @@ export default function ReportSavingsAccount() {
           <table className='border w-full mt-4'>
             <thead className='bg-gray-100 font-bold text-left'>
               <tr>
-                <th className='py-2 px-6'>NAME</th>
-                <th className='py-2 px-6'>TOTAL ACCOUNTS</th>
-                <th className='py-2 px-6'>TOTAL DEPOSITS</th>
-                <th className='py-2 px-6'>TOTAL WITHDRAWALS</th>
-                <th className='py-2 px-6'>TOTAL BALANCE</th>
+                <th className='py-2 px-6 text-[.8rem]'>NAME</th>
+                <th className='py-2 px-6 text-[.8rem]'>TOTAL ACCOUNTS</th>
+                <th className='py-2 px-6 text-[.8rem]'>TOTAL DEPOSITS</th>
+                <th className='py-2 px-6 text-[.8rem]'>TOTAL WITHDRAWALS</th>
+                <th className='py-2 px-6 text-[.8rem]'>TOTAL BALANCE</th>
               </tr>
             </thead>
             <tbody>
                {Array.isArray(data) && data.length > 0 ? (
                 data.map((item: Fields, ix: number) => (
                   <tr key={ix} className="border">
-                    <td className="px-6 py-2">{item?.user_lname}, {item.user_fname} {item.user_mname}</td>
-                    <td className="px-6 py-2">{item?.total_accounts}</td>
-                    <td className="px-6 py-2">&#8369; {item?.total_deposits?.toLocaleString()}</td>
-                    <td className="px-6 py-2">&#8369; {item?.total_withdrawals?.toLocaleString()}</td>
-                    <td className="text-right px-6 py-2">&#8369; {item?.total_balance?.toLocaleString()}</td>
+                    <td className="px-6 text-[.8rem] py-2">{item?.user_lname}, {item.user_fname} {item.user_mname}</td>
+                    <td className="px-6 text-[.8rem] py-2">{item?.total_accounts}</td>
+                    <td className="px-6 text-[.8rem] py-2">&#8369; {item?.total_deposits?.toLocaleString()}</td>
+                    <td className="px-6 text-[.8rem] py-2">&#8369; {item?.total_withdrawals?.toLocaleString()}</td>
+                    <td className="text-right px-6 text-[.8rem] py-2">&#8369; {item?.total_balance?.toLocaleString()}</td>
                   </tr>
                 ))
               ) : (
