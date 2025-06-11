@@ -18,6 +18,7 @@ import ChangePassword from './partials/ChangePassword';
 import AdminAuthLayout from '@/Layouts/AdminAuthLayout';
 import { PaginateResponse } from '@/types/apiResponse';
 import { Captions, FileLock2, MonitorCheck, Pencil, RefreshCw, ShieldOff, Trash2 } from 'lucide-react';
+import InputAutocompleteMember from '@/Components/InputAutocompleteMember';
 
 const { Column } = Table;
 
@@ -177,14 +178,16 @@ const AdminUserIndex = ({ auth }: PageProps)=> {
                         <div className='flex md:flex-row flex-col gap-2'>
                             <div className='flex flex-col gap-2 w-full'>
                                 <label htmlFor="search-lname">Last Name</label>
-                                <Input id='search-lname'
-                                    onKeyDown={ (e) =>{
+                                <InputAutocompleteMember 
+                                    onKeyDown={(e) => {
                                         if(e.key === 'Enter'){
                                             loadDataAsync()
                                         }
                                     }}
-                                    name='lname' onChange={handleChange} 
-                                    placeholder="Search Last Name"/>
+                                    onChange={(value:string)=>{
+                                        setSearch({...search, lname:value})
+                                    }}
+                                />
                             </div>
                             <div className='flex flex-col gap-2 w-full'>
                                 <label>Select Role</label>

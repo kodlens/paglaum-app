@@ -171,10 +171,6 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
         }
     }
 
-    useEffect(()=>{
-        loadDataAsync()
-    },[search])
-
 	return (
 		<BmLAuthLayout user={auth.user}>
 			<Head title="User Management"></Head>
@@ -190,9 +186,16 @@ const BmMemberIndex = ({ auth }: PageProps)=> {
                         <div>
                             <div className='flex flex-col w-full mb-4'>
                                 <label htmlFor="" className='mb-2'>Last Name</label>
-                                <InputAutocompleteMember handleSelect={(value:string)=>{
-                                    setSearch({...search, lname:value})
-                                }}/>
+                                <InputAutocompleteMember 
+                                    onKeyDown={(e) => {
+                                        if(e.key === 'Enter'){
+                                            loadDataAsync()
+                                        }
+                                    }}
+                                    onChange={(value:string)=>{
+                                        setSearch({...search, lname:value})
+                                    }}
+                                />
                             </div>
                             <div className='flex flex-col gap-2 w-full'>
                                 <label>Select Role</label>

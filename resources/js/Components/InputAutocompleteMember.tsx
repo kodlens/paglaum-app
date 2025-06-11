@@ -2,7 +2,12 @@ import { AutoComplete, AutoCompleteProps } from 'antd'
 import axios from 'axios';
 import React from 'react'
 
-export default function InputAutocompleteMember( {handleSelect}: { handleSelect:any }) {
+
+type Props ={
+  onKeyDown?: (event:React.KeyboardEvent<HTMLInputElement>) => void;
+  onChange?: any;
+}
+export default function InputAutocompleteMember( { onKeyDown, onChange }: Props ) {
 
   const [options, setOptions] = React.useState<AutoCompleteProps['options']>([]);
   const debounceRef = React.useRef<NodeJS.Timeout | null>(null);
@@ -25,8 +30,9 @@ export default function InputAutocompleteMember( {handleSelect}: { handleSelect:
   return (
     <AutoComplete
       className='w-full'
+      onKeyDown={onKeyDown}
       onSearch={handleSearch}
-      onSelect={handleSelect}
+      onChange={onChange}
       options={options}
     />
   )

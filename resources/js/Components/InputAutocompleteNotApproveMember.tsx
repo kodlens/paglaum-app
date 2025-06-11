@@ -3,11 +3,11 @@ import axios from 'axios';
 import React from 'react'
 
 type Props = {
-  handleSelect: any;
+  onChange?: (value: string) => void;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
-export default function InputAutocompleteNotApproveMember( {handleSelect, onKeyDown}: Props ) {
+export default function InputAutocompleteNotApproveMember( {onChange, onKeyDown}: Props ) {
 
   const [options, setOptions] = React.useState<AutoCompleteProps['options']>([]);
   const debounceRef = React.useRef<NodeJS.Timeout | null>(null);
@@ -32,7 +32,7 @@ export default function InputAutocompleteNotApproveMember( {handleSelect, onKeyD
       className='w-full'
       onKeyDown={onKeyDown}
       onSearch={handleSearch}
-      onSelect={handleSelect}
+      onChange={onChange}
       options={options}
     />
   )

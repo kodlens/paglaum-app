@@ -76,9 +76,6 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
         loadDataAsync()
     },[perPage, page])
 
-    useEffect(()=>{
-        loadDataAsync()
-    },[search])
 
     const onPageChange = (index:number, perPage:number) => {
         setPage(index)
@@ -145,9 +142,17 @@ const DoMemeberIndex = ({ auth }: PageProps)=> {
                         <div>
                             <div className='mb-4 flex flex-col w-full'>
                                 <label htmlFor="" className='mb-2'>Last Name</label>
-                                <InputAutocompleteMember handleSelect={(value:string)=>{
-                                    setSearch({...search, lname:value})
-                                }}/>
+                                <InputAutocompleteMember 
+                                    onKeyDown={(e) => {
+                                        if(e.key === 'Enter'){
+                                            loadDataAsync()
+                                        }
+                                    }}
+
+                                    onChange={ (value:string)=> {
+                                        setSearch({...search, lname:value})
+                                    }}
+                                />
                             </div>
                             <div>
                                 <label>Select Role</label>

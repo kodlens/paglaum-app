@@ -77,7 +77,7 @@ const DoPendingMemberIndex = ({ auth }: PageProps) => {
 
   useEffect(() => {
     loadDataAsync()
-  }, [perPage, search, page])
+  }, [perPage, page])
 
 
   const onPageChange = (index: number, perPage: number) => {
@@ -152,9 +152,16 @@ const DoPendingMemberIndex = ({ auth }: PageProps) => {
               <div className='mb-4 flex flex-col w-full'>
                 <label htmlFor="" className='mb-2'>Last Name</label>
                 <InputAutocompleteNotApproveMember
-                  handleSelect={(value:string)=>{
-                    setSearch({...search, lname:value})
-                }}/>
+                    onChange={(value:string)=>{
+                      console.log(value); 
+                      setSearch({...search, lname:value})
+                    }}
+                    onKeyDown={(e)=>{
+                      if(e.key === 'Enter'){
+                        loadDataAsync()
+                      }
+                    }}
+                />
               </div>
 
               <div>
