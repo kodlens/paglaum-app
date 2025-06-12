@@ -26,6 +26,14 @@ class MemberDepositOnlineController extends Controller
     }
 
     public function depositOnline(Request $req){
+
+
+        $req->validate([
+            'deposit_amount' => ['gt:19']
+        ],[
+            'deposit_amount.gt' => 'Minimum required amount is 20.'
+        ]);
+        return $req;
         $user = Auth::user();
 
         $client = new \GuzzleHttp\Client();

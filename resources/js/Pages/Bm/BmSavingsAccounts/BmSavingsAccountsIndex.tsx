@@ -14,6 +14,7 @@ import axios from 'axios';
 import { BookUp, Captions, ClipboardList, RefreshCcwIcon, ShieldCheck, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { SavingsAccount } from "@/types/savingsAccount";
 import BmAuthLayout from '@/Layouts/BmAuthLayout';
+import AutoCompleteUser from '@/Components/AutoCompleteUser';
 
 const { Column } = Table;
 
@@ -163,12 +164,16 @@ const BmSavingsAccountsIndex = ({ auth }: PageProps) => {
             </div>
             <div className="flex flex-wrap gap-y-2 mt-4">
               <label>Last Name</label>
-              <Input
-                type={"text"}
-                autoComplete={'off'}
-                name="name"
-                onChange={handleChange}
-                placeholder="Juan Dela Cruz..." />
+              <AutoCompleteUser
+                  onChange={(value: string) => {
+                      setFields({ ...fields, name: value })
+                  }}
+                  onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                          loadDataAsync()
+                      }
+                  }}
+              />
             </div>
             <div className='mt-4 mb-2'>
               <Button type='primary'

@@ -19,6 +19,7 @@ import { Loan } from '@/types/loan';
 import DoAuthLayout from '@/Layouts/DoAuthLayout';
 import { LoanType } from '@/types/loanType';
 import { SavingsAccount } from "@/types/savingsAccount";
+import AutoCompleteUser from '@/Components/AutoCompleteUser';
 
 const { Column } = Table;
 
@@ -39,6 +40,7 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
   const [fields, setFields] = useState<Fields>({
     sa: '',
     name: ''
+
   }); //for modal
 
   const [perPage, setPerPage] = useState(10);
@@ -53,7 +55,6 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
   }
 
   const loadDataAsync = async () => {
-    console.log(fields)
     setLoading(true)
     const params = [
       `sa=${fields.sa}`,
@@ -68,7 +69,7 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
       setTotal(res.data.total)
       setLoading(false)
     } catch (err) {
-      console.log(err)
+      
     }
   }
 
@@ -195,12 +196,16 @@ const DoSavingsAccountsIndex = ({ auth }: PageProps) => {
             </div>
             <div className="flex flex-wrap gap-y-2 mt-4">
               <label>Last Name</label>
-              <Input
-                type={"text"}
-                autoComplete={'off'}
-                name="name"
-                onChange={handleChange}
-                placeholder="Juan Dela Cruz..." />
+              <AutoCompleteUser
+                  onChange={(value: string) => {
+                      setFields({ ...fields, name: value })
+                  }}
+                  onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                          loadDataAsync()
+                      }
+                  }}
+              />
             </div>
             <div className='mt-4 mb-2'>
               <Button type='primary'

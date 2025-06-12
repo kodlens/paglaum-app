@@ -23,6 +23,7 @@ import InputAutocompleteMember from '@/Components/InputAutocompleteMember';
 import InputAutocompleteNotApproveMember from '@/Components/InputAutocompleteNotApproveMember';
 import { SavingsAccount } from '@/types/savingsAccount';
 import BmAuthLayout from '@/Layouts/BmAuthLayout';
+import AutoCompleteUser from '@/Components/AutoCompleteUser';
 
 const { Column } = Table;
 
@@ -163,9 +164,8 @@ return (
                     <div>
                         <div className='mb-4 flex flex-col w-full'>
                             <label htmlFor="" className='mb-2'>Last Name</label>
-                            <InputAutocompleteNotApproveMember
+                            <AutoCompleteUser
                                 onChange={(value: string) => {
-                                    console.log(value);
                                     setSearch({ ...search, lname: value })
                                 }}
                                 onKeyDown={(e) => {

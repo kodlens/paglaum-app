@@ -24,6 +24,7 @@ import DoAuthLayout from '@/Layouts/DoAuthLayout';
 import InputAutocompleteMember from '@/Components/InputAutocompleteMember';
 import InputAutocompleteNotApproveMember from '@/Components/InputAutocompleteNotApproveMember';
 import { SavingsAccount } from '@/types/savingsAccount';
+import AutoCompleteSavings from '@/Components/AutoCompleteUser';
 
 const { Column } = Table;
 
@@ -72,7 +73,7 @@ const DoPendingSavingsAccountIndex = ({ auth }: PageProps) => {
             setTotal(res.data.total)
             setLoading(false)
         } catch (err) {
-            console.log(err)
+            notification.error({ placement: 'topRight', message: 'Error!', description: 'An error occured.' })
         }
     }
 
@@ -85,14 +86,6 @@ const DoPendingSavingsAccountIndex = ({ auth }: PageProps) => {
         setPage(index)
         setPerPage(perPage)
     }
-
-    const handleEditClick = (id: any) => {
-        //setId(id);
-        //setOpen(true);
-        //getUser(id);
-        router.visit('/do/members/' + id + '/edit');
-    }
-
 
 
     const handleClickApprove = (savingsAccount: SavingsAccount) => {
@@ -173,10 +166,9 @@ return (
                 <div className='z-0'>
                     <div>
                         <div className='mb-4 flex flex-col w-full'>
-                            <label htmlFor="" className='mb-2'>Last Name</label>
-                            <InputAutocompleteNotApproveMember
+                            <label htmlFor="" className='mb-2'>Search By Last Name</label>
+                            <AutoCompleteSavings
                                 onChange={(value: string) => {
-                                    console.log(value);
                                     setSearch({ ...search, lname: value })
                                 }}
                                 onKeyDown={(e) => {
