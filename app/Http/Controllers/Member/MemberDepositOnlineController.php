@@ -33,7 +33,8 @@ class MemberDepositOnlineController extends Controller
         ],[
             'deposit_amount.gt' => 'Minimum required amount is 20.'
         ]);
-        return $req;
+        
+        //return $req;
         $user = Auth::user();
 
         $client = new \GuzzleHttp\Client();

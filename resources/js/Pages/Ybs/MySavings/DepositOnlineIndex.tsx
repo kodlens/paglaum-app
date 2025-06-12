@@ -1,7 +1,8 @@
+import YbsAuthLayout from "@/Layouts/YbsAuthLayout";
 import { PageProps } from "@/types";
 import { SavingsAccount } from "@/types/savingsAccount";
 import { Head, router } from "@inertiajs/react";
-import { Button, Form, Input, InputNumber } from "antd";
+import { App, Button, Form, Input, InputNumber } from "antd";
 import axios from "axios";
 import { WalletCards } from "lucide-react";
 import { useState } from "react";
@@ -10,11 +11,13 @@ import { useState } from "react";
 interface Fields { 
     deposit_amount: number|null;
 }
-export default function DepositOnlineIndex( { savingsAccount }: PageProps<{ savingsAccount: SavingsAccount }>) {
+export default function DepositOnlineIndex( { savingsAccount, auth }: PageProps<{ savingsAccount: SavingsAccount }>) {
 
     const [fields, setFields] = useState<Fields>();
     const [loading, setLoading] = useState<boolean>(false);
 
+    const  { notification } = App.useApp();
+    
     const handleOnlinePay = () => {
        
         
@@ -38,11 +41,18 @@ export default function DepositOnlineIndex( { savingsAccount }: PageProps<{ savi
     
         }).catch(err => {
             setLoading(false)
+            if(err.response.status === 422){
+                notification.error({
+                    placement: 'topRight',
+                    description: 'Error: ' + err.response.data.message,
+                    message: 'Invalid!'
+                });
+            }
         })
     }
 
     return (
-        <>
+        <YbsAuthLayout user={auth.user}>
             <Head title="Savings Online Payment" />
             <div className="min-h-screen flex justify-center items-center bg-gray-100">
 
@@ -66,7 +76,7 @@ export default function DepositOnlineIndex( { savingsAccount }: PageProps<{ savi
                     </div>
                 </div>
             </div>
-        </>
+        </YbsAuthLayout>
         
     )
 }

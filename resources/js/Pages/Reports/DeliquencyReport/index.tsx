@@ -4,6 +4,7 @@ import { Button, DatePicker } from 'antd'
 import axios from 'axios'
 import { ArrowLeft, PrinterCheck } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import dayjs from 'dayjs'
 
 interface Fields {
   full_name?: string;
@@ -58,11 +59,27 @@ export default function DeliquencyReport() {
                 window.print()
               }}>Print</Button>
           </div>
+
+          <div className='flex gap-2 mb-2 print:hidden'>
+            <DatePicker onChange={(value)=> setSearch({...search, dateFrom: value ? dayjs(value).format('YYYY-MM-DD') : ''})}/>
+            {/* <DatePicker onChange={(value)=> setSearch({...search, dateTo: value ? dayjs(value).format('YYYY-MM-DD') : ''})}/> */}
+            <Button
+              onClick={loadReport}>Search</Button>
+            <hr />
+          </div>
           
     
           <ReportLogo />
 
-          <div className='font-bold text-center mb-4'>DELIQUENCY REPORT</div>
+          <div className='font-bold text-center'>DELIQUENCY REPORT</div>
+
+          { search.dateFrom && search.dateTo ? (
+            <div className='font-bold text-center mb-4'>
+              As of &nbsp;
+              { dayjs(search.dateFrom).format('MMM DD, YYYY') } 
+            </div>
+          ): null }
+
           <table className='border w-full'>
             <thead className='bg-gray-100 font-bold text-left'>
               <tr>
