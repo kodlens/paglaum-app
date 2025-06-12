@@ -25,6 +25,7 @@ class DoMemberSavingsAccountController extends Controller
                 $q->where('lname', 'like', $req->input('name').'%');
             })
             ->where('account_no', 'like', $req->input('sa').'%')
+            ->orderBy('opened_at', 'desc')
             ->paginate($req->perPage);
 
         return $data;

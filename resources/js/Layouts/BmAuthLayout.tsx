@@ -67,9 +67,21 @@ export default function BmLAuthLayout(
             ]
         },
         {
-            key: 'bm.savings-accounts.index',
+            key: 'bm.savings-accounts',
             icon: <BarsOutlined />,
-            label: 'Savings Account'
+            label: 'Savings Account',
+            children: [
+                {
+                    key: 'bm.savings-accounts.index',
+                    label: 'List of Savings',
+                    icon: <BarsOutlined />,
+                },
+                {
+                    key: 'bm.pending-savings-account.index',
+                    label: 'Pending Savings',
+                    icon: <Loader size={16} />,
+                },
+            ]
         },
         {
             key: 'bm.members',

@@ -26,6 +26,7 @@ import PendingAccounts from '@/Components/Dashboard/PendingAccounts';
 import TotalLoanPaymentToday from '@/Components/Dashboard/TotalLoanPaymentToday';
 import TotalDepositToday from '@/Components/Dashboard/TotalSavingsDepositToday';
 import BmAuthLayout from '@/Layouts/BmAuthLayout';
+import SavingsPendingApplication from '@/Components/Dashboard/SavingsPendingApplication';
 
 
 ChartJS.register(
@@ -102,6 +103,8 @@ export default function Dashboard( { auth } : PageProps) {
             <div className='mt-4 flex gap-4 flex-wrap'>
                 
                 <LoanPendingApplication />
+
+                <SavingsPendingApplication />
                 
                 <PendingAccounts />
 

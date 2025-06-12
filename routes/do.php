@@ -21,6 +21,9 @@ Route::middleware(['auth', 'do'])->group(function () {
     Route::resource('/do/pending-loans', App\Http\Controllers\Do\DoPendingLoanController::class)->names('do.pending-loans');
     Route::get('/do/get-pending-loans', [App\Http\Controllers\Do\DoPendingLoanController::class, 'getData']);
 
+    Route::resource('/do/pending-savings-account', App\Http\Controllers\Do\DoPendingSavingsController::class)->names('do.pending-savings-account');
+    Route::get('/do/get-pending-savings-account', [App\Http\Controllers\Do\DoPendingSavingsController::class, 'getData']);
+
 
     Route::resource('/do/members', App\Http\Controllers\Do\DoMemberController::class)->names('do.members');
     Route::get('/do/get-members', [App\Http\Controllers\Do\DoMemberController::class, 'getData']);

@@ -25,6 +25,9 @@ Route::middleware(['auth', 'bm'])->group(function () {
     Route::resource('/bm/savings-accounts', App\Http\Controllers\Bm\BmSavingsAccountController::class)->names('bm.savings-accounts');
     Route::get('/bm/get-savings-accounts', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'getData']);
     
+    Route::resource('/bm/pending-savings-account', App\Http\Controllers\Bm\BmPendingSavingsController::class)->names('bm.pending-savings-account');
+    Route::get('/bm/get-pending-savings-account', [App\Http\Controllers\Bm\BmPendingSavingsController::class, 'getData']);
+
     Route::post('/bm/approve-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'approve']); //approve
     Route::post('/bm/disapprove-savings-account/{id}', [App\Http\Controllers\Bm\BmSavingsAccountController::class, 'disapprove']); //disapprove
 

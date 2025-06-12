@@ -138,6 +138,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/loan-request-count', [App\Http\Controllers\OpenDashboardController::class, 'loanRequestCount']);
     Route::get('/open-dashboard/pending-loan-application', [App\Http\Controllers\OpenDashboardController::class, 'pendingLoanApplication']);
+    Route::get('/open-dashboard/pending-savings-application', [App\Http\Controllers\OpenDashboardController::class, 'pendingSavingsApplication']);
     Route::get('/open-dashboard/load-pending-accounts', [App\Http\Controllers\OpenDashboardController::class, 'loadPendingAccounts']);
     Route::get('/open-dashboard/load-loan-payment-today', [App\Http\Controllers\OpenDashboardController::class, 'loadLoanPaymentToday']);
     Route::get('/open-dashboard/load-total-deposit-today', [App\Http\Controllers\OpenDashboardController::class, 'loadLoanDepositToday']);

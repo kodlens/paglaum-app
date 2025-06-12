@@ -3,7 +3,7 @@ import { router, usePage } from '@inertiajs/react'
 import axios from 'axios'
 import React, { useEffect } from 'react'
 
-export default function LoanPendingApplication() {
+export default function SavingsPendingApplication() {
 
   const props:any = usePage().props;
 
@@ -14,7 +14,7 @@ export default function LoanPendingApplication() {
 
   const loadData = () => {
     setLoading(true)
-    axios.get('/open-dashboard/pending-loan-application').then(res => {
+    axios.get('/open-dashboard/pending-savings-application').then(res => {
       setLoading(false)
       setData(res.data)
     }).catch(err=>{
@@ -28,7 +28,7 @@ export default function LoanPendingApplication() {
 
   const handleRedirect = () => {
     const role:string = props.auth ? props.auth.user.role : '';
-    router.visit('/' + role.toLocaleLowerCase() + '/pending-loans')
+    router.visit('/' + role.toLocaleLowerCase() + '/pending-savings-account')
   }
 
   return (
@@ -39,7 +39,7 @@ export default function LoanPendingApplication() {
         <div className='text-[2rem] font-bold'>
           {loading ? 0 : data}
         </div>
-        <div className=''>Loan Pending Application</div>
+        <div className=''>Savings Pending Application</div>
       </div>
     </div>
   )

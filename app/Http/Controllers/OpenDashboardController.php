@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Loan;
 use App\Models\User;
+use App\Models\SavingAccount;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -12,12 +13,19 @@ class OpenDashboardController extends Controller
 {
     //
 
-     public function pendingLoanApplication(){
+    public function pendingLoanApplication(){
 
-        return Loan::where('is_bm_approve', 0)
-            ->where('is_do_approve', 0)
-            ->count();
-     }
+    return Loan::where('is_bm_approve', 0)
+        ->where('is_do_approve', 0)
+        ->count();
+    }
+
+    public function pendingSavingsApplication(){
+
+    return SavingAccount::where('is_approved', 0)
+        ->where('is_bm_approved', 0)
+        ->count();
+    }
 
     public function loadPendingAccounts(){
         return User::where('active', 0)

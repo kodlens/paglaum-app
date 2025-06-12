@@ -69,9 +69,21 @@ export default function DoAuthLayout(
             ]
         },
         {
-          key: 'do.member-savings-accounts.index',
+          key: 'do.member-savings-accounts',
           icon: <BarsOutlined />,
-          label: 'Savings Accounts'
+          label: 'Savings Accounts',
+          children: [
+                {
+                    key: 'do.member-savings-accounts.index',
+                    label: 'List of Savings',
+                    icon: <BarsOutlined />,
+                },
+                {
+                    key: 'do.pending-savings-account.index',
+                    label: 'Pending Savings',
+                    icon: <Loader size={16} />,
+                },
+            ]
         },
 
         {
